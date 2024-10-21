@@ -12,17 +12,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Dark overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black z-40"
-            onClick={onClose} // Close sidebar on overlay click
+            onClick={onClose} 
           />
 
-          {/* Sidebar */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: "0%" }}
@@ -30,7 +28,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             transition={{ type: "", duration: 0.4 }}
             className="fixed right-0 top-0 h-full w-[380px] bg-white shadow-lg z-50 flex flex-col"
           >
-            {/* Header with close button */}
             <div className="flex justify-between items-center p-4 h-[45px] border-b">
               <IoClose
                 className=" hover:text-[#982B2B]  text-[34px] pr-3 transition-all ease-in-out duration-200 cursor-pointer border-r h-[45px]"
@@ -42,7 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               </span>
             </div>
 
-            {/* Sidebar content */}
             <div className="p-4 flex-1 flex flex-col items-center justify-center">
               <p className="text-center text-[22px] mb-6 w-[380px] font-semibold">
                 Your shopping bag is empty
