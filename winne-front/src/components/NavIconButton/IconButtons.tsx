@@ -136,119 +136,122 @@ const IconButtons = () => {
       </AnimatePresence>
 
       <AnimatePresence>
-        {isUserModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white w-[500px] h-[600px] -m-[15px]  shadow-lg p-[50px] relative"
+  {isUserModalOpen && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50"
+      onClick={toggleUserModal} 
+    >
+      <motion.div
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0.9 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white w-[500px] h-[600px] -m-[15px] shadow-lg p-[50px] relative"
+        onClick={(e) => e.stopPropagation()} 
+      >
+        <div className="absolute -top-8 text-white -right-1 cursor-pointer">
+          <IoMdClose
+            className="text-3xl hover:text-[#982B2B] transition-all duration-300 hover:rotate-180"
+            onClick={toggleUserModal}
+          />
+        </div>
+
+        <div className="text-center w-[400px] mx-auto flex-col items-start ">
+          <div className="w-[366px] mx-auto border-b pb-[20px] text-[16px]">
+            <Image
+              src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
+              alt="Logo"
+              width={160}
+              height={40}
+              className="mx-auto object-cover"
+            />
+          </div>
+
+          {isResetPassword ? (
+            <p className="text-[16px] tracking-[4px] font-semibold mb-[25px] text-[#212529] pt-[25px]">
+              RESET YOUR PASSWORD
+            </p>
+          ) : (
+            !isRegister && (
+              <p className="text-xl mb-[14px] text-#111111 pt-[20px]">
+                Great to have you back!
+              </p>
+            )
+          )}
+        </div>
+
+        <form className="space-y-4 w-[366px] mx-auto ">
+          <input
+            type="email"
+            placeholder="Email address"
+            className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black "
+          />
+          {!isResetPassword && (
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black"
+            />
+          )}
+
+          {!isRegister && !isResetPassword && (
+            <div
+              onClick={switchToResetPassword}
+              className="text-start inline-block text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200 text-sm cursor-pointer mt-6"
             >
-              <div className="absolute -top-8 text-white  -right-1 cursor-pointer">
-                <IoMdClose
-                  className="text-3xl hover:text-[#982B2B] transition-all duration-300 hover:rotate-180"
-                  onClick={toggleUserModal}
-                />
-              </div>
+              Forgot your password?
+            </div>
+          )}
 
-              <div className="text-center w-[400px] mx-autoflex-col items-start ">
-                <div className="w-[366px] mx-auto  border-b pb-[20px] text-[16px]">
-                  <Image
-                    src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
-                    alt="Logo"
-                    width={160}
-                    height={40}
-                    className="mx-auto object-cover"
-                  />
-                </div>
+          <button className="w-full h-[55px] px-[12px] font-semibold hover:bg-[#982B2B] transition-all ease-in-out duration-300 bg-black text-white tracking-[2px] mt-4">
+            {isRegister
+              ? "REGISTER"
+              : isResetPassword
+              ? "SUBMIT"
+              : "LOG IN"}
+          </button>
+        </form>
 
-                {isResetPassword ? (
-                  <p className="text-[16px]  tracking-[4px] font-semibold mb-[25px] text-[#212529] pt-[25px]">
-                    RESET YOUR PASSWORD
-                  </p>
-                ) : (
-                  !isRegister && (
-                    <p className="text-xl mb-[14px] text-#111111 pt-[20px]">
-                      Great to have you back!
-                    </p>
-                  )
-                )}
-              </div>
-
-              <form className="space-y-4 w-[366px] mx-auto ">
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black "
-                />
-                {!isResetPassword && (
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full h-[55px] px-[12px] py-[6px]  border border-gray-300 placeholder:text-[14px]  focus:outline-none focus:placeholder:text-black  "
-                  />
-                )}
-
-                {!isRegister && !isResetPassword && (
-                  <div
-                    onClick={switchToResetPassword}
-                    className="text-start inline-block text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200 text-sm cursor-pointer mt-6 "
-                  >
-                    Forgot your password?
-                  </div>
-                )}
-
-                <button className="w-full h-[55px] px-[12px] font-semibold hover:bg-[#982B2B] transition-all ease-in-out duration-300  bg-black text-white  tracking-[2px] mt-4">
-                  {isRegister
-                    ? "REGISTER"
-                    : isResetPassword
-                    ? "SUBMIT"
-                    : "LOG IN"}
-                </button>
-              </form>
-
-              {!isRegister && !isResetPassword ? (
-                <div className="mt-6 text-center ">
-                  <p className="bg-[#F2F2F2] text-[#212529] text-sm p-[10px] w-[366px] mx-auto ">
-                    Don’t have an account?{" "}
-                    <button
-                      onClick={switchToRegister}
-                      className="text-[#C5C4C4]  hover:text-[#982B2B] transition-all ease duration-200"
-                    >
-                      Register now
-                    </button>
-                  </p>
-                </div>
-              ) : isRegister ? (
-                <div className="mt-6 text-center  ">
-                  <button
-                    onClick={switchToLogin}
-                    className="bg-[#F2F2F2]  hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer "
-                  >
-                    Back to login
-                  </button>
-                </div>
-              ) : (
-                <div className="mt-6 text-center">
-                  <button
-                    onClick={switchToLogin}
-                    className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
+        {!isRegister && !isResetPassword ? (
+          <div className="mt-6 text-center">
+            <p className="bg-[#F2F2F2] text-[#212529] text-sm p-[10px] w-[366px] mx-auto">
+              Don’t have an account?{" "}
+              <button
+                onClick={switchToRegister}
+                className="text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200"
+              >
+                Register now
+              </button>
+            </p>
+          </div>
+        ) : isRegister ? (
+          <div className="mt-6 text-center">
+            <button
+              onClick={switchToLogin}
+              className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
+            >
+              Back to login
+            </button>
+          </div>
+        ) : (
+          <div className="mt-6 text-center">
+            <button
+              onClick={switchToLogin}
+              className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
         )}
-      </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
 
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
 
