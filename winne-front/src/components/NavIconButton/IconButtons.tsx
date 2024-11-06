@@ -79,6 +79,7 @@ const IconButtons = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black z-40"
+            onClick={toggleSearch}
           />
         )}
       </AnimatePresence>
@@ -91,181 +92,180 @@ const IconButtons = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="fixed top-0 left-0 w-full z-50 bg-white"
+            className="fixed top-0 pt-2 left-0 w-full z-50 bg-white"
           >
-            <div className="w-full h-[522px] flex justify-center p-4 border-b shadow-lg">
-              <div className="flex flex-col w-full justify-start items-center">
-                <motion.h1
-                  initial={{ opacity: 0, y: -50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-[40px] text-center font-bold mb-[20px] w-full"
-                >
-                  Start typing and hit Enter
-                </motion.h1>
+            <div className="w-full  h-[522px] flex flex-col items-center p-4 border-b shadow-lg relative">
+              {/* Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.5 }}
+                className="text-[24px] md:text-[40px] text-center font-bold mb-[20px]"
+              >
+                Start typing and hit Enter
+              </motion.h1>
 
-                <motion.div
+              <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.5 }}
+                className="relative w-[90%] md:w-[900px]"
+              >
+                <motion.input
                   initial={{ opacity: 0, y: -50 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -50 }}
                   transition={{ duration: 0.5 }}
-                  className="relative w-[900px]"
-                >
-                  <motion.input
-                    initial={{ opacity: 0, y: -50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -50 }}
-                    transition={{ duration: 0.5 }}
-                    type="text"
-                    placeholder="Search Anything"
-                    className="py-[8px] px-[10px] outline-none h-[44px] border-b-2 border-gray-200 w-full pr-10 mt-10"
-                  />
-                  <FiSearch className="absolute right-3 top-2 text-black text-[20px] mt-10 hover:text-[#982B2B] transition-all ease-in-out duration-200 cursor-pointer" />
-                </motion.div>
-              </div>
-              <div className="absolute right-3 top-3">
-                <IoClose
-                  className="text-[32px] hover:text-[#982B2B] transition-all ease-in-out duration-200 cursor-pointer"
-                  onClick={toggleSearch}
+                  type="text"
+                  placeholder="Search Anything"
+                  className="py-[8px] px-[10px] outline-none h-[44px] border-b-2 border-gray-200 w-full pr-10"
                 />
-              </div>
+                <FiSearch className="absolute right-3 top-2 text-black text-[20px] hover:text-[#982B2B] transition-all ease-in-out duration-200 cursor-pointer" />
+              </motion.div>
+
+              <IoClose
+                className="absolute right-3 top-3 text-[32px] hover:text-[#982B2B] transition-all ease-in-out duration-200 cursor-pointer"
+                onClick={toggleSearch}
+              />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
-  {isUserModalOpen && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50"
-      onClick={toggleUserModal} 
-    >
-      <motion.div
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0.9 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white w-[500px] h-[600px] -m-[15px] shadow-lg p-[50px] relative"
-        onClick={(e) => e.stopPropagation()} 
-      >
-        <div className="absolute -top-8 text-white -right-1 cursor-pointer">
-          <IoMdClose
-            className="text-3xl hover:text-[#982B2B] transition-all duration-300 hover:rotate-180"
+        {isUserModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50"
             onClick={toggleUserModal}
-          />
-        </div>
-
-        <div className="text-center w-[400px] mx-auto flex-col items-start ">
-          <div className="w-[366px] mx-auto border-b pb-[20px] text-[16px]">
-            <Image
-              src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
-              alt="Logo"
-              width={160}
-              height={40}
-              className="mx-auto object-cover"
-            />
-          </div>
-
-          {isResetPassword ? (
-            <p className="text-[16px] tracking-[4px] font-semibold mb-[25px] text-[#212529] pt-[25px]">
-              RESET YOUR PASSWORD
-            </p>
-          ) : (
-            !isRegister && (
-              <p className="text-xl mb-[14px] text-#111111 pt-[20px]">
-                Great to have you back!
-              </p>
-            )
-          )}
-        </div>
-
-        <form className="space-y-4 w-[366px] mx-auto ">
-          <input
-            type="email"
-            placeholder="Email address"
-            className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black "
-          />
-          {!isResetPassword && (
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black"
-            />
-          )}
-
-          {!isRegister && !isResetPassword && (
-            <div
-              onClick={switchToResetPassword}
-              className="text-start inline-block text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200 text-sm cursor-pointer mt-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ duration: 0.5 }}
+              className="bg-white w-[500px] h-[600px] -m-[15px] shadow-lg p-[50px] relative"
+              onClick={(e) => e.stopPropagation()}
             >
-              Forgot your password?
-            </div>
-          )}
+              <div className="absolute -top-8 text-white -right-1 cursor-pointer">
+                <IoMdClose
+                  className="text-3xl hover:text-[#982B2B] transition-all duration-300 hover:rotate-180"
+                  onClick={toggleUserModal}
+                />
+              </div>
 
-          <button className="w-full h-[55px] px-[12px] font-semibold hover:bg-[#982B2B] transition-all ease-in-out duration-300 bg-black text-white tracking-[2px] mt-4">
-            {isRegister
-              ? "REGISTER"
-              : isResetPassword
-              ? "SUBMIT"
-              : "LOG IN"}
-          </button>
-        </form>
+              <div className="text-center w-[400px] mx-auto flex-col items-start ">
+                <div className="w-[366px] mx-auto border-b pb-[20px] text-[16px]">
+                  <Image
+                    src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
+                    alt="Logo"
+                    width={160}
+                    height={40}
+                    className="mx-auto object-cover"
+                  />
+                </div>
 
-        {!isRegister && !isResetPassword ? (
-          <div className="mt-6 text-center">
-            <p className="bg-[#F2F2F2] text-[#212529] text-sm p-[10px] w-[366px] mx-auto">
-              Don’t have an account?{" "}
-              <button
-                onClick={switchToRegister}
-                className="text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200"
-              >
-                Register now
-              </button>
-            </p>
-          </div>
-        ) : isRegister ? (
-          <div className="mt-6 text-center">
-            <button
-              onClick={switchToLogin}
-              className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
-            >
-              Back to login
-            </button>
-          </div>
-        ) : (
-          <div className="mt-6 text-center">
-            <button
-              onClick={switchToLogin}
-              className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
-            >
-              Cancel
-            </button>
-          </div>
+                {isResetPassword ? (
+                  <p className="text-[16px] tracking-[4px] font-semibold mb-[25px] text-[#212529] pt-[25px]">
+                    RESET YOUR PASSWORD
+                  </p>
+                ) : (
+                  !isRegister && (
+                    <p className="text-xl mb-[14px] text-#111111 pt-[20px]">
+                      Great to have you back!
+                    </p>
+                  )
+                )}
+              </div>
+
+              <form className="space-y-4 w-[366px] mx-auto ">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black "
+                />
+                {!isResetPassword && (
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black"
+                  />
+                )}
+
+                {!isRegister && !isResetPassword && (
+                  <div
+                    onClick={switchToResetPassword}
+                    className="text-start inline-block text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200 text-sm cursor-pointer mt-6"
+                  >
+                    Forgot your password?
+                  </div>
+                )}
+
+                <button className="w-full h-[55px] px-[12px] font-semibold hover:bg-[#982B2B] transition-all ease-in-out duration-300 bg-black text-white tracking-[2px] mt-4">
+                  {isRegister
+                    ? "REGISTER"
+                    : isResetPassword
+                    ? "SUBMIT"
+                    : "LOG IN"}
+                </button>
+              </form>
+
+              {!isRegister && !isResetPassword ? (
+                <div className="mt-6 text-center">
+                  <p className="bg-[#F2F2F2] text-[#212529] text-sm p-[10px] w-[366px] mx-auto">
+                    Don’t have an account?{" "}
+                    <button
+                      onClick={switchToRegister}
+                      className="text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200"
+                    >
+                      Register now
+                    </button>
+                  </p>
+                </div>
+              ) : isRegister ? (
+                <div className="mt-6 text-center">
+                  <button
+                    onClick={switchToLogin}
+                    className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
+                  >
+                    Back to login
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-6 text-center">
+                  <button
+                    onClick={switchToLogin}
+                    className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
         )}
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
-
+      </AnimatePresence>
 
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
 
-      <div className="w-[240px] h-[26px] justify-center flex items-center gap-[14px] z-30">
+      <div className="md:h-[26px]  justify-center flex items-center gap-2 md:gap-[14px] z-30">
         <IconButton
           icon={<FiSearch className="text-[24px]" />}
           onClick={toggleSearch}
         />
         <IconButton
-          icon={<FaRegUser className="text-[22px]" />}
+          icon={<FaRegUser className="text-[22px] hidden md:block" />}
           onClick={toggleUserModal}
         />
         <Link href="/wishlist">
-          <IconButton icon={<FiHeart className="text-[24px]" />} />
+          <IconButton
+            icon={<FiHeart className="text-[24px] hidden md:block" />}
+          />
         </Link>
         <IconButton
           icon={<GrShop className="text-[24px]" />}

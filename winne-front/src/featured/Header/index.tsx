@@ -8,10 +8,31 @@ import Tooltip from "@/components/Tooltip/Tooltip";
 import "swiper/swiper-bundle.css";
 import "swiper/swiper-bundle.css";
 import ProductSwiper from "@/components/NavProductItem/ProductSwiper";
-
+import { FiMenu } from "react-icons/fi";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { motion } from "framer-motion";
+import { LuUser2 } from "react-icons/lu";
+import { RxHamburgerMenu } from "react-icons/rx";
+type MenuType = "main" | "Home" | "Shop" | "Featured" | "Pages" | "Blogs";
 const Header = () => {
   const [isFixed, setIsFixed] = useState(false);
   const headerRef = useRef<HTMLDivElement | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [activeMenu, setActiveMenu] = useState<MenuType>("main");
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    setActiveMenu("main");
+  };
+
+  const handleSubMenu = (menu: MenuType): void => {
+    setActiveMenu(menu);
+  };
+  const menuVariants = {
+    hidden: { opacity: 0, x: "-100%" },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+    exit: { opacity: 0, x: "-100%", transition: { duration: 0.6 } },
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,13 +52,19 @@ const Header = () => {
       }`}
       ref={headerRef}
     >
-      <div className="max-w-[1450px] mx-auto ml-[9%] h-[42px]">
-        <div className=" flex justify-between items-center">
-          <div>
+      <div>
+        <div className="max-w-[1450px] w-full mx-auto flex justify-between items-center">
+          <div className="md:hidden flex items-center">
+            <FiMenu
+              className="text-[30px] cursor-pointer"
+              onClick={toggleMenu}
+            />
+          </div>
+          <div className="  flex items-center md:order-first">
             <Link href="/">
               <Image
                 src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
-                className="w-[140px] h-[30px]"
+                className=" w-[140px] h-[30px] ml-[18%] md:ml-0 object-cover"
                 alt="Logo"
                 width={140}
                 height={30}
@@ -45,7 +72,8 @@ const Header = () => {
               />
             </Link>
           </div>
-          <nav className="relative w-[960px] h-[42px] flex justify-center">
+
+          <nav className="hidden md:flex relative w-[960px] h-[42px] z-10  justify-center font-semibold text-[#212529]">
             <ul className="flex flex-wrap  items-center gap-14 text-[#212529] font-semibold">
               <NavItem
                 label="home"
@@ -729,6 +757,803 @@ const Header = () => {
               />
             </ul>
           </nav>
+          {isMenuOpen && (
+            <div className="fixed inset-0 z-50">
+              <motion.div
+                className="fixed inset-0 bg-black bg-opacity-80"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 0.4 } }}
+                exit={{ opacity: 0, transition: { duration: 0.4 } }}
+                onClick={toggleMenu}
+              />
+
+              <motion.div
+                className={`bg-white h-full flex flex-col relative ${
+                  activeMenu === "main"
+                    ? "w-[75%] md:w-full"
+                    : "w-[75%] md:w-[60%]"
+                }`}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={menuVariants}
+              >
+                <div
+                  className={`flex gap-1 items-center h-[54px] ${
+                    activeMenu !== "main"
+                      ? "bg-[#A53E4C] text-white pl-4"
+                      : "border-b border-gray-300"
+                  } `}
+                >
+                  {activeMenu === "main" ? (
+                    <>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="w-[160px] md:w-[180px] flex gap-2 items-center bg-[#111111] text-white justify-center h-[55px]">
+                          <RxHamburgerMenu className="text-[21px] mb-[2px]" />
+                          <button className="text-[15px] md:text-[18px]">
+                            MENU
+                          </button>
+                        </div>
+                        <div className="w-[160px] md:w-[180px] flex gap-2 items-center text-black justify-center h-[55px]">
+                          <LuUser2 className="text-[21px] mb-[4px]" />
+                          <button className="text-[16px] md:text-[18px]">
+                            LOGIN
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <AiOutlineLeft
+                        className="text-[17px] flex items-center justify-center rounded"
+                        onClick={() => setActiveMenu("main")}
+                      />
+                      <h2 className="text-xl font-semibold">{activeMenu}</h2>
+                      <div />
+                    </>
+                  )}
+                </div>
+
+                {activeMenu === "main" && (
+                  <motion.nav
+                    className="flex flex-col flex-grow overflow-y-auto"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={menuVariants}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="w-full md:w-full h-[54px] flex items-center border">
+                        <Link
+                          href="/"
+                          className="text-[17px] md:text-[19px] ml-3"
+                        >
+                          HOME
+                        </Link>
+                      </div>
+                      <div className="w-[50px] h-[54px] flex items-center justify-center border">
+                        <AiOutlineRight
+                          onClick={() => handleSubMenu("Home")}
+                          className="w-[15px] h-[15px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center w-full">
+                      <div className="w-full md:w-full h-[54px] flex items-center border">
+                        <Link
+                          href="/Shop"
+                          className="text-[17px] md:text-[19px] ml-3"
+                        >
+                          SHOP
+                        </Link>
+                      </div>
+                      <div className="w-[50px] h-[54px] flex items-center justify-center border">
+                        <AiOutlineRight
+                          onClick={() => handleSubMenu("Shop")}
+                          className="w-[15px] h-[15px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="w-full md:w-full h-[54px] flex items-center border">
+                        <Link
+                          href="/featured"
+                          className="text-[17px] md:text-[19px] ml-3"
+                        >
+                          FEATURED
+                        </Link>
+                      </div>
+                      <div className="w-[50px] h-[54px] flex items-center justify-center border">
+                        <AiOutlineRight
+                          onClick={() => handleSubMenu("Featured")}
+                          className="w-[15px] h-[15px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="w-full md:w-full h-[54px] flex items-center border">
+                        <Link
+                          href="/pages"
+                          className="text-[17px] md:text-[19px] ml-3"
+                        >
+                          PAGES
+                        </Link>
+                      </div>
+                      <div className="w-[50px] h-[54px] flex items-center justify-center border">
+                        <AiOutlineRight
+                          onClick={() => handleSubMenu("Pages")}
+                          className="w-[15px] h-[15px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="w-full md:w-full h-[54px] flex items-center border">
+                        <Link
+                          href="/blogs"
+                          className="text-[17px] md:text-[19px] ml-3"
+                        >
+                          BLOGS
+                        </Link>
+                      </div>
+                      <div className="w-[50px] h-[54px] flex items-center justify-center border">
+                        <AiOutlineRight
+                          onClick={() => handleSubMenu("Blogs")}
+                          className="w-[15px] h-[15px]"
+                        />
+                      </div>
+                    </div>
+                  </motion.nav>
+                )}
+
+                {activeMenu === "Home" && (
+                  <motion.nav
+                    className="flex flex-col flex-grow overflow-y-auto gap-4"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.3 },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -100,
+                      transition: { duration: 0.3 },
+                    }}
+                  >
+                    <Link
+                      href="/home-1"
+                      onClick={toggleMenu}
+                      className="text-black text-[16px]  md:text-[16px] h-[54px] flex items-center ml-5"
+                    >
+                      Home 1
+                    </Link>
+                    <Link
+                      href="/home-2"
+                      onClick={toggleMenu}
+                      className="text-black text-[16px]  md:text-[16px] h-[54px] flex items-center ml-5"
+                    >
+                      Home 2
+                    </Link>
+                    <Link
+                      href="/home-3"
+                      onClick={toggleMenu}
+                      className="text-black text-[16px]  md:text-[16px] h-[54px] flex items-center ml-5"
+                    >
+                      Home 3
+                    </Link>
+                    <Link
+                      href="/home-4"
+                      onClick={toggleMenu}
+                      className="text-black text-[16px]  md:text-[16px] h-[54px] flex items-center ml-5"
+                    >
+                      Home 4
+                    </Link>
+                    <Link
+                      href="/home-5"
+                      onClick={toggleMenu}
+                      className="text-black text-[16px]  md:text-[16px] h-[54px] flex items-center ml-5"
+                    >
+                      Home 5
+                    </Link>
+                  </motion.nav>
+                )}
+
+                {activeMenu === "Shop" && (
+                  <motion.nav
+                    className="flex flex-col flex-grow overflow-y-auto gap-4 scrollbar-hide"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.3 },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -100,
+                      transition: { duration: 0.3 },
+                    }}
+                  >
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        SHOP LAYOUTS
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <Link
+                        href="/shop-layouts"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Fullwidth
+                      </Link>
+                      <Link
+                        href="/sidebar-layouts"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Sidebar Layouts
+                      </Link>
+                      <Link
+                        href="/infinity-scroll"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Infinity Scroll
+                      </Link>
+                      <Link
+                        href="/background-modern"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Background Modern
+                      </Link>
+                      <Link
+                        href="/list-view"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        List View
+                      </Link>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        SHOP HEADING
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <Link
+                        href="/heading-style-1"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Heading Style 1
+                      </Link>
+                      <Link
+                        href="/heading-style-2"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Heading Style 2
+                      </Link>
+                      <Link
+                        href="/heading-style-3"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Heading Style 3
+                      </Link>
+                      <Link
+                        href="/heading-style-4"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Heading Style 4
+                      </Link>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        FILTER LAYOUT
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <div className="relative group">
+                        <Link
+                          href="/drawer-filter"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Drawer Filter
+                        </Link>
+                        <span className="-top-1 ml-2 absolute  bg-green-400 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+
+                      <Link
+                        href="/off-canvas"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Off Canvas
+                      </Link>
+                      <Link
+                        href="/filter-sticky"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Filter Sticky
+                      </Link>
+                      <Link
+                        href="/filter-dropdown"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Filter Dropdown
+                      </Link>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Filter Accordion
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-red-600 text-white text-[9px] px-1">
+                          HOT
+                        </span>
+                      </div>
+                    </div>
+                  </motion.nav>
+                )}
+                {activeMenu === "Featured" && (
+                  <motion.nav
+                    className="flex flex-col flex-grow overflow-y-auto gap-4 scrollbar-hide"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.3 },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -100,
+                      transition: { duration: 0.3 },
+                    }}
+                  >
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        ANIMATE DEMOS
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Quickview-Popup
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-blue-600 text-white text-[9px] px-1">
+                          TREND
+                        </span>
+                      </div>
+                      <Link
+                        href="/sidebar-layouts"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Minicart Draws
+                      </Link>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Quick Add to cart
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        9 PRODUCT HOVER
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <Link
+                        href="/heading-style-1"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Product Hover Style 1
+                      </Link>
+                      <Link
+                        href="/heading-style-2"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Product Hover Style 2
+                      </Link>
+                      <Link
+                        href="/heading-style-3"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Product Hover Style 3
+                      </Link>
+                      <Link
+                        href="/heading-style-4"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Product Hover Style 4
+                      </Link>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          All Style
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-red-600 text-white text-[9px] px-1">
+                          HOT
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        THEME ELEMENT
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <Link
+                        href="/drawer-filter"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Ajax Search
+                      </Link>
+
+                      <div className="relative group">
+                        <Link
+                          href="/drawer-filter"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Ajax Minicart
+                        </Link>
+                        <span className="-top-1 ml-2 absolute  bg-green-400 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+                      <Link
+                        href="/filter-sticky"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Filter Sticky
+                      </Link>
+                      <Link
+                        href="/filter-dropdown"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Recently Products
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Social Share
+                      </Link>
+                    </div>
+                  </motion.nav>
+                )}
+                {activeMenu === "Pages" && (
+                  <motion.nav
+                    className="flex flex-col flex-grow overflow-y-auto gap-4 scrollbar-hide"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.3 },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -100,
+                      transition: { duration: 0.3 },
+                    }}
+                  >
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        DEMO LAYOUTS
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Full Screen
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
+                          New
+                        </span>
+                      </div>
+                      <Link
+                        href="/sidebar-layouts"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Heading Background
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Simple
+                      </Link>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        PRE-BUILD PAGES
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          About Us #1
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-red-600 text-white text-[9px] px-1">
+                          HOT
+                        </span>
+                      </div>
+                      <Link
+                        href="/heading-style-2"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        About Us #2
+                      </Link>
+                      <Link
+                        href="/heading-style-3"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        About Us #3
+                      </Link>
+                      <Link
+                        href="/heading-style-4"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        About Us #4
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Contact Us #1
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Contact Us #2
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        FaQs
+                      </Link>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        ECOMERCE
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Cart
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-red-600 text-white text-[9px] px-1">
+                          HOT
+                        </span>
+                      </div>
+
+                      <Link
+                        href="/filter-sticky"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        404 Page
+                      </Link>
+                      <Link
+                        href="/filter-dropdown"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        My Account
+                      </Link>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Login/Register
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+                    </div>
+                  </motion.nav>
+                )}
+                {activeMenu === "Blogs" && (
+                  <motion.nav
+                    className="flex flex-col flex-grow overflow-y-auto gap-4 scrollbar-hide"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.3 },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -100,
+                      transition: { duration: 0.3 },
+                    }}
+                  >
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        SINGLE POST
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          No Sidebar
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+                      <Link
+                        href="/sidebar-layouts"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Left Sidebar
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Right Sidebar
+                      </Link>
+
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Standar
+                      </Link>
+
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Audio
+                      </Link>
+
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Video
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-red-600 text-white text-[9px] px-1">
+                          HOT
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4 pl-5 ">
+                      <h3 className="font-semibold text-gray-900 text-lg relative">
+                        LAYOUT
+                        <span className="absolute bottom-0 left-0 w-1/2 h-[1.5px] bg-[#982B2B]"></span>
+                      </h3>
+                      <Link
+                        href="/heading-style-1"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        No Sidebar
+                      </Link>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          Left Sidebar
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+                      <Link
+                        href="/heading-style-3"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Right Sidebar
+                      </Link>
+                      <Link
+                        href="/heading-style-4"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Standar
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Blog List
+                      </Link>
+                      <Link
+                        href="/filter-accordion"
+                        onClick={toggleMenu}
+                        className="text-gray-800 text-base hover:text-[#982B2B]"
+                      >
+                        Grid
+                      </Link>
+                    </div>
+                  </motion.nav>
+                )}
+
+                <div className="absolute bottom-0 left-0 w-full flex justify-center bg-[#A53E4C] text-white h-[52px] md:h-[60px]">
+                  <button
+                    onClick={toggleMenu}
+                    className="text-[12px] md:text-[14px]"
+                  >
+                    CLOSE
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+
           <IconButtons />
         </div>
       </div>

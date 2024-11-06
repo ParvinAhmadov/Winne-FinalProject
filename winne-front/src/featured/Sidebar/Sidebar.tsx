@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black z-40"
-            onClick={onClose} 
+            onClick={onClose}
           />
 
           <motion.div

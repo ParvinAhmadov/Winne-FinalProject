@@ -30,3 +30,45 @@ body.activedesktop {
   margin-top: 522px;
   transition: all 0.5s ease;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+.swiper-pagination-horizontal.swiper-pagination-bullets
+  .swiper-pagination-bullet {
+  font-size: 20px;
+  background-color: gray;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #333; /* Match tooltip background color */
+  content: "";
+}
+
+@layer components {
+  .sidebar_active {
+    @apply bg-backColor w-[251px] min-h-screen fixed top-0 left-0 transition-transform duration-300;
+  }
+  .dashboard_active {
+    @apply flex items-center justify-between hover:text-white cursor-pointer  transition-colors duration-300;
+  }
+
+  .sidebar_active_text {
+    @apply hover:text-white transition-colors duration-300 ml-[25px] cursor-pointer text-[14px] mb-[5px];
+  }
+}

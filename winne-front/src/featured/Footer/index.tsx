@@ -5,8 +5,8 @@ import { FaBehance, FaDribbble, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t mt-10 py-10">
-      <div className="max-w-[1450px] mx-auto px-4 text-center">
+    <footer className="w-full bg-white border-t mt-10 py-10">
+      <div className="max-w-[1450px] md:pl-[1.5%] text-center">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="flex flex-col items-center">
             <Image
@@ -150,8 +150,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10 border-t pt-6 flex flex-col items-center justify-center text-center text-gray-700 text-sm">
-        <p className="mb-4">
+      <div className="mt-10 md:pl-[6.2%] md:pr-[6.2%] border-t pt-6 flex flex-col md:flex-row md:justify-between items-center justify-center text-center text-gray-700 text-sm">
+        <p className="mb-4 md:mb-0">
           &copy; 2023 |{" "}
           <a
             href="#"
@@ -172,7 +172,7 @@ const Footer = () => {
           </a>
           .
         </p>
-        <div className="mt-4">
+        <div className="mt-4 md:mt-0">
           <Image
             src="https://winne-store-demo.myshopify.com/cdn/shop/files/payment.png?v=1653894988"
             alt="Payment Methods"
