@@ -615,20 +615,25 @@ const Header = () => {
                           className="hover:text-[#982B2B] transition-all relative"
                           href="#"
                         >
-                          DEMO LAYOUTS
+                          ECOMERCE
                           <span className="absolute left-0 transform translate-x-2/2 bottom-0 border-b top-8 border-[#982B2B] w-[50%]" />
                         </a>
                         <ul className="flex flex-col gap-4 font-normal text-gray-500">
                           {[
                             {
-                              text: "Full Screen",
+                              text: "Cart",
                               href: "#",
-                              tooltip: { text: "NEW", color: "bg-green-400" },
+                              tooltip: { text: "HOT", color: "bg-red-600" },
                             },
-                            { text: "Heading Background", href: "#" },
+                            { text: "404 Page", href: "#" },
                             {
-                              text: "Simple",
-                              href: "#",
+                              text: "My account",
+                              href: "account/login",
+                            },
+                            {
+                              text: "Login/Register",
+                              href: "account/login",
+                              tooltip: { text: "NEW", color: "bg-green-400" },
                             },
                           ].map(({ text, href, tooltip }, index) => (
                             <li key={index} className="relative">
