@@ -2,92 +2,97 @@ import React from "react";
 
 const LoginPage = () => {
   return (
-    <section>
-      <div className="flex justify-center max-w-[1200px] w-full mx-auto items-center min-h-screen bg-white">
-        {/* Login Section */}
-        <div className="w-1/2 px-10 border-r border-gray-300">
-          <h2 className="text-2xl font-semibold mb-8 text-center tracking-wide">LOGIN</h2>
+    <section className="bg-white">
+      <div className="flex flex-col sm:flex-row justify-between max-w-[1450px] sm:h-[405px] w-full mx-auto">
+        <div className="w-full sm:w-[600px] sm:h-[405px] sm:pt-[100px] px-4 py-8">
+          <h2 className="text-[18px] font-semibold mb-8 text-center tracking-wide">
+            LOGIN
+          </h2>
           <form className="flex flex-col gap-6">
-            <div className="flex items-center gap-4">
-              <label className="text-lg font-medium w-1/3 text-right" htmlFor="email">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <label className="text-lg w-full sm:w-[150px]" htmlFor="email">
                 Email address
               </label>
               <input
                 type="email"
                 id="email"
-                className="border-b border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400 flex-grow"
+                className="border-b w-full focus:border-black border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400"
                 placeholder="Email address"
               />
             </div>
 
-            <div className="flex items-center gap-4">
-              <label className="text-lg font-medium w-1/3 text-right" htmlFor="password">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <label className="text-lg w-full sm:w-[150px]" htmlFor="password">
                 Password
               </label>
               <input
                 type="password"
                 id="password"
-                className="border-b border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400 flex-grow"
+                className="border-b w-full focus:border-black border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400"
                 placeholder="Password"
               />
             </div>
 
             <div className="flex justify-center mt-6">
-              <button className="bg-black text-white py-3 px-12 font-semibold rounded-none">
-                LOG IN
-              </button>
+              <button className="custom-button">LOG IN</button>
             </div>
 
-            <div className="text-center mt-4 text-sm text-gray-500 flex justify-center gap-8">
-              <a href="/" className="hover:underline">
+            <div className="text-center mt-2 text-sm text-black flex flex-col sm:flex-row justify-center gap-6">
+              <a href="/" className="hover:text-[#A53E4C]">
                 Return to Store
               </a>
-              <a href="/" className="hover:underline">
+              <a href="/" className="hover:text-[#A53E4C]">
                 Forgot your password?
               </a>
             </div>
           </form>
         </div>
 
-        {/* Divider */}
-        <div className="w-4"></div>
+        <div className="w-full h-[1px] bg-gray-300 my-8 sm:my-0 sm:w-[120px] sm:h-[405px] sm:bg-transparent"></div>
 
-        {/* Register Section */}
-        <div className="w-1/2 px-10">
-          <h2 className="text-2xl font-semibold mb-8 text-center tracking-wide">REGISTER</h2>
+        <div className="w-full sm:w-[600px] sm:h-[405px] sm:pt-[100px] px-4 py-8">
+          <h2 className="text-[18px] font-semibold mb-8 text-center tracking-wide">
+            REGISTER
+          </h2>
           <form className="flex flex-col gap-6">
-            <div className="flex items-center gap-4">
-              <label className="text-lg font-medium w-1/3 text-right" htmlFor="reg-email">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <label
+                className="text-lg w-full sm:w-[150px]"
+                htmlFor="reg-email"
+              >
                 Email address
               </label>
               <input
                 type="email"
                 id="reg-email"
-                className="border-b border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400 flex-grow"
+                className="border-b w-full focus:border-black border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400"
                 placeholder="Email address"
               />
             </div>
 
-            <div className="flex items-center gap-4">
-              <label className="text-lg font-medium w-1/3 text-right" htmlFor="reg-password">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <label
+                className="text-lg w-full sm:w-[150px]"
+                htmlFor="reg-password"
+              >
                 Password
               </label>
               <input
                 type="password"
                 id="reg-password"
-                className="border-b border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400 flex-grow"
+                className="border-b w-full focus:border-black border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400"
                 placeholder="Password"
               />
             </div>
 
             <div className="flex justify-center mt-6">
-              <button className="bg-black text-white py-3 px-12 font-semibold rounded-none">
-                REGISTER
-              </button>
+              <div className="flex justify-center">
+                <button className="custom-button">REGISTER</button>
+              </div>
             </div>
 
-            <div className="text-center mt-4 text-sm text-gray-500">
-              <a href="/" className="hover:underline">
+            <div className="text-center mt-2 text-sm text-black">
+              <a href="/" className="hover:text-[#A53E4C]">
                 Return to Store
               </a>
             </div>

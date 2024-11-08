@@ -56,7 +56,7 @@ body.activedesktop {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #333; /* Match tooltip background color */
+  border-top: 5px solid #333; 
   content: "";
 }
 
@@ -71,4 +71,49 @@ body.activedesktop {
   .sidebar_active_text {
     @apply hover:text-white transition-colors duration-300 ml-[25px] cursor-pointer text-[14px] mb-[5px];
   }
+}
+
+.custom-button {
+  position: relative;
+  background-color: black;
+  color: white;
+  padding: 0.75rem 3rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out ;
+  letter-spacing: 0.1em
+}
+.custom-button:hover{
+  background-color: white;
+  color: #A53E4C;
+}
+.custom-button::before,
+.custom-button::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 1px solid #A53E4C;
+  transition: all 0.4s ease;
+}
+
+.custom-button::before {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.custom-button::after {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+.custom-button:hover::before,
+.custom-button:hover::after {
+  width: 100%;
+  height: 100%;
 }
