@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CollapsibleTable from "../productsTable/productsTable";
 
-// Interface for products used in the table (images are strings)
 interface Product {
   _id?: string;
   name: string;
@@ -17,7 +16,6 @@ interface Product {
   bestSeller: boolean;
 }
 
-// Interface for new or editable products (images can be File[] or string[])
 interface NewProduct extends Omit<Product, "images"> {
   images: File[] | string[];
 }
@@ -110,9 +108,8 @@ const ProductsPage: React.FC = () => {
 
   const addProductToBestSellers = async (formData: FormData) => {
     try {
-      // Make sure the URL path matches your backend API
       const bestSellerResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/best-seller/create`, // Updated URL
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/best-seller/create`, 
         {
           method: "POST",
           body: formData,

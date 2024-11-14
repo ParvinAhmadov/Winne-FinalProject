@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Image from "next/image"; // Import Next.js Image component
+import Image from "next/image";
 
 interface Product {
   name: string;
@@ -61,8 +61,8 @@ const Row: React.FC<RowProps> = ({ product, index, onDelete, onEdit }) => {
               key={i}
               src={`${baseURL}${image}`}
               alt={product.name}
-              width={40} // Set appropriate width
-              height={40} // Set appropriate height
+              width={40} 
+              height={40} 
               className="object-cover"
             />
           ))}

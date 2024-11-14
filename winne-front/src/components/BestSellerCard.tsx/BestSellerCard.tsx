@@ -88,7 +88,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
               layout="fill"
               objectFit="cover"
               className="cursor-pointer"
-              onLoad={onLoad} // Trigger onLoad when the image loads
+              onLoad={onLoad}
             />
           )}
           <div className="absolute flex left-1/2 transform -translate-x-1/2 gap-4 bottom-8 opacity-0 group-hover:opacity-100 transition duration-500 z-[1] group-hover:-translate-y-[20px]">

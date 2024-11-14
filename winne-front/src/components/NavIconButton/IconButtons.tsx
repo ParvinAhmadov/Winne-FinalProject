@@ -9,14 +9,23 @@ import IconButton from "@/components/IconButton";
 import Link from "next/link";
 import { IoMdClose } from "react-icons/io";
 import Image from "next/image";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const IconButtons = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
-  const [isResetPassword, setIsResetPassword] = useState(false);
   const searchRef = useRef<HTMLDivElement | null>(null);
+
+  const [isResetPassword, setIsResetPassword] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [resetEmail, setResetEmail] = useState<string>("");
+  const [registerEmail, setRegisterEmail] = useState<string>("");
+  const [registerPassword, setRegisterPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -32,28 +41,86 @@ const IconButtons = () => {
   };
 
   const toggleUserModal = () => {
-    setIsUserModalOpen(!isUserModalOpen);
-    setIsResetPassword(false);
+    const token = localStorage.getItem("token");
+    if (token) {
+      window.location.href = "/account"; 
+    } else {
+      setIsUserModalOpen(!isUserModalOpen);
+      setIsResetPassword(false);
+    }
   };
 
-  const switchToRegister = () => {
-    setIsRegister(true);
-    setIsResetPassword(false);
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      const { token, role, message } = response.data;
+
+      toast.success(message || "Logged in successfully!");
+      localStorage.setItem("token", token);
+
+      window.location.href = role === "admin" ? "/admin" : "/account";
+    } catch (error) {
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || "Login failed!"
+          : "An unexpected error occurred!"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const switchToLogin = () => {
-    setIsRegister(false);
-    setIsResetPassword(false);
+  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/auth/forgot-password",
+        { email: resetEmail }
+      );
+      toast.success(response.data.message || "Password reset email sent!");
+    } catch (error) {
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || "Reset password failed!"
+          : "An unexpected error occurred!"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const switchToResetPassword = () => {
-    setIsResetPassword(true);
-  };
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-      setIsSearchOpen(false);
-      document.body.classList.remove("activedesktop");
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/auth/register",
+        {
+          email: registerEmail,
+          password: registerPassword,
+          role: "user",
+        }
+      );
+      toast.success(response.data.message || "Registered successfully!");
+      setRegisterEmail("");
+      setRegisterPassword("");
+    } catch (error) {
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || "Registration failed!"
+          : "An unexpected error occurred!"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,6 +135,13 @@ const IconButtons = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSearchOpen]);
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+      setIsSearchOpen(false);
+      document.body.classList.remove("activedesktop");
+    }
+  };
 
   return (
     <div className="relative">
@@ -149,18 +223,18 @@ const IconButtons = () => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
               transition={{ duration: 0.5 }}
-              className="bg-white w-[500px] h-[600px] -m-[15px] shadow-lg p-[50px] relative"
+              className="bg-white w-[500px] h-[600px] shadow-lg p-[50px] relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="absolute -top-8 text-white -right-1 cursor-pointer">
+              <div className="absolute top-2 right-2 text-gray-500 cursor-pointer">
                 <IoMdClose
-                  className="text-3xl hover:text-[#982B2B] transition-all duration-300 hover:rotate-180"
+                  className="text-3xl hover:text-[#982B2B] transition-all duration-300"
                   onClick={toggleUserModal}
                 />
               </div>
 
-              <div className="text-center w-[400px] mx-auto flex-col items-start ">
-                <div className="w-[366px] mx-auto border-b pb-[20px] text-[16px]">
+              <div className="text-center w-[400px] mx-auto">
+                <div className="w-[366px] mx-auto border-b pb-[20px]">
                   <Image
                     src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
                     alt="Logo"
@@ -170,82 +244,108 @@ const IconButtons = () => {
                   />
                 </div>
 
-                {isResetPassword ? (
-                  <p className="text-[16px] tracking-[4px] font-semibold mb-[25px] text-[#212529] pt-[25px]">
-                    RESET YOUR PASSWORD
-                  </p>
-                ) : (
-                  !isRegister && (
-                    <p className="text-xl mb-[14px] text-#111111 pt-[20px]">
-                      Great to have you back!
-                    </p>
-                  )
-                )}
+                <p className="text-xl mb-[14px] text-[#111111] pt-[20px]">
+                  {isResetPassword
+                    ? "RESET YOUR PASSWORD"
+                    : isRegister
+                    ? "CREATE AN ACCOUNT"
+                    : "Great to have you back!"}
+                </p>
               </div>
 
-              <form className="space-y-4 w-[366px] mx-auto ">
+              <form
+                className="space-y-4 w-[366px] mx-auto"
+                onSubmit={
+                  isResetPassword
+                    ? handleResetPassword
+                    : isRegister
+                    ? handleRegister
+                    : handleLogin
+                }
+              >
                 <input
                   type="email"
+                  value={
+                    isResetPassword
+                      ? resetEmail
+                      : isRegister
+                      ? registerEmail
+                      : email
+                  }
+                  onChange={(e) =>
+                    isResetPassword
+                      ? setResetEmail(e.target.value)
+                      : isRegister
+                      ? setRegisterEmail(e.target.value)
+                      : setEmail(e.target.value)
+                  }
                   placeholder="Email address"
-                  className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black "
+                  className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black"
+                  required
                 />
                 {!isResetPassword && (
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black"
-                  />
+                  <>
+                    <input
+                      type="password"
+                      value={isRegister ? registerPassword : password}
+                      onChange={(e) =>
+                        isRegister
+                          ? setRegisterPassword(e.target.value)
+                          : setPassword(e.target.value)
+                      }
+                      placeholder="Password"
+                      className="w-full h-[55px] px-[12px] py-[6px] border border-gray-300 placeholder:text-[14px] focus:outline-none focus:placeholder:text-black"
+                      required
+                    />
+                    {!isRegister && (
+                      <div
+                        className="text-left text-sm text-[#C5C4C4] hover:text-[#982B2B] cursor-pointer inline-block"
+                        onClick={() => setIsResetPassword(true)}
+                      >
+                        Forgot your password?
+                      </div>
+                    )}
+                  </>
                 )}
 
-                {!isRegister && !isResetPassword && (
-                  <div
-                    onClick={switchToResetPassword}
-                    className="text-start inline-block text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200 text-sm cursor-pointer mt-6"
-                  >
-                    Forgot your password?
-                  </div>
-                )}
-
-                <button className="w-full h-[55px] px-[12px] font-semibold hover:bg-[#982B2B] transition-all ease-in-out duration-300 bg-black text-white tracking-[2px] mt-4">
-                  {isRegister
-                    ? "REGISTER"
+                <button
+                  className="w-full h-[55px] font-semibold bg-black text-white hover:bg-[#982B2B] transition-all tracking-[2px]"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading
+                    ? "Processing..."
                     : isResetPassword
-                    ? "SUBMIT"
-                    : "LOG IN"}
+                    ? "RESET PASSWORD"
+                    : isRegister
+                    ? "REGISTER"
+                    : "LOGIN"}
                 </button>
               </form>
 
-              {!isRegister && !isResetPassword ? (
-                <div className="mt-6 text-center">
-                  <p className="bg-[#F2F2F2] text-[#212529] text-sm p-[10px] w-[366px] mx-auto">
+              <div className="mt-6 text-center">
+                {isRegister || isResetPassword ? (
+                  <button
+                    onClick={() => {
+                      setIsRegister(false);
+                      setIsResetPassword(false);
+                    }}
+                    className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
+                  >
+                    Back to Login
+                  </button>
+                ) : (
+                  <p className="text-sm">
                     Don’t have an account?{" "}
-                    <button
-                      onClick={switchToRegister}
-                      className="text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200"
+                    <span
+                      onClick={() => setIsRegister(true)}
+                      className="text-[#C5C4C4] hover:text-[#982B2B] transition-all ease duration-200 cursor-pointer"
                     >
                       Register now
-                    </button>
+                    </span>
                   </p>
-                </div>
-              ) : isRegister ? (
-                <div className="mt-6 text-center">
-                  <button
-                    onClick={switchToLogin}
-                    className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
-                  >
-                    Back to login
-                  </button>
-                </div>
-              ) : (
-                <div className="mt-6 text-center">
-                  <button
-                    onClick={switchToLogin}
-                    className="bg-[#F2F2F2] hover:text-[#982B2B] text-sm p-[10px] w-[366px] mx-auto cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              )}
+                )}
+              </div>
             </motion.div>
           </motion.div>
         )}

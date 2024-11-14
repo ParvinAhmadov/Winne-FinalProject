@@ -628,7 +628,7 @@ const Header = () => {
                             { text: "404 Page", href: "#" },
                             {
                               text: "My account",
-                              href: "account/login",
+                              href: "/account",
                             },
                             {
                               text: "Login/Register",
