@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Header from "../Header";
-import Footer from "../Footer";
+import Header from "@/featured/Header";
+import Footer from "@/featured/Footer";
 import AdminFooter from "@/components/admin/AdminFooter/AdminFooter";
 import AdminSidebar from "@/components/admin/AdminSidebar/AdminSidebar";
 import Adminheader from "@/components/admin/AdminHeader/Adminheader";
 import UpButton from "@/components/UpButton";
 import ErrorPage from "@/app/error/page";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,17 +20,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith("/admin");
   const [isKnownRoute, setIsKnownRoute] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const routeExists = knownRoutes.some((route) => pathname.startsWith(route));
-    setIsKnownRoute(routeExists || isAdminRoute);
-  }, [pathname, isAdminRoute]);
+    setIsKnownRoute(routeExists);
+    setLoading(false);
+  }, [pathname]);
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (!isKnownRoute) {
     return <ErrorPage />;
@@ -54,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div>
-      <Header />
+      <Header toggleSidebar={toggleSidebar} />
       <main>{children}</main>
       <UpButton />
       <Footer />

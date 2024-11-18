@@ -17,7 +17,6 @@ const IconButtons = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement | null>(null);
-
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState<string>("");
@@ -26,6 +25,61 @@ const IconButtons = () => {
   const [registerEmail, setRegisterEmail] = useState<string>("");
   const [registerPassword, setRegisterPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<
+    {
+      productId: string;
+      name: string;
+      price: number;
+      quantity: number;
+      image: string;
+    }[]
+  >([]);
+
+  const fetchCartItems = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("User is not logged in.");
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cart`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Cache-Control": "no-cache",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart items");
+      }
+
+      const data = await response.json();
+      console.log("Updated Cart Items:", data.items);
+
+      setCartItems(
+        data.items.map((item: any) => ({
+          ...item,
+          image: `${process.env.NEXT_PUBLIC_API_URL}${item.image}`,
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      fetchCartItems();
+    }
+  }, [isSidebarOpen]);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -43,7 +97,7 @@ const IconButtons = () => {
   const toggleUserModal = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      window.location.href = "/account"; 
+      window.location.href = "/account";
     } else {
       setIsUserModalOpen(!isUserModalOpen);
       setIsResetPassword(false);
@@ -169,7 +223,6 @@ const IconButtons = () => {
             className="fixed top-0 pt-2 left-0 w-full z-50 bg-white"
           >
             <div className="w-full  h-[522px] flex flex-col items-center p-4 border-b shadow-lg relative">
-              {/* Title */}
               <motion.h1
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -351,7 +404,12 @@ const IconButtons = () => {
         )}
       </AnimatePresence>
 
-      <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={toggleSidebar}
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+      />
 
       <div className="md:h-[26px]  justify-center flex items-center gap-2 md:gap-[14px] z-30">
         <IconButton

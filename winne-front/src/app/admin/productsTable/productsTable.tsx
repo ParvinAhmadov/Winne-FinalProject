@@ -11,9 +11,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
+import { FaRegEdit } from "react-icons/fa";
+import { FiDelete } from "react-icons/fi";
 
 interface Product {
   name: string;
@@ -23,9 +23,12 @@ interface Product {
   slug: string;
   images: string[];
   bestSeller: boolean;
+  tags: string[];
+  sizes: string[];
+  colors: (string | { name: string })[];
 }
 
-interface productsTableProps {
+interface ProductsTableProps {
   products: Product[];
   onDelete: (index: number) => void;
   onEdit: (index: number) => void;
@@ -42,6 +45,12 @@ const Row: React.FC<RowProps> = ({ product, index, onDelete, onEdit }) => {
   const [open, setOpen] = useState(false);
   const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
+  const formatColors = (colors: (string | { name: string })[]) => {
+    return colors
+      .map((color) => (typeof color === "string" ? color : color.name))
+      .join(", ");
+  };
+
   return (
     <>
       <TableRow>
@@ -50,34 +59,47 @@ const Row: React.FC<RowProps> = ({ product, index, onDelete, onEdit }) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{product.name}</TableCell>
-        <TableCell align="right">${product.price}</TableCell>
-        <TableCell align="right">{product.stock}</TableCell>
-        <TableCell align="right">{product.remainingStock}</TableCell>
-        <TableCell align="center">{product.bestSeller ? "Yes" : "No"}</TableCell>
         <TableCell>
           {product.images.map((image, i) => (
             <Image
               key={i}
               src={`${baseURL}${image}`}
               alt={product.name}
-              width={40} 
-              height={40} 
+              width={40}
+              height={40}
               className="object-cover"
             />
           ))}
         </TableCell>
-        <TableCell align="right">
-          <IconButton onClick={() => onEdit(index)} aria-label="edit" color="primary">
-            <EditIcon />
+        <TableCell>{product.name}</TableCell>
+        <TableCell align="center">${product.price}</TableCell>
+        <TableCell align="center">{product.stock}</TableCell>
+        <TableCell align="center">{product.remainingStock}</TableCell>
+        <TableCell align="center">{product.sizes.join(", ")}</TableCell>
+        <TableCell align="center">{formatColors(product.colors)}</TableCell>
+        <TableCell align="center">{product.tags.join(", ")}</TableCell>
+        <TableCell align="center">
+          {product.bestSeller ? "Yes" : "No"}
+        </TableCell>
+        <TableCell align="center">
+          <IconButton
+            onClick={() => onEdit(index)}
+            aria-label="edit"
+            className="text-black text-[22px]"
+          >
+            <FaRegEdit />
           </IconButton>
-          <IconButton onClick={() => onDelete(index)} aria-label="delete" color="secondary">
-            <DeleteIcon />
+          <IconButton
+            onClick={() => onDelete(index)}
+            aria-label="delete"
+            className="text-[#A53E4C] text-[22px]"
+          >
+            <FiDelete />
           </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <p className="text-gray-500">Slug: {product.slug}</p>
@@ -89,28 +111,41 @@ const Row: React.FC<RowProps> = ({ product, index, onDelete, onEdit }) => {
   );
 };
 
-const productsTable: React.FC<productsTableProps> = ({ products, onDelete, onEdit }) => (
+const ProductsTable: React.FC<ProductsTableProps> = ({
+  products,
+  onDelete,
+  onEdit,
+}) => (
   <TableContainer component={Paper}>
     <Table>
       <TableHead>
         <TableRow>
           <TableCell />
-          <TableCell>Name</TableCell>
-          <TableCell align="right">Price</TableCell>
-          <TableCell align="right">Stock</TableCell>
-          <TableCell align="right">Remaining Stock</TableCell>
-          <TableCell align="center">Best Seller</TableCell>
           <TableCell>Images</TableCell>
-          <TableCell align="right">Actions</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell align="center">Price</TableCell>
+          <TableCell align="center">Stock</TableCell>
+          <TableCell align="center">Remaining Stock</TableCell>
+          <TableCell align="center">Sizes</TableCell>
+          <TableCell align="center">Colors</TableCell>
+          <TableCell align="center">Tags</TableCell>
+          <TableCell align="center">Best Seller</TableCell>
+          <TableCell align="center">Actions</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {products.map((product, index) => (
-          <Row key={index} product={product} index={index} onDelete={onDelete} onEdit={onEdit} />
+          <Row
+            key={index}
+            product={product}
+            index={index}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
         ))}
       </TableBody>
     </Table>
   </TableContainer>
 );
 
-export default productsTable;
+export default ProductsTable;

@@ -5,15 +5,18 @@ import { GrShop } from "react-icons/gr";
 import { TbSearch } from "react-icons/tb";
 import ClipLoader from "react-spinners/ClipLoader";
 import ProductModal from "../ProductModal/ProductModal";
+import AddToCartModal from "../AddToCartModal/AddToCartModal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 interface ProductDetails {
+  id: string;
   name: string;
   price: number;
   images: string[];
-  stock?: number;
-  remainingStock?: number;
+  stock: number;
   slug: string;
-  bestSeller?: boolean;
 }
 
 interface BestSellerCardProps {
@@ -22,6 +25,7 @@ interface BestSellerCardProps {
   image: string;
   productSlug: string;
   onLoad: () => void;
+  isAuthenticated: boolean;
 }
 
 const BestSellerCard: React.FC<BestSellerCardProps> = ({
@@ -32,19 +36,35 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
   onLoad,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isCartModalOpen, setCartModalOpen] = useState(false);
   const [productDetails, setProductDetails] = useState<ProductDetails | null>(
     null
   );
+  const [cartProduct, setCartProduct] = useState<{
+    name: string;
+    price: number;
+    image: string;
+    quantity: number;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const imageUrl = image
     ? `${process.env.NEXT_PUBLIC_API_URL}${image}`
     : "/placeholder-image.jpg";
 
+  const handleViewDetails = () => {
+    if (!productSlug) {
+      toast.error("Product slug is missing or invalid.");
+      return;
+    }
+
+    router.push(`/products/${productSlug}`);
+  };
+
   const handleSearchClick = async () => {
     setLoading(true);
-    setError(null);
 
     try {
       if (!productSlug) {
@@ -60,12 +80,70 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
         throw new Error("Failed to fetch product details.");
       }
 
-      const data: ProductDetails = await response.json();
-      setProductDetails(data);
+      const data = await response.json();
+      setProductDetails({
+        id: data.slug, 
+        name: data.name,
+        price: data.price,
+        images: data.images,
+        stock: data.stock,
+        slug: data.slug,
+      });
       setModalOpen(true);
-    } catch (error) {
-      console.error("Error loading product details:", error);
-      setError("Error loading product details. Please try again.");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+      console.error("Error loading product details:", errorMessage);
+      toast.error("Error loading product details. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+
+      const userToken = localStorage.getItem("token");
+
+      if (!userToken) {
+        toast.error("You must be logged in to add items to the cart.");
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cart/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify({
+            productId: productSlug,
+            quantity: 1,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add product to cart.");
+      }
+
+      const data = await response.json();
+      setCartProduct({
+        name,
+        price,
+        image: imageUrl,
+        quantity: 1,
+      });
+      setCartModalOpen(true);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+      console.error("Error adding product to cart:", errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -73,6 +151,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
 
   return (
     <div>
+      <ToastContainer />
       {loading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
           <ClipLoader color="#A53E4C" size={60} />
@@ -80,7 +159,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
       )}
 
       <div className="flex flex-col justify-center ml-[4%] md:ml-0 w-[340px] h-[515.7px] overflow-hidden text-center group relative">
-        <div className="relative w-full h-[400px]">
+        <div className="relative w-full h-[400px] cursor-pointer">
           {imageUrl && (
             <Image
               src={imageUrl}
@@ -89,10 +168,16 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
               objectFit="cover"
               className="cursor-pointer"
               onLoad={onLoad}
+              onClick={handleViewDetails}
+              onLoadingComplete={() => onLoad()}
+              
             />
           )}
           <div className="absolute flex left-1/2 transform -translate-x-1/2 gap-4 bottom-8 opacity-0 group-hover:opacity-100 transition duration-500 z-[1] group-hover:-translate-y-[20px]">
-            <button className="relative bg-white text-[21px] p-3 rounded-full flex items-center justify-center transition duration-500 hover:bg-[#A53E4C] hover:text-white">
+            <button
+              onClick={handleAddToCart}
+              className="relative bg-white text-[21px] p-3 rounded-full flex items-center justify-center transition duration-500 hover:bg-[#A53E4C] hover:text-white"
+            >
               <GrShop />
             </button>
             <button
@@ -112,12 +197,17 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
           <p className="text-[#A53E4C] font-bold mt-2">${price.toFixed(2)}</p>
         </div>
 
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-
         <ProductModal
-          isOpen={isModalOpen && !loading}
+          isOpen={isModalOpen}
           onClose={() => setModalOpen(false)}
+          onAddToCart={handleAddToCart}
           product={productDetails}
+        />
+
+        <AddToCartModal
+          isOpen={isCartModalOpen}
+          onClose={() => setCartModalOpen(false)}
+          product={cartProduct}
         />
       </div>
     </div>

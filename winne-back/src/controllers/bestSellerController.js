@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const upload = require("../middleware/upload");
+const generateSlug = require("../utils/generateSlug");
 
 exports.getBestSellers = async (req, res) => {
   try {
@@ -14,10 +15,15 @@ exports.createBestSeller = [
   upload.array("images", 5),
   async (req, res) => {
     try {
-      const { name, price, sizes, colors, tags, slug, stock } = req.body;
-      let images = req.files.map((file) => `/uploads/${file.filename}`);
+      console.log("Uploaded files:", req.files);
+      console.log("Request body:", req.body);
 
-      if (images.length < 2) {
+      const { name, price, sizes, colors, tags, slug, stock } = req.body;
+
+      let images = [];
+      if (req.files && req.files.length > 0) {
+        images = req.files.map((file) => `/uploads/${file.filename}`);
+      } else {
         images.push("/uploads/placeholder-image.jpg");
       }
 
@@ -43,6 +49,7 @@ exports.createBestSeller = [
       const savedProduct = await product.save();
       res.status(201).json(savedProduct);
     } catch (error) {
+      console.error("Error:", error.message);
       res.status(500).json({ message: error.message });
     }
   },

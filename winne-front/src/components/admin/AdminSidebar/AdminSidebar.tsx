@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image"; 
+import { FaBox, FaShoppingCart, FaStar, FaTachometerAlt } from "react-icons/fa";
+import Image from "next/image";
 interface AdminSidebarProps {
   isOpen: boolean;
 }
@@ -20,39 +21,67 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
         backdropFilter: "blur(4px)",
       }}
     >
-      <div className="bg-black bg-opacity-70 h-full w-full p-6">
-        <ul className="flex flex-col gap-5">
-          <div className="bg-white p-2 border-none rounded-md">
+      <div className="bg-black bg-opacity-60 h-full w-full p-6">
+        <div className="flex items-center justify-center mb-8">
           <Image
-              className="object-cover"
-              src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
-              alt="Logo"
-              width={150}
-              height={30} 
-            />
-          </div>
-          <li className="group transition duration-300">
-            <Link
-              href="/admin"
-              className="text-gray-400 group-hover:text-white transition"
-            >
-              Dashboard
+            src="https://winne-store-demo.myshopify.com/cdn/shop/files/logo.png?v=1653980231"
+            alt="Winne Logo"
+            width={150}
+            height={40}
+            className="object-contain"
+          />
+        </div>
+
+        <ul className="flex flex-col gap-4 text-base">
+          <li>
+            <Link href="/admin">
+              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FaTachometerAlt className="text-gray-700 text-2xl group-hover:text-indigo-500 transition-all" />
+                  <span className="text-gray-800 font-semibold transition-all group-hover:text-indigo-500">
+                    Dashboard
+                  </span>
+                </div>
+              </div>
             </Link>
           </li>
-          <li className="group transition duration-300">
-            <Link
-              href="/admin/products"
-              className="text-gray-400 group-hover:text-white transition"
-            >
-              Products
+
+          <li>
+            <Link href="/admin/products">
+              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FaBox className="text-gray-700 text-2xl group-hover:text-green-500 transition-all" />
+                  <span className="text-gray-800 font-semibold transition-all group-hover:text-green-500">
+                    Products
+                  </span>
+                </div>
+              </div>
             </Link>
           </li>
-          <li className="group transition duration-300">
-            <Link
-              href="/admin/best-sellers"
-              className="text-gray-400 group-hover:text-white transition"
-            >
-              Best Sellers
+
+          <li>
+            <Link href="/admin/best-sellers">
+              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FaStar className="text-gray-700 text-2xl group-hover:text-yellow-500 transition-all" />
+                  <span className="text-gray-800 font-semibold transition-all group-hover:text-yellow-500">
+                    Best Sellers
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/admin/orders">
+              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FaShoppingCart className="text-gray-700 text-2xl group-hover:text-red-500 transition-all" />
+                  <span className="text-gray-800 font-semibold transition-all group-hover:text-red-500">
+                    Orders
+                  </span>
+                </div>
+              </div>
             </Link>
           </li>
         </ul>

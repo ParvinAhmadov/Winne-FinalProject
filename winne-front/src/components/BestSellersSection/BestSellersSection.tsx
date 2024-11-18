@@ -32,11 +32,9 @@ const BestSellersSection: React.FC = () => {
   }, []);
 
   const handleImageLoad = (index: number) => {
-    setLoadingStates((prev) => {
-      const updatedLoadingStates = [...prev];
-      updatedLoadingStates[index] = false;
-      return updatedLoadingStates;
-    });
+    setLoadingStates((prev) =>
+      prev.map((state, i) => (i === index ? false : state)) 
+    );
   };
 
   if (error) return <p className="text-red-500">{error}</p>;
@@ -66,6 +64,7 @@ const BestSellersSection: React.FC = () => {
               image={product.images?.[0] || "/placeholder-image.jpg"}
               productSlug={product.slug}
               onLoad={() => handleImageLoad(index)}
+              isAuthenticated={true}
             />
           </div>
         ))}

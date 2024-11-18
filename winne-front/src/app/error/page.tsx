@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const ErrorPage = () => {
   return (
@@ -19,7 +19,8 @@ const ErrorPage = () => {
         href="/"
         className="mt-6 text-sm md:text-base lg:text-[14px] text-[#A8A8A8] font-medium cursor-default"
       >
-        Please return to <span className="text-[#A53E4C] cursor-pointer">Home page</span>
+        Please return to{" "}
+        <span className="text-[#A53E4C] cursor-pointer">Home page</span>
       </a>
 
       <div className="flex items-center w-full max-w-md mt-6">

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
-import { Swiper as SwiperType } from "swiper"; 
+import { Swiper as SwiperType } from "swiper";
 
 const HomeImageSwiper = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -6,7 +6,7 @@ const User = require("../models/User");
 
 
 exports.register = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username, surname, address, isAdmin } = req.body;
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -28,50 +28,39 @@ exports.register = async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
+      username,
+      surname,
+      address,
+      isAdmin: isAdmin || false,
     });
+
     await newUser.save();
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465, 
-      secure: true, 
-      auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS, 
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email, username: newUser.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json({
+      message: "User registered successfully!",
+      user: {
+        email: newUser.email,
+        username: newUser.username,
+        surname: newUser.surname,
+        address: newUser.address,
+        isAdmin: newUser.isAdmin,
       },
+      token, 
     });
-
-    const mailOptions = {
-      from: `"Wine Store" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: "Welcome to Wine Store!",
-      text: `Hello ${email},\n\nThank you for registering to our platform. We're excited to have you on board!`,
-    };
-
-    await transporter.sendMail(mailOptions);
-    console.log(`Welcome email successfully sent to ${email}`);
-
-    res.status(201).json({ message: "User registered successfully!" });
   } catch (error) {
     console.error("Registration Error:", error);
-    res.status(500).json({
-      message: "Server error",
-      error: error.response || error.message || "Unknown error",
-    });
+    res.status(500).json({ message: "Server error", error });
   }
 };
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
-
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
-
-  if (!password) {
-    return res.status(400).json({ message: "Password is required" });
-  }
 
   try {
     const user = await User.findOne({ email });
@@ -85,12 +74,16 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, isAdmin: user.isAdmin }, 
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      isAdmin: user.isAdmin,
+    });
   } catch (error) {
     console.error("Login Error:", error.message);
     res.status(500).json({ message: "Server error", error });
@@ -159,6 +152,59 @@ exports.resetPassword = async (req, res) => {
     res.status(200).json({ message: "Password reset successfully!" });
   } catch (error) {
     console.error("Reset Password Error:", error.message);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id); 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      user: {
+        email: user.email,
+        username: user.username,
+        surname: user.surname,
+        address: user.address,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } catch (error) {
+    console.error("Get Profile Error:", error.message);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  const { username, surname, address } = req.body; 
+
+  try {
+    const userId = req.user.id; 
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, surname, address },
+      { new: true } 
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully!",
+      user: {
+        email: updatedUser.email,
+        username: updatedUser.username,
+        surname: updatedUser.surname,
+        address: updatedUser.address, 
+      },
+    });
+  } catch (error) {
+    console.error("Profile Update Error:", error.message);
     res.status(500).json({ message: "Server error", error });
   }
 };

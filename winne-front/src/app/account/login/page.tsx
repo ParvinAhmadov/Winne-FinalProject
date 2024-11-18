@@ -11,6 +11,8 @@ const LoginPage: React.FC = () => {
   const [resetEmail, setResetEmail] = useState<string>("");
   const [registerEmail, setRegisterEmail] = useState<string>("");
   const [registerPassword, setRegisterPassword] = useState<string>("");
+  const [registerUsername, setRegisterUsername] = useState<string>("");
+  const [registerSurname, setRegisterSurname] = useState<string>("");
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
   const [loadingRegister, setLoadingRegister] = useState<boolean>(false);
   const [loadingReset, setLoadingReset] = useState<boolean>(false);
@@ -25,18 +27,20 @@ const LoginPage: React.FC = () => {
   const [registerErrors, setRegisterErrors] = useState<{
     email: string;
     password: string;
+    username: string;
+    surname: string;
   }>({
     email: "",
     password: "",
+    username: "",
+    surname: "",
   });
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    
     const errors = { email: "", password: "" };
 
-    
     if (!email) {
       errors.email = "Email is required";
     }
@@ -61,15 +65,29 @@ const LoginPage: React.FC = () => {
           password,
         }
       );
-      const { token, role, message } = response.data;
+
+      const { token, role, user, message } = response.data;
+
+      if (!token) {
+        throw new Error("Token is missing in the response!");
+      }
+
+      localStorage.setItem("token", token);
+
+      const expiresIn = response.data.expiresIn;
+      const expiryTime = Date.now() + expiresIn * 1000;
+      localStorage.setItem("tokenExpiry", expiryTime.toString());
+
+      localStorage.setItem("user", JSON.stringify(user));
 
       toast.success(message || "Logged in successfully!");
-      localStorage.setItem("token", token);
 
       window.location.href = role === "admin" ? "/admin" : "/account";
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Login failed!");
+        const errorMessage =
+          error.response?.data?.message || "Invalid email or password!";
+        toast.error(errorMessage);
       } else {
         toast.error("An unexpected error occurred!");
       }
@@ -81,7 +99,7 @@ const LoginPage: React.FC = () => {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const errors = { email: "", password: "" }; 
+    const errors = { email: "", password: "", username: "", surname: "" };
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -96,9 +114,17 @@ const LoginPage: React.FC = () => {
         "Password must be at least 8 characters, include one uppercase, one lowercase, one number, and one special character.";
     }
 
+    if (!registerUsername.trim()) {
+      errors.username = "Username is required";
+    }
+
+    if (!registerSurname.trim()) {
+      errors.surname = "Surname is required";
+    }
+
     setRegisterErrors(errors);
 
-    if (errors.email || errors.password) {
+    if (errors.email || errors.password || errors.username || errors.surname) {
       return;
     }
 
@@ -110,12 +136,16 @@ const LoginPage: React.FC = () => {
         {
           email: registerEmail,
           password: registerPassword,
-          role: "user",
+          username: registerUsername,
+          surname: registerSurname,
         }
       );
+
       toast.success(response.data.message || "Registered successfully!");
       setRegisterEmail("");
       setRegisterPassword("");
+      setRegisterUsername("");
+      setRegisterSurname("");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.message || "Registration failed!");
@@ -151,9 +181,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <section className="bg-white">
-        <ToastContainer />
-      <div className="flex flex-col sm:flex-row justify-between max-w-[1450px] sm:h-[405px] w-full mx-auto mb-[70px]">
-        <div className="w-full sm:w-[600px] sm:h-[405px] sm:pt-[100px] px-4 py-8">
+      <ToastContainer />
+      <div className="flex flex-col sm:flex-row justify-between max-w-[1450px] sm:h-[405px] w-full mx-auto mt-[50px] mb-[90px] ">
+        <div className="w-full sm:w-[600px] sm:h-[405px] sm:pt-[10px] px-4 py-8">
           <h2 className="text-[18px] font-semibold mb-8 text-center tracking-wide">
             {isResetPassword ? "RESET PASSWORD" : "LOGIN"}
           </h2>
@@ -273,7 +303,7 @@ const LoginPage: React.FC = () => {
           )}
         </div>
 
-        <div className="w-full sm:w-[600px] sm:h-[405px] sm:pt-[100px] px-4 py-8 pb-[100px]">
+        <div className="w-full sm:w-[600px] sm:h-[405px] sm:pt-[10px] px-4 py-8 pb-[100px]">
           <h2 className="text-[18px] font-semibold mb-8 text-center tracking-wide">
             REGISTER
           </h2>
@@ -300,6 +330,42 @@ const LoginPage: React.FC = () => {
                   {registerErrors.email}
                 </p>
               )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <label
+                className="text-lg w-full sm:w-[150px]"
+                htmlFor="reg-username"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                id="reg-username"
+                value={registerUsername}
+                onChange={(e) => setRegisterUsername(e.target.value)}
+                className="border-b w-full focus:border-black border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400"
+                placeholder="Username"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <label
+                className="text-lg w-full sm:w-[150px]"
+                htmlFor="reg-surname"
+              >
+                Surname
+              </label>
+              <input
+                type="text"
+                id="reg-surname"
+                value={registerSurname}
+                onChange={(e) => setRegisterSurname(e.target.value)}
+                className="border-b w-full focus:border-black border-gray-400 p-2 text-gray-700 focus:outline-none placeholder-gray-400"
+                placeholder="Surname"
+                required
+              />
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">

@@ -1,57 +1,165 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import jwtDecode from "jwt-decode";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface User {
   email: string;
-  role: string;
+  isAdmin: boolean;
+  username: string;
+  surname: string;
 }
 
-interface Order {
-  id: number;
-  product: string;
-  date: string;
+interface EditModalProps {
+  isOpen: boolean;
+  title: string;
+  fields: { [key: string]: string };
+  onSave: (updatedFields: { [key: string]: string }) => void;
+  onClose: () => void;
 }
+
+const EditModal: React.FC<EditModalProps> = ({
+  isOpen,
+  title,
+  fields,
+  onSave,
+  onClose,
+}) => {
+  const [formData, setFormData] = useState(fields);
+
+  useEffect(() => {
+    setFormData(fields);
+  }, [fields]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h3 className="text-lg font-semibold mb-4">{title}</h3>
+        <div className="space-y-4">
+          {Object.keys(fields).map((field) => (
+            <div key={field}>
+              <label className="block text-sm font-medium text-gray-700">
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
+              <input
+                type="text"
+                value={formData[field]}
+                onChange={(e) =>
+                  setFormData({ ...formData, [field]: e.target.value })
+                }
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 flex justify-end space-x-2">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm bg-gray-300 rounded-md hover:bg-gray-400"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => onSave(formData)}
+            className="px-4 py-2 text-sm bg-[#A53E4C] text-white rounded-md hover:bg-red-600"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AccountPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [billingAddress, setBillingAddress] = useState<string>("United States");
+  const [billingAddress, setBillingAddress] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalFields, setModalFields] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token");
+
     if (!token) {
       toast.error("Please log in first!");
       window.location.href = "/account/login";
       return;
     }
 
-    try {
-      const decoded: User = jwtDecode(token);
-      setUser(decoded);
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/auth/profile", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      setOrders([
-        { id: 1, product: "Sauvignon Blanc Wine", date: "48 minutes ago" },
-        { id: 2, product: "Merlot Wine", date: "2 days ago" },
-      ]);
-    } catch {
-      toast.error("Invalid session. Please log in again.");
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
-      window.location.href = "/account/login";
-    }
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        setUser(data.user);
+        setBillingAddress(data.user.address || "No address set");
+        toast.success("Profile loaded successfully!");
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        toast.error("Error fetching profile. Please log in again.");
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        window.location.href = "/account/login";
+      }
+    };
+
+    fetchProfile();
   }, []);
 
-  const handleBillingUpdate = () => {
-    const newAddress = prompt(
-      "Enter your new billing address:",
-      billingAddress
-    );
-    if (newAddress) {
-      setBillingAddress(newAddress);
-      toast.success("Billing address updated successfully!");
+  const openEditModal = (title: string, fields: { [key: string]: string }) => {
+    setModalTitle(title);
+    setModalFields(fields);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (updatedFields: { [key: string]: string }) => {
+    setIsModalOpen(false);
+
+    try {
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("token");
+
+      const response = await fetch(
+        "http://localhost:3001/api/auth/update-profile",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedFields),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      if (updatedFields.address) {
+        setBillingAddress(updatedFields.address);
+      } else {
+        setUser((prevUser) =>
+          prevUser ? { ...prevUser, ...updatedFields } : prevUser
+        );
+      }
+
+      toast.success("Information updated successfully!");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      toast.error("Failed to update profile.");
     }
   };
 
@@ -65,14 +173,17 @@ const AccountPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center px-6 py-12 bg-white">
-
-      <div className="w-full max-w-lg p-6 ">
+      <div className="w-full max-w-lg p-6">
         <h2 className="text-lg text-center font-semibold mb-2">{user.email}</h2>
-        <p className="text-center flex items-center justify-center gap-1  text-black mb-6">
+
+        <p className="text-center flex items-center justify-center gap-1 text-black mb-6">
           (<span className="text-[17px]">not</span>{" "}
-          <div className="font-semibold md:text-[17px] text-[15px]">{user.email}</div>?{" "}
+          <div className="font-semibold md:text-[17px] text-[15px]">
+            {user.email}
+          </div>
+          ?{" "}
           <span
-            className=" cursor-pointer text-[15px]"
+            className="cursor-pointer text-[15px]"
             onClick={() => {
               localStorage.removeItem("token");
               sessionStorage.removeItem("token");
@@ -84,34 +195,64 @@ const AccountPage: React.FC = () => {
           ).
         </p>
 
+        {user.isAdmin && (
+          <div className="text-center mb-4">
+            <a
+              href="/admin"
+              className="inline-block px-2 py-1 bg-black text-white hover:bg-[#A53E4C] transition ease-in-out duration-200"
+            >
+              Admin Page
+            </a>
+          </div>
+        )}
+
         <div className="border-t pt-4 mt-4 text-center">
-          <h3 className="text-lg font-semibold mb-2">Recent Orders</h3>
-          {orders.length > 0 ? (
-            <ul className="text-gray-700 text-sm">
-              {orders.map((order) => (
-                <li key={order.id} className="mb-2">
-                  {order.product}{" "}
-                  <span className="text-gray-500">({order.date})</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">You haven’t placed any orders yet.</p>
-          )}
+          <h3 className="text-lg font-semibold mb-2">Profile Information</h3>
+          <p>
+            <strong>Username:</strong> {user.username}
+          </p>
+          <p>
+            <strong>Surname:</strong> {user.surname}
+          </p>
+          <p>
+            <strong>Email:</strong> {user.email}
+          </p>
+          <button
+            onClick={() =>
+              openEditModal("Edit Profile", {
+                username: user.username,
+                surname: user.surname,
+              })
+            }
+            className="text-sm hover:text-[#A53E4C] mt-2"
+          >
+            Edit Profile
+          </button>
         </div>
 
         <div className="border-t pt-4 mt-4 text-center">
-          <div className="flex items-center justify-center text-center gap-2 mb-2">
-            <h3 className="text-[16px] font-semibold tracking-widest ">
-              BILLING ADDRESS
-            </h3>
-            <button onClick={handleBillingUpdate} className="text-sm hover:text-[#A53E4C] transition ease duration-200">
-              Edit
-            </button>
-          </div>
-          <p className="text-gray-600 mt-8">{billingAddress}</p>
+          <h3 className="text-lg font-semibold mb-2">Billing Address</h3>
+          <p>{billingAddress}</p>
+          <button
+            onClick={() =>
+              openEditModal("Edit Billing Address", { address: billingAddress })
+            }
+            className="text-sm hover:text-[#A53E4C] mt-2"
+          >
+            Edit Billing Address
+          </button>
         </div>
       </div>
+
+      <EditModal
+        isOpen={isModalOpen}
+        title={modalTitle}
+        fields={modalFields}
+        onSave={handleSave}
+        onClose={() => setIsModalOpen(false)}
+      />
+
+      <ToastContainer />
     </div>
   );
 };

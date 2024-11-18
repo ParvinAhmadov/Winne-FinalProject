@@ -1,5 +1,4 @@
 import React from "react";
-
 interface IconButtonProps {
   icon: React.ReactNode;
   onClick?: () => void;
