@@ -24,7 +24,6 @@ interface BestSellerCardProps {
   price: number;
   image: string;
   productSlug: string;
-  onLoad: () => void;
   isAuthenticated: boolean;
 }
 
@@ -33,7 +32,6 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
   price,
   image,
   productSlug,
-  onLoad,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isCartModalOpen, setCartModalOpen] = useState(false);
@@ -82,7 +80,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
 
       const data = await response.json();
       setProductDetails({
-        id: data.slug, 
+        id: data.slug,
         name: data.name,
         price: data.price,
         images: data.images,
@@ -167,10 +165,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
               layout="fill"
               objectFit="cover"
               className="cursor-pointer"
-              onLoad={onLoad}
               onClick={handleViewDetails}
-              onLoadingComplete={() => onLoad()}
-              
             />
           )}
           <div className="absolute flex left-1/2 transform -translate-x-1/2 gap-4 bottom-8 opacity-0 group-hover:opacity-100 transition duration-500 z-[1] group-hover:-translate-y-[20px]">

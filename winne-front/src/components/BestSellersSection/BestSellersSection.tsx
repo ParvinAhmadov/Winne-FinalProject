@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { fetchBestSellers } from "@/lib/fetchers";
-import ClipLoader from "react-spinners/ClipLoader";
 import BestSellerCard from "../BestSellerCard.tsx/BestSellerCard";
 
 interface Product {
@@ -14,7 +13,6 @@ interface Product {
 
 const BestSellersSection: React.FC = () => {
   const [bestSellers, setBestSellers] = useState<Product[]>([]);
-  const [loadingStates, setLoadingStates] = useState<boolean[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,7 +20,6 @@ const BestSellersSection: React.FC = () => {
       try {
         const products = await fetchBestSellers();
         setBestSellers(products);
-        setLoadingStates(Array(products.length).fill(true));
       } catch {
         setError("Failed to load best sellers.");
       }
@@ -30,12 +27,6 @@ const BestSellersSection: React.FC = () => {
 
     getBestSellers();
   }, []);
-
-  const handleImageLoad = (index: number) => {
-    setLoadingStates((prev) =>
-      prev.map((state, i) => (i === index ? false : state)) 
-    );
-  };
 
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -51,19 +42,13 @@ const BestSellersSection: React.FC = () => {
         </span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-[3%]">
-        {bestSellers.map((product, index) => (
+        {bestSellers.map((product) => (
           <div key={product._id} className="relative">
-            {loadingStates[index] && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
-                <ClipLoader color="#00fcff" size={40} />
-              </div>
-            )}
             <BestSellerCard
               name={product.name}
               price={product.price}
               image={product.images?.[0] || "/placeholder-image.jpg"}
               productSlug={product.slug}
-              onLoad={() => handleImageLoad(index)}
               isAuthenticated={true}
             />
           </div>

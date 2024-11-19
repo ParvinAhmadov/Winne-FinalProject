@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import CollapsibleTable from "../productsTable/productsTable";
 import Select, { StylesConfig, MultiValue } from "react-select";
 import makeAnimated from "react-select/animated";
-
 interface ColorOption {
   label: string;
   value: string;

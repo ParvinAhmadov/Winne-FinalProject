@@ -1,13 +1,13 @@
 export interface Product {
-  _id: string;
+  id?: string;
   name: string;
   price: number;
-  sizes: string[];
-  colors: { name: string; hexCode: string; image: string }[];
-  tags: string[];
-  slug: string;
-  bestSeller: boolean;
   stock: number;
   remainingStock: number;
-  images: string[];
+  images: string[] | File[];
+  slug: string;
+  colors: { name: string; hex: string }[];
+  tags: string[];
+  sizes: string[];
+  bestSeller?: boolean; 
 }

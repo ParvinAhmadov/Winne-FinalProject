@@ -54,6 +54,9 @@ const config: Config = {
         'default': 'ease-in-out',
       },
     },
+    animation: {
+      'move-stripes': 'move-stripes 2s linear infinite',
+    },
   },
   plugins: [],
 };
