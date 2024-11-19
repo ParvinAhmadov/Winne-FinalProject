@@ -180,3 +180,22 @@ exports.increaseStock = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+exports.getPaginatedProducts = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Varsayılan olarak 1. sayfa
+    const limit = parseInt(req.query.limit) || 4; // Varsayılan olarak 4 ürün
+    const skip = (page - 1) * limit; // Atlama miktarı
+
+    const products = await Product.find().skip(skip).limit(limit);
+    const totalProducts = await Product.countDocuments();
+
+    res.json({
+      products,
+      totalPages: Math.ceil(totalProducts / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error("Error fetching paginated products:", error);
+    res.status(500).json({ message: "Failed to fetch products" });
+  }
+};

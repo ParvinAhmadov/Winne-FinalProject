@@ -14,7 +14,7 @@ router.put("/update/:id", productController.updateProduct);
 router.delete("/delete/:id", productController.deleteProduct);
 router.post("/update-stock/:id", productController.updateStock);
 router.post("/increase-stock/:id", productController.increaseStock);
-
+router.get("/paginated", productController.getPaginatedProducts);
 router.get("/:slug", productController.getProductBySlug); 
 
 module.exports = router;
