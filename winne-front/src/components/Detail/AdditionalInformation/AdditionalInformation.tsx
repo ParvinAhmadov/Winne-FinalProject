@@ -3,12 +3,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 
+interface Product {
+  name?: string;
+  images?: string[];
+}
+
 interface AdditionalInformationProps {
-  image: string;
+  product: Product;
 }
 
 export default function AdditionalInformation({
-  image,
+  product,
 }: AdditionalInformationProps) {
   return (
     <motion.div
@@ -16,44 +21,63 @@ export default function AdditionalInformation({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-8"
+      className="px-6 py-4 flex flex-col lg:flex-row gap-10 items-start justify-center"
     >
-      <div className="sm:block">
-        {image ? (
-          <img
-            src={`${process.env.NEXT_PUBLIC_API_URL}${image}`}
-            alt="Product Image"
-            className="w-full object-cover rounded-md shadow-md"
-          />
-        ) : (
-          <p className="text-gray-500">No image available</p>
-        )}
-      </div>
-
-      <div>
-        <h2 className="text-xl font-bold mb-4 text-[#A53E4C]">
-          Things You Need to Know
+      <div className="lg:w-3/3">
+        <h2 className="text-[12px] tracking-widest font-bold text-gray-500 mb-2 uppercase ">
+          More Information to You
         </h2>
-        <p className="text-gray-700 mb-4">
-          We use industry-standard SSL encryption to protect your details.
-          Sensitive information like your name, address, and card details are
-          securely encoded.
+        <h3 className="text-2xl font-bold mb-2 text-black">
+          Things You Need to Know
+        </h3>
+        <div className="w-1/2 h-[2px] bg-[#A53E4C] mb-4"></div>
+        <p className="text-gray-500 mb-4 leading-relaxed">
+          We use industry-standard SSL encryption to protect <br /> your
+          details. Potentially sensitive information such as <br /> your name,
+          address, and card details are encoded so <br /> they can only be read
+          on the secure server.
         </p>
-        <ul className="list-disc list-inside text-gray-700 mb-4">
+        <ul className="list-none text-gray-500 mb-6 space-y-4">
           <li>Safe Payments</li>
-          <li>Accept Credit Cards</li>
-          <li>Multiple Payment Methods</li>
+          <li>Accept Credit Card</li>
+          <li>Different Payment Method</li>
           <li>Price Includes VAT</li>
           <li>Easy to Order</li>
         </ul>
-        <h3 className="text-lg font-semibold text-[#A53E4C] mb-2">
-          Express Delivery
-        </h3>
-        <ul className="list-disc list-inside text-gray-700">
+      </div>
+
+      <div className="lg:w-3/3 lg:mt-20">
+        <h3 className="text-lg font-bold text-black mb-2">Express Delivery</h3>
+        <ul className="list-none text-gray-500 mb-6 space-y-4">
           <li>Europe & USA within 2-4 days</li>
           <li>Rest of the world within 3-7 days</li>
-          <li>Selected locations only</li>
+          <li>Selected locations</li>
         </ul>
+
+        <h3 className="text-lg font-bold text-black mb-2">
+          Need More Information
+        </h3>
+        <ul className="list-none text-gray-500 space-y-2">
+          <li>Orders & Shipping</li>
+          <li>Returns & Refunds</li>
+          <li>Payments</li>
+          <li>Your Orders</li>
+        </ul>
+      </div>
+
+      <div className="flex justify-end items-start lg:w-1/3">
+        {product.images && product.images[0] ? (
+          <picture>
+            {" "}
+            <img
+              src={`${process.env.NEXT_PUBLIC_API_URL}${product.images[0]}`}
+              alt={product.name || "Product Image"}
+              className="w-[360px] h-[450px] object-cover shadow-md "
+            />
+          </picture>
+        ) : (
+          <p className="text-gray-500">No image available</p>
+        )}
       </div>
     </motion.div>
   );

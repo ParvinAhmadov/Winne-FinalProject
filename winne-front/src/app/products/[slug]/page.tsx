@@ -2,6 +2,8 @@ import React from "react";
 import ProductDetails from "./ProductDetails";
 import InfoSection from "@/components/Detail/InfoSection/InfoSection";
 import TabSection from "@/components/Detail/TabSection/TabSection";
+import SosialMedia from "@/components/Detail/SosialMedia/SosialMedia";
+import RelatedProducts from "@/components/Detail/RelatedProducts/RelatedProducts";
 
 async function fetchProduct(slug: string) {
   try {
@@ -46,7 +48,9 @@ export default async function DetailPage({
     <div className="container mx-auto p-6">
       <ProductDetails product={product} />
       <InfoSection />
-      <TabSection />
+      <TabSection product={product}  />
+      <SosialMedia />
+      <RelatedProducts/>
     </div>
   );
 }

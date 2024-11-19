@@ -5,11 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import DescriptionContent from "../DescriptionContent/DescriptionContent";
 import AdditionalInformation from "../AdditionalInformation/AdditionalInformation";
 
-interface TabSectionProps {
-  image: string;
+interface Product {
+  name?: string;
+  images?: string[];
+  // Eğer başka özellikler varsa buraya ekleyin
 }
 
-export default function TabSection({ image }: TabSectionProps) {
+interface TabSectionProps {
+  product: Product; // `product` artık tam olarak tanımlı bir nesne
+}
+
+export default function TabSection({ product }: TabSectionProps) {
   const [activeTab, setActiveTab] = useState<string>("description");
 
   const renderContent = () => {
@@ -17,7 +23,12 @@ export default function TabSection({ image }: TabSectionProps) {
       case "description":
         return <DescriptionContent key="description" />;
       case "additionalInfo":
-        return <AdditionalInformation key="additionalInfo" image={image} />;
+        return (
+          <AdditionalInformation
+            key="additionalInfo"
+            product={product} // `product` burada geçiliyor
+          />
+        );
       case "review":
         return (
           <motion.div
@@ -41,7 +52,8 @@ export default function TabSection({ image }: TabSectionProps) {
 
   return (
     <div className="mt-8">
-      <div className="flex flex-col gap-2 border-b mb-4 justify-center pb-4 border-t pt-4 sm:flex-row sm:gap-4">
+      {/* Tab Buttons */}
+      <div className="flex flex-col gap-2 mr-6 ml-4 border-b mb-4 justify-center pb-4 border-t pt-4 sm:flex-row sm:gap-4">
         <button
           className={`px-4 py-2 font-semibold transition-all duration-100 ease-in-out relative overflow-hidden ${
             activeTab === "description"
@@ -74,6 +86,7 @@ export default function TabSection({ image }: TabSectionProps) {
         </button>
       </div>
 
+      {/* Tab Content */}
       <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
     </div>
   );
