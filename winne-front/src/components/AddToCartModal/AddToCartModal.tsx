@@ -7,7 +7,7 @@ interface AddToCartModalProps {
     name: string;
     price: number;
     image: string;
-    quantity: number; 
+    quantity: number;
   } | null;
 }
 
@@ -20,7 +20,7 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
 
   if (!isOpen || !product) return null;
 
-  const calculateTotal = () => (product.price * product.quantity).toFixed(2); 
+  const calculateTotal = () => (product.price * product.quantity).toFixed(2);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -37,12 +37,12 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
             ✔ Added to cart successfully!
           </h2>
           <picture>
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-[178px] h-[200px] object-cover mt-4"
-          />
-         </picture>
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-[178px] h-[200px] object-cover mt-4"
+            />
+          </picture>
           <div className="flex items-center flex-col justify-center mt-6 gap-1">
             <p className="text-xl text-black">{product.name}</p>
             <p className="text-[#A53E4C]">
@@ -51,7 +51,7 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
             </p>
             <p className="text-[#A53E4C]">
               <span className="font-semibold text-sm text-black">QTY: </span>
-              {product.quantity} 
+              {product.quantity}
             </p>
             <p className="text-[#A53E4C]">
               <span className="font-semibold text-sm text-black">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa";
 import { GrShop } from "react-icons/gr";
@@ -24,6 +24,7 @@ interface BestSellerCardProps {
   price: number;
   image: string;
   productSlug: string;
+  productId: string;
   isAuthenticated: boolean;
 }
 
@@ -32,6 +33,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
   price,
   image,
   productSlug,
+  productId,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isCartModalOpen, setCartModalOpen] = useState(false);
@@ -45,6 +47,76 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
     quantity: number;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+  const [wishlist, setWishlist] = useState<{ id: string; name: string }[]>([]);
+
+  const handleWishlistToggle = async () => {
+    try {
+      setWishlistLoading(true);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("You must be logged in to add items to the wishlist.");
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ productId }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add to wishlist.");
+      }
+
+      const data = await response.json();
+      console.log(data.message || "Product added to wishlist!"); 
+    } catch (error: any) {
+      const errorMessage = error.message || "An unexpected error occurred.";
+      console.error("Error adding to wishlist:", errorMessage);
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("User not logged in.");
+          return;
+        }
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/wishlist`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch wishlist.");
+        }
+
+        const data = await response.json();
+        setWishlist(data); 
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    fetchWishlist();
+  }, []);
 
   const router = useRouter();
 
@@ -129,7 +201,8 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
         throw new Error(errorData.message || "Failed to add product to cart.");
       }
 
-      const data = await response.json();
+      await response.json();
+
       setCartProduct({
         name,
         price,
@@ -181,7 +254,15 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
             >
               <TbSearch />
             </button>
-            <button className="relative bg-white text-[21px] p-3 rounded-full flex items-center justify-center transition duration-500 hover:bg-[#A53E4C] hover:text-white">
+            <button
+              onClick={handleWishlistToggle} 
+              disabled={wishlistLoading} 
+              className={`relative bg-white text-[21px] p-3 rounded-full flex items-center justify-center transition duration-500 ${
+                wishlistLoading
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-[#A53E4C] hover:text-white"
+              }`}
+            >
               <FaRegHeart />
             </button>
           </div>

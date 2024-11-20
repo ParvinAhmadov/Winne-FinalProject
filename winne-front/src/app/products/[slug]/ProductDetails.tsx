@@ -20,6 +20,7 @@ interface ProductDetailsProps {
     slug: string;
     soldCount?: number;
     soldDurationHours?: number;
+    _id: string;
   };
 }
 
@@ -33,6 +34,44 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     product.soldDurationHours || 0
   );
   const [visitorCount, setVisitorCount] = useState<number>(10);
+
+  const handleWishlistToggle = async () => {
+    try {
+      console.log("Product:", product);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("You must be logged in to add items to the wishlist.");
+      }
+
+      const productId = product._id;
+
+      if (!productId) {
+        throw new Error("Product ID is missing or invalid.");
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ productId }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add to wishlist.");
+      }
+
+      const data = await response.json();
+      console.log(data.message || "Product successfully added to wishlist!");
+    } catch (error: any) {
+      console.error("Error adding to wishlist:", error.message);
+    }
+  };
 
   useEffect(() => {
     const visitorInterval = setInterval(() => {
@@ -137,9 +176,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               {product.name || "Unnamed Product"}
             </h1>
             <div className="group relative flex items-center">
-              <div className="border rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-[#A53E4C] cursor-pointer hover:text-white transition">
+              <button
+                onClick={handleWishlistToggle}
+                className="border rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-[#A53E4C] cursor-pointer hover:text-white transition"
+              >
                 <LuHeart className="w-5 h-5" />
-              </div>
+              </button>
               <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -top-2 w-[110px] text-center left-1/2 transform -translate-x-1/2 -translate-y-full bg-black text-white text-xs rounded px-2 py-1">
                 Add to Wishlist
                 <div className="w-2 h-2 absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 rotate-45 bg-black"></div>

@@ -182,9 +182,9 @@ exports.increaseStock = async (req, res) => {
 };
 exports.getPaginatedProducts = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Varsayılan olarak 1. sayfa
-    const limit = parseInt(req.query.limit) || 4; // Varsayılan olarak 4 ürün
-    const skip = (page - 1) * limit; // Atlama miktarı
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+    const skip = (page - 1) * limit;
 
     const products = await Product.find().skip(skip).limit(limit);
     const totalProducts = await Product.countDocuments();

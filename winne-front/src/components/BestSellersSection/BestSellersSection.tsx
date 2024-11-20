@@ -50,6 +50,7 @@ const BestSellersSection: React.FC = () => {
               image={product.images?.[0] || "/placeholder-image.jpg"}
               productSlug={product.slug}
               isAuthenticated={true}
+              productId={product._id}
             />
           </div>
         ))}

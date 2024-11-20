@@ -1,6 +1,7 @@
 "use client";
-import BestSellerCard from "@/components/BestSellerCard.tsx/BestSellerCard";
+
 import React, { useEffect, useState } from "react";
+import BestSellerCard from "@/components/BestSellerCard.tsx/BestSellerCard";
 import { BiLoaderCircle } from "react-icons/bi";
 import { MdOutlineNextPlan } from "react-icons/md";
 import { CiCircleMore } from "react-icons/ci";
@@ -21,7 +22,7 @@ const RelatedProductsSection: React.FC = () => {
   const [limit, setLimit] = useState<number>(4);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false); 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchPaginatedProducts = async (page: number, limit: number) => {
     try {
@@ -93,6 +94,7 @@ const RelatedProductsSection: React.FC = () => {
             image={product.images?.[0] || "/placeholder-image.jpg"}
             productSlug={product.slug}
             isAuthenticated={true}
+            productId={product._id}
           />
         ))}
       </div>
@@ -107,7 +109,7 @@ const RelatedProductsSection: React.FC = () => {
         {page > 1 && (
           <button
             onClick={handlePreviousPage}
-            className="flex items-center px-4 py-2 bg-[#A53E4C] text-white tracking-widest  hover:bg-black transition ease-in-out duration-200"
+            className="flex items-center px-4 py-2 bg-[#A53E4C] text-white tracking-widest hover:bg-black transition ease-in-out duration-200"
           >
             <VscDebugStepBack className="mr-2 text-lg" /> PREVIOUS PAGE
           </button>
@@ -115,14 +117,14 @@ const RelatedProductsSection: React.FC = () => {
         {hasMore && (
           <button
             onClick={handleNextPage}
-            className="flex items-center px-4 py-2 bg-[#A53E4C] text-white tracking-widest  hover:bg-black transition ease-in-out duration-200"
+            className="flex items-center px-4 py-2 bg-[#A53E4C] text-white tracking-widest hover:bg-black transition ease-in-out duration-200"
           >
             NEXT PAGE <MdOutlineNextPlan className="ml-2 text-lg" />
           </button>
         )}
         <button
           onClick={handleLoadMore}
-          className="flex items-center px-4 py-2 bg-black text-white  tracking-widest hover:bg-[#A53E4C] transition ease-in-out duration-200"
+          className="flex items-center px-4 py-2 bg-black text-white tracking-widest hover:bg-[#A53E4C] transition ease-in-out duration-200"
         >
           <CiCircleMore className="mr-2 text-lg" /> LOAD MORE
         </button>
@@ -131,7 +133,7 @@ const RelatedProductsSection: React.FC = () => {
             onClick={handleReduceLimit}
             className="flex items-center px-4 py-2 bg-[#A53E4C] text-white hover:bg-black transition ease-in-out duration-200"
           >
-            <RiDeleteRow className="mr-2 text-lg" /> Reduce Items
+            <RiDeleteRow className="mr-2 text-lg" /> REDUCE ITEMS
           </button>
         )}
       </div>
