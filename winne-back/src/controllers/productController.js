@@ -199,3 +199,55 @@ exports.getPaginatedProducts = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch products" });
   }
 };
+
+exports.filterProducts = async (req, res) => {
+  try {
+    const { priceMin, priceMax, size, color, tags, bestSeller, sort } =
+      req.query;
+
+    const filter = {};
+
+    if (priceMin || priceMax) {
+      filter.price = {};
+      if (priceMin) filter.price.$gte = parseFloat(priceMin);
+      if (priceMax) filter.price.$lte = parseFloat(priceMax);
+    }
+
+    if (size) {
+      filter.sizes = size;
+    }
+
+    if (color) {
+      filter["colors.name"] = color;
+    }
+
+    if (tags) {
+      filter.tags = { $in: tags.split(",") };
+    }
+
+    if (bestSeller) {
+      filter.bestSeller = bestSeller === "true";
+    }
+
+    let sortOption = {};
+    if (sort) {
+      if (sort === "default") sortOption = {};
+      else if (sort === "best-sellers") sortOption = { bestSeller: -1 };
+      else if (sort === "name_asc") sortOption = { name: 1 };
+      else if (sort === "name_desc") sortOption = { name: -1 };
+      else if (sort === "price_asc") sortOption = { price: 1 };
+      else if (sort === "price_desc") sortOption = { price: -1 };
+    }
+
+    const products = await Product.find(filter).sort(sortOption);
+
+    if (products.length === 0) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.error("Error filtering products:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

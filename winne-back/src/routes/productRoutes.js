@@ -16,5 +16,6 @@ router.post("/update-stock/:id", productController.updateStock);
 router.post("/increase-stock/:id", productController.increaseStock);
 router.get("/paginated", productController.getPaginatedProducts);
 router.get("/:slug", productController.getProductBySlug); 
+router.get("/all/filter", productController.filterProducts);
 
 module.exports = router;

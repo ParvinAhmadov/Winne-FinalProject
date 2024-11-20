@@ -22,18 +22,18 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: process.env.API_URL || "http://localhost:3001/api/:path*", // Çevresel değişkenle dinamik hale getirildi
+        destination: process.env.API_URL || "http://localhost:3001/api/:path*",
       },
     ];
   },
   webpack: (config, { dev }) => {
     if (!dev) {
-      config.devtool = false; // Üretim ortamında source map devre dışı
+      config.devtool = false; 
     }
     return config;
   },
   env: {
-    API_URL: process.env.API_URL, // Tarayıcı için API URL'sini geçiriyoruz
+    API_URL: process.env.API_URL, 
   },
 };
 
