@@ -5,7 +5,7 @@ const { authenticate } = require("../middleware/authMiddleware");
 
 router.get("/", authenticate, cartController.getCart);
 router.post("/add", authenticate, cartController.addToCart);
-router.put("/update/:itemId", authenticate, cartController.updateCartItem);
+router.put("/update/:productId", authenticate, cartController.updateCartItem); 
 router.delete("/remove/:itemId", authenticate, cartController.removeCartItem);
 router.delete("/clear", authenticate, cartController.clearCart);
 

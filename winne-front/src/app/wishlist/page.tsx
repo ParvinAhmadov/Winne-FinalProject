@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaChevronRight } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface WishlistItem {
   _id: string;
@@ -21,6 +23,7 @@ const WishlistPage = () => {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -88,6 +91,44 @@ const WishlistPage = () => {
     }
   };
 
+  const handleAddToCart = async (item: WishlistItem) => {
+    try {
+      const userToken = localStorage.getItem("token");
+
+      if (!userToken) {
+        toast.error("You must be logged in to add items to the cart.");
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cart/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify({
+            productId: item.productId._id,
+            quantity,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to add product to cart.");
+        return;
+      }
+
+      toast.success("Product successfully added to cart!");
+      setQuantity(1);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("An error occurred. Please try again.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -106,10 +147,10 @@ const WishlistPage = () => {
 
   return (
     <div>
-      
+      <ToastContainer />
       <div className="relative w-full h-[404px]">
         <Image
-          src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348" 
+          src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348"
           alt="Wishlist Background"
           layout="fill"
           objectFit="cover"
@@ -123,7 +164,6 @@ const WishlistPage = () => {
               Home
             </a>
             <span>
-              {" "}
               <FaChevronRight className="text-[10px]" />
             </span>
             Wishlist
@@ -177,11 +217,7 @@ const WishlistPage = () => {
                       <div className="flex w-full items-center justify-center">
                         <button
                           className="bg-black text-white w-[200px] h-[55px] hover:bg-[#A53E4C] transition ease-in-out duration-200"
-                          onClick={() =>
-                            alert(
-                              "Add to Cart functionality for product coming soon!"
-                            )
-                          }
+                          onClick={() => handleAddToCart(item)}
                         >
                           Add to Cart
                         </button>
@@ -203,18 +239,16 @@ const WishlistPage = () => {
                 ))}
               </tbody>
             </table>
+            <div className="mt-6 flex justify-center">
+              <a
+                href="/product"
+                className="hover:bg-black flex tracking-widest items-center justify-center cursor-pointer text-white w-full sm:w-[290px] h-[50px] sm:h-[60px] bg-[#A53E4C] transition-all"
+              >
+                CONTINUE SHOPPING
+              </a>
+            </div>
           </div>
         )}
-        <div className="mt-6 text-center">
-          <button
-            className="bg-black text-white px-4 py-4 hover:bg-[#A53E4C] transition ease-in-out duration-200"
-            onClick={() =>
-              alert("Continue Shopping functionality coming soon!")
-            }
-          >
-            CONTINUE SHOPPING
-          </button>
-        </div>
       </div>
     </div>
   );
