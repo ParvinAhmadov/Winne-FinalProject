@@ -177,12 +177,13 @@ const ProductsPage: React.FC = () => {
     selectedOption: MultiValue<ColorOption> | null
   ) => {
     if (selectedOption) {
+      const colorValues = selectedOption.map((option) => ({
+        name: option.value,
+        hex: option.hex,
+      }));
       setNewProduct((prev) => ({
         ...prev,
-        colors: selectedOption.map((option) => ({
-          name: option.value,
-          hex: option.hex,
-        })),
+        colors: colorValues,
       }));
     }
   };
@@ -210,6 +211,8 @@ const ProductsPage: React.FC = () => {
         }
       });
 
+      formData.append("bestSeller", JSON.stringify(true));
+
       const url =
         editIndex !== null
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/products/update/${products[editIndex]._id}`
@@ -234,7 +237,13 @@ const ProductsPage: React.FC = () => {
 
   const handleEditProduct = (index: number) => {
     setEditIndex(index);
-    setNewProduct(products[index]);
+    const productToEdit = products[index];
+    setNewProduct({
+      ...productToEdit,
+      colors: productToEdit.colors,
+      tags: productToEdit.tags,
+      sizes: productToEdit.sizes,
+    });
     setIsModalOpen(true);
   };
 

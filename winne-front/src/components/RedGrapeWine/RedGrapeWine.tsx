@@ -89,13 +89,13 @@ const RedGrapeWine: React.FC = () => {
           WineimgSrc="https://winne-store-demo.myshopify.com/cdn/shop/files/bn1.3.png?v=1653894772"
           Winetitle="Red Wine"
           Wineprice="$50"
-          Winelink="/products"
+          Winelink="/product"
         />{" "}
         <WineCard
           WineimgSrc="https://winne-store-demo.myshopify.com/cdn/shop/files/bn1.4.png?v=1653894783"
           Winetitle="Grape Wine"
           Wineprice="$60"
-          Winelink="/products"
+          Winelink="/product"
         />
       </div>
     </section>

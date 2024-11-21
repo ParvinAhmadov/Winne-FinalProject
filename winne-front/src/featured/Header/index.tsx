@@ -801,7 +801,10 @@ const Header = () => {
                         </div>
                         <div className="w-[160px] md:w-[180px] flex gap-2 items-center text-black justify-center h-[55px]">
                           <LuUser2 className="text-[21px] mb-[4px]" />
-                          <a href="/account" className="text-[16px] md:text-[18px]">
+                          <a
+                            href="/account"
+                            className="text-[16px] md:text-[18px]"
+                          >
                             LOGIN
                           </a>
                         </div>

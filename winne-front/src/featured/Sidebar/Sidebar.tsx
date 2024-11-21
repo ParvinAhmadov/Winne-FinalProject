@@ -152,15 +152,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
                 <Link
                   href="/cart"
-                  className="block bg-gray-200 text-black text-center py-2 mb-2"
+                  className="block bg-[#212529] text-white tracking-widest hover:bg-[#A53E4C]  text-center py-2 mb-2 transition ease duration-200"
                 >
                   VIEW CART
                 </Link>
                 <Link
                   href="/checkout"
-                  className="block bg-[#982B2B] text-white text-center py-2"
+                  className="block bg-black text-white tracking-widest hover:bg-[#A53E4C] transition ease duration-200 text-center py-2"
                 >
-                  Proceed to Checkout
+                  CHECK OUT
                 </Link>
               </div>
             )}

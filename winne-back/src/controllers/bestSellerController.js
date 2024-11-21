@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 const upload = require("../middleware/upload");
-const generateSlug = require("../utils/generateSlug");
+const { generateSlug } = require("../utils/generateSlug");
 
 exports.getBestSellers = async (req, res) => {
   try {
@@ -20,6 +20,12 @@ exports.createBestSeller = [
 
       const { name, price, sizes, colors, tags, slug, stock } = req.body;
 
+      if (!name || !price || !stock) {
+        return res.status(400).json({
+          message: "Name, price, and stock are required fields.",
+        });
+      }
+
       let images = [];
       if (req.files && req.files.length > 0) {
         images = req.files.map((file) => `/uploads/${file.filename}`);
@@ -35,14 +41,14 @@ exports.createBestSeller = [
 
       const product = new Product({
         name,
-        price,
+        price: parseFloat(price),
         sizes: sizes ? sizes.split(",") : [],
         colors: colors ? JSON.parse(colors) : [],
         tags: tags ? tags.split(",") : [],
         slug: uniqueSlug,
         images,
-        stock,
-        remainingStock: stock,
+        stock: parseInt(stock, 10),
+        remainingStock: parseInt(stock, 10),
         bestSeller: true,
       });
 
@@ -61,12 +67,12 @@ exports.updateBestSeller = [
     try {
       const { id } = req.params;
       const { name, price, sizes, colors, tags, slug, stock } = req.body;
-      const images = req.files || [];
 
       const product = await Product.findById(id);
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
+
       if (!product.bestSeller) {
         return res
           .status(400)
@@ -84,8 +90,8 @@ exports.updateBestSeller = [
         product.remainingStock = parseInt(stock, 10);
       }
 
-      if (images.length > 0) {
-        product.images = images.map((file) => `/uploads/${file.filename}`);
+      if (req.files && req.files.length > 0) {
+        product.images = req.files.map((file) => `/uploads/${file.filename}`);
       }
 
       const updatedProduct = await product.save();

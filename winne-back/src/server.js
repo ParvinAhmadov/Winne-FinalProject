@@ -4,7 +4,7 @@ const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const cartRoutes = require("./routes/cartRoutes");
-const orderRoutes = require('./routes/orderRoutes');
+const orderRoutes = require("./routes/orderRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 
 const cors = require("cors");
@@ -33,10 +33,10 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/cart", cartRoutes);
-app.use('/api/orders', orderRoutes);
+app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use((req, res, next) => {
-  res.set("Cache-Control", "no-store"); 
+  res.set("Cache-Control", "no-store");
   next();
 });
 app.use((req, res) => {

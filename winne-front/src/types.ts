@@ -1,13 +1,22 @@
 export interface Product {
-  id?: string;
+  _id: string;
   name: string;
   price: number;
+  sizes: string[];
+  colors: { name: string; hexCode: string }[];
+  tags: string[];
+  images: string[];
+  slug: string;
+  bestSeller: boolean;
   stock: number;
   remainingStock: number;
-  images: string[] | File[];
-  slug: string;
-  colors: { name: string; hex: string }[];
+}
+
+export interface FilterState {
+  priceMin: string;
+  priceMax: string;
+  size: string[];
   tags: string[];
-  sizes: string[];
-  bestSeller?: boolean; 
+  color: string[];
+  priceRange?: string[];
 }

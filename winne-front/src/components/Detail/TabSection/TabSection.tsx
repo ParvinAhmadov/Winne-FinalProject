@@ -8,11 +8,10 @@ import AdditionalInformation from "../AdditionalInformation/AdditionalInformatio
 interface Product {
   name?: string;
   images?: string[];
-  // Eğer başka özellikler varsa buraya ekleyin
 }
 
 interface TabSectionProps {
-  product: Product; // `product` artık tam olarak tanımlı bir nesne
+  product: Product;
 }
 
 export default function TabSection({ product }: TabSectionProps) {
@@ -23,12 +22,7 @@ export default function TabSection({ product }: TabSectionProps) {
       case "description":
         return <DescriptionContent key="description" />;
       case "additionalInfo":
-        return (
-          <AdditionalInformation
-            key="additionalInfo"
-            product={product} // `product` burada geçiliyor
-          />
-        );
+        return <AdditionalInformation key="additionalInfo" product={product} />;
       case "review":
         return (
           <motion.div
@@ -52,7 +46,6 @@ export default function TabSection({ product }: TabSectionProps) {
 
   return (
     <div className="mt-8">
-      {/* Tab Buttons */}
       <div className="flex flex-col gap-2 mr-6 ml-4 border-b mb-4 justify-center pb-4 border-t pt-4 sm:flex-row sm:gap-4">
         <button
           className={`px-4 py-2 font-semibold transition-all duration-100 ease-in-out relative overflow-hidden ${
@@ -86,7 +79,6 @@ export default function TabSection({ product }: TabSectionProps) {
         </button>
       </div>
 
-      {/* Tab Content */}
       <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
     </div>
   );

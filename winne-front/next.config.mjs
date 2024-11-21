@@ -28,12 +28,12 @@ const nextConfig = {
   },
   webpack: (config, { dev }) => {
     if (!dev) {
-      config.devtool = false; 
+      config.devtool = false;
     }
     return config;
   },
   env: {
-    API_URL: process.env.API_URL, 
+    API_URL: process.env.API_URL,
   },
 };
 

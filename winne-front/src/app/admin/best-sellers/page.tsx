@@ -163,24 +163,36 @@ const BestSellersPage: React.FC = () => {
   const handleSaveBestSeller = async () => {
     try {
       const formData = new FormData();
-      Object.entries(newBestSeller).forEach(([key, value]) => {
-        if (key === "images" && Array.isArray(value)) {
-          value.forEach((file) => formData.append("images", file as File));
-        } else if (key === "colors" || key === "tags" || key === "sizes") {
-          formData.append(key, JSON.stringify(value));
-        } else {
-          formData.append(key, value as string);
-        }
+
+      formData.append("name", newBestSeller.name);
+      formData.append("price", newBestSeller.price.toString());
+      formData.append("sizes", newBestSeller.sizes.join(","));
+      formData.append("tags", newBestSeller.tags.join(","));
+      formData.append("colors", JSON.stringify(newBestSeller.colors));
+      formData.append("slug", newBestSeller.slug || "");
+      formData.append("stock", newBestSeller.stock.toString());
+
+      newBestSeller.images.forEach((file) => {
+        formData.append("images", file);
       });
 
       const url =
         editIndex !== null
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/products/best-seller/update/${bestSellers[editIndex]._id}`
           : `${process.env.NEXT_PUBLIC_API_URL}/api/products/best-seller/create`;
+
       const method = editIndex !== null ? "PUT" : "POST";
 
-      const response = await fetch(url, { method, body: formData });
-      if (!response.ok) throw new Error("Failed to save best seller.");
+      const response = await fetch(url, {
+        method,
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to ${editIndex !== null ? "update" : "create"} best seller.`
+        );
+      }
 
       toast.success(
         `Best seller ${editIndex !== null ? "updated" : "added"} successfully!`
@@ -189,10 +201,11 @@ const BestSellersPage: React.FC = () => {
       window.location.reload();
     } catch (error) {
       console.error(error);
-      toast.error("Error saving best seller.");
+      toast.error(
+        `Error ${editIndex !== null ? "updating" : "creating"} best seller.`
+      );
     }
   };
-
   const handleDeleteBestSeller = async (id: string) => {
     try {
       const response = await fetch(

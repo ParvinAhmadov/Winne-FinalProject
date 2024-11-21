@@ -155,3 +155,15 @@ body.activedesktop {
   animation: move-stripes 50s linear infinite;
 }
 
+.grid {
+  display: grid;
+  transition: all 0.3s ease-in-out; 
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}

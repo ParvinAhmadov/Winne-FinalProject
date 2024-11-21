@@ -82,9 +82,9 @@ exports.updateProduct = [
 
       if (name) product.name = name;
       if (price) product.price = parseFloat(price);
-      if (sizes) product.sizes = sizes.split(",");
+      if (sizes) product.sizes = JSON.parse(sizes || "[]");
       if (colors) product.colors = JSON.parse(colors || "[]");
-      if (tags) product.tags = tags.split(",");
+      if (tags) product.tags = JSON.parse(tags || "[]");
       if (stock) {
         product.stock = parseInt(stock, 10);
         product.remainingStock = parseInt(stock, 10);
@@ -202,8 +202,17 @@ exports.getPaginatedProducts = async (req, res) => {
 
 exports.filterProducts = async (req, res) => {
   try {
-    const { priceMin, priceMax, size, color, tags, bestSeller, sort } =
-      req.query;
+    const {
+      priceMin,
+      priceMax,
+      size,
+      color,
+      tags,
+      bestSeller,
+      sort,
+      page = 1,
+      limit = 10,
+    } = req.query;
 
     const filter = {};
 
@@ -214,38 +223,58 @@ exports.filterProducts = async (req, res) => {
     }
 
     if (size) {
-      filter.sizes = size;
+      filter.sizes = { $in: size.split(",") };
     }
 
     if (color) {
-      filter["colors.name"] = color;
+      filter["colors.name"] = { $in: color.split(",") };
     }
 
     if (tags) {
-      filter.tags = { $in: tags.split(",") };
+      
+      if (!filter.$and) filter.$and = [];
+      filter.$and.push({ tags: { $in: tags.split(",") } });
     }
 
+   
     if (bestSeller) {
       filter.bestSeller = bestSeller === "true";
     }
 
-    let sortOption = {};
-    if (sort) {
-      if (sort === "default") sortOption = {};
-      else if (sort === "best-sellers") sortOption = { bestSeller: -1 };
-      else if (sort === "name_asc") sortOption = { name: 1 };
-      else if (sort === "name_desc") sortOption = { name: -1 };
-      else if (sort === "price_asc") sortOption = { price: 1 };
-      else if (sort === "price_desc") sortOption = { price: -1 };
+    console.log("Generated Filter:", JSON.stringify(filter, null, 2));
+
+    const sortOption =
+      sort === "price_asc"
+        ? { price: 1 }
+        : sort === "price_desc"
+        ? { price: -1 }
+        : sort === "name_asc"
+        ? { name: 1 }
+        : sort === "name_desc"
+        ? { name: -1 }
+        : {};
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const products = await Product.find(filter)
+      .sort(sortOption)
+      .skip(skip)
+      .limit(parseInt(limit));
+    const totalProducts = await Product.countDocuments(filter);
+
+    if (!products.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No products found matching the criteria.",
+      });
     }
 
-    const products = await Product.find(filter).sort(sortOption);
-
-    if (products.length === 0) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    res.status(200).json({ success: true, data: products });
+    res.status(200).json({
+      success: true,
+      data: products,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalProducts / limit),
+    });
   } catch (error) {
     console.error("Error filtering products:", error);
     res.status(500).json({ success: false, message: error.message });

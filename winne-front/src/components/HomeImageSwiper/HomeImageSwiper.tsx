@@ -98,7 +98,7 @@ const HomeImageSwiper = () => {
 
                     <motion.a
                       key={slide.buttonText}
-                      href="/products"
+                      href="/product"
                       className="py-2 px-4 md:py-2 md:px-6 tracking-widest bg-black text-white hover:bg-transparent hover:text-black border border-black hover:transition-all hover:duration-300 inline-block"
                       initial={{ opacity: 0, x: -100 }}
                       animate={{ opacity: 1, x: 0 }}

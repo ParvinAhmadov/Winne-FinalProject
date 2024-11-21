@@ -106,10 +106,10 @@ const WishlistPage = () => {
 
   return (
     <div>
-      {/* Hero Section */}
+      
       <div className="relative w-full h-[404px]">
         <Image
-          src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348" // Update with your image path
+          src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348" 
           alt="Wishlist Background"
           layout="fill"
           objectFit="cover"

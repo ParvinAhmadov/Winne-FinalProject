@@ -35,7 +35,7 @@ const EditModal: React.FC<EditModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-6  shadow-lg w-full max-w-md">
         <h3 className="text-lg font-semibold mb-4">{title}</h3>
         <div className="space-y-4">
           {Object.keys(fields).map((field) => (
@@ -49,7 +49,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 onChange={(e) =>
                   setFormData({ ...formData, [field]: e.target.value })
                 }
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-2 p-2 block w-full border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
           ))}
@@ -57,13 +57,13 @@ const EditModal: React.FC<EditModalProps> = ({
         <div className="mt-6 flex justify-end space-x-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm bg-gray-300 rounded-md hover:bg-gray-400"
+            className="px-4 py-2 text-sm bg-black text-white transition ease duration-300 hover:bg-[#A53E4C]"
           >
             Cancel
           </button>
           <button
             onClick={() => onSave(formData)}
-            className="px-4 py-2 text-sm bg-[#A53E4C] text-white rounded-md hover:bg-red-600"
+            className="px-4 py-2 text-sm bg-[#A53E4C] text-white  hover:bg-black transition ease-in-out duration-300"
           >
             Save
           </button>
