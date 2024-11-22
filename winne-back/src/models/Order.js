@@ -27,10 +27,11 @@ const OrderSchema = new mongoose.Schema({
     },
   ],
   totalPrice: { type: Number, required: true },
+  paymentIntentId: { type: String }, // Stripe Payment Intent ID
   status: {
     type: String,
-    enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
-    default: "Pending", 
+    enum: ["Pending", "Paid", "Shipped", "Delivered", "Cancelled"],
+    default: "Pending",
   },
   createdAt: { type: Date, default: Date.now },
 });
