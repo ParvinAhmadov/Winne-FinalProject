@@ -133,20 +133,20 @@ const AdminPage: React.FC = () => {
           "url('https://winne-store-demo.myshopify.com/cdn/shop/files/bn1.1.png?v=1653892975')",
       }}
     >
-      <h2 className="text-4xl font-extrabold text-gray-900 mb-8 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
-        Admin Dashboard
+      <h2 className="text-2xl tracking-widest font-extrabold text-[#212529] mb-8 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
+        ADMIN DASHBOARD
       </h2>
 
       <section className="mb-12">
-        <h3 className="text-2xl font-semibold text-gray-700 mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
-          Overview
+        <h3 className="text-xl tracking-widest font-semibold text-[#212529] mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
+          OVERVIEW
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="p-6 bg-white bg-opacity-80 border rounded-lg shadow-md flex items-center space-x-4">
             <FaCube className="h-10 w-10 text-blue-600" />
             <div>
               <p className="text-gray-500">Total Products</p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
+              <p className="text-4xl font-bold text-[#212529] mt-2">
                 {statistics.totalProducts}
               </p>
             </div>
@@ -155,7 +155,7 @@ const AdminPage: React.FC = () => {
             <FaArrowUp className="h-10 w-10 text-green-600" />
             <div>
               <p className="text-gray-500">Best Sellers</p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
+              <p className="text-4xl font-bold text-[#212529] mt-2">
                 {statistics.bestSellers}
               </p>
             </div>
@@ -164,7 +164,7 @@ const AdminPage: React.FC = () => {
             <FaShoppingCart className="h-10 w-10 text-orange-600" />
             <div>
               <p className="text-gray-500">Total Orders</p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
+              <p className="text-4xl font-bold text-[#212529] mt-2">
                 {statistics.totalOrders}
               </p>
             </div>
@@ -173,7 +173,7 @@ const AdminPage: React.FC = () => {
             <FaClock className="h-10 w-10 text-red-600" />
             <div>
               <p className="text-gray-500">Pending Orders</p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
+              <p className="text-4xl font-bold text-[#212529] mt-2">
                 {statistics.pendingOrders}
               </p>
             </div>
@@ -182,27 +182,63 @@ const AdminPage: React.FC = () => {
       </section>
 
       <section className="mb-12">
-        <h3 className="text-2xl font-semibold text-gray-700 mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
-          Quick Access
+        <h3 className="text-xl tracking-widest font-semibold text-gray-700 mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
+          QUICK ACCESS
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
             href="/admin/products"
-            className="bg-blue-600 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
           >
             Manage Products
           </Link>
           <Link
             href="/admin/best-sellers"
-            className="bg-green-600 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-green-700 transition duration-300"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-green-700 transition duration-300"
           >
             Manage Best Sellers
           </Link>
           <Link
             href="/admin/orders"
-            className="bg-orange-600 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-orange-700 transition duration-300"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-orange-700 transition duration-300"
           >
             Manage Orders
+          </Link>
+          <Link
+            href="/admin/blogs"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-amber-800 transition duration-300"
+          >
+            Manage Blogs
+          </Link>
+          <Link
+            href="/"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-amber-800 transition duration-300"
+          >
+            Home Page
+          </Link>
+          <Link
+            href="/blogs"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-amber-800 transition duration-300"
+          >
+            Blogs Page
+          </Link>
+          <Link
+            href="/product"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-amber-800 transition duration-300"
+          >
+            Products Page
+          </Link>
+          <Link
+            href="/cart"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-amber-800 transition duration-300"
+          >
+            Cart Page
+          </Link>
+          <Link
+            href="/account"
+            className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-amber-800 transition duration-300"
+          >
+            Account Page
           </Link>
         </div>
       </section>

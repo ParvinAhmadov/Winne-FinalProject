@@ -41,7 +41,7 @@ const BlogListPage = () => {
   }, []);
 
   if (loading) {
-    return <p className="text-center text-gray-600">Loading...</p>;
+    return <p className="text-center text-gray-400">Loading...</p>;
   }
 
   return (

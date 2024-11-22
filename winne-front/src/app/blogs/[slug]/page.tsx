@@ -1,8 +1,13 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { MdChevronRight, MdComment } from "react-icons/md";
+import Link from "next/link";
+import { CiClock2 } from "react-icons/ci";
+import { FaPinterestP, FaTwitter, FaUser, FaFacebookF } from "react-icons/fa";
+import RelatedPost from "@/components/Blogs/Related post/RelatedPost";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface Blog {
   _id: string;
@@ -47,7 +52,11 @@ const BlogDetailPage = () => {
   }, [slug]);
 
   if (loading) {
-    return <p className="text-center text-gray-600">Loading...</p>;
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+        <ClipLoader color="#A53E4C" size={60} />
+      </div>
+    );
   }
 
   if (!blog) {
@@ -55,38 +64,91 @@ const BlogDetailPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="relative w-full h-64">
+    <div className="max-w-[1450px] w-full mx-auto  pb-8 px-4 md:px-8 lg:px-0">
+      <nav className="text-[#898989] mb-4 md:mb-6 flex items-center gap-1 text-xs md:text-sm lg:text-base">
+        <Link href="/" className="hover:text-[#A53E4C]">
+          Home
+        </Link>
+        <MdChevronRight />
+        <span className="text-[#A53E4C] font-semibold text-sm">
+          {blog.title}
+        </span>
+      </nav>
+
+      <div className="relative w-full h-[300px] sm:h-[500px] lg:h-[940px] overflow-hidden">
         <Image
           src={blog.image || "/placeholder.png"}
           alt={blog.title}
           layout="fill"
           objectFit="cover"
-          className="rounded-lg"
+          className="block"
         />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-[#212529] via-black/10 to-transparent flex flex-col justify-end px-6 py-8 text-white">
+          <div className="flex flex-col justify-center items-start md:items-center text-left md:text-center">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+              {blog.title}
+            </h1>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center mt-2 text-xs sm:text-sm lg:text-base space-y-2 sm:space-y-0 sm:space-x-4">
+              <p className="flex items-center gap-2">
+                <FaUser className="text-[10px]" />
+                Winne-store-demo Admin
+              </p>
+              <p className="flex items-center gap-1">
+                <CiClock2 />
+                {new Date(blog.createdAt).toLocaleDateString()}
+              </p>
+              <div className="flex items-center space-x-1">
+                <MdComment />
+                <span>0 Comments</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1 className="text-4xl font-bold text-gray-800 mt-6">{blog.title}</h1>
-      <p className="text-gray-600 mt-2">
-        Published on {new Date(blog.createdAt).toLocaleDateString()}
-      </p>
-      <div className="mt-6">
-        <p className="text-gray-700 leading-relaxed">{blog.content}</p>
+
+      <div className="mt-6 w-full ">
+        <p className="text-sm sm:text-base lg:text-lg text-[#A8A8A8]">
+          {blog.content}
+        </p>
       </div>
+
       {blog.tags?.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">Tags:</h2>
-          <div className="flex flex-wrap mt-2">
-            {blog.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-medium mr-2"
-              >
-                {tag}
-              </span>
-            ))}
+        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-10">
+          <div className="flex items-center gap-6">
+            <h2 className="text-[12px] sm:text-[14px] lg:text-[16px] font-semibold tracking-widest">
+              TAGS :
+            </h2>
+            <div className="flex flex-wrap items-center text-center border border-black gorup hover:border-white hover:text-white hover:bg-[#A53E4C] transition-all ease-in-out duration-300 cursor-pointer  ml-4 px-4 py-1">
+              {blog.tags.map((tag, index) => (
+                <a
+                  href="/blogs"
+                  key={index}
+                  className="px-3 py-1 text-xs sm:text-sm lg:text-base font-medium "
+                >
+                  {tag}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="mt-4 sm:mt-0">
+            <ul className="flex items-center gap-2">
+              <li className="border p-2 bg-gray-200 hover:bg-[#A53E4C] hover:text-white cursor-pointer transition-all">
+                <FaTwitter />
+              </li>
+              <li className="border p-2 bg-gray-200 hover:bg-[#A53E4C] hover:text-white cursor-pointer transition-all">
+                <FaFacebookF />
+              </li>
+              <li className="border p-2 bg-gray-200 hover:bg-[#A53E4C] hover:text-white cursor-pointer transition-all">
+                <FaPinterestP />
+              </li>
+            </ul>
           </div>
         </div>
       )}
+      <div className="mt-12">
+        <RelatedPost />
+      </div>
     </div>
   );
 };

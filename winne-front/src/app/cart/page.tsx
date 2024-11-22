@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoCaretDownOutline, IoCaretUpOutline } from "react-icons/io5";
@@ -87,6 +86,29 @@ const CartPage = () => {
   const handleUpdateCart = async () => {
     for (const item of cartItems) {
       await updateCartItem(item.productId, item.quantity);
+    }
+  };
+
+  const handleRemoveCartItem = async (productId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cart/remove/${productId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to remove cart item");
+      }
+
+      fetchCartItems();
+    } catch (error) {
+      console.error("Error removing cart item:", error);
     }
   };
 
@@ -207,14 +229,7 @@ const CartPage = () => {
                       </td>
                       <td className="px-4 py-4 text-center">
                         <button
-                          onClick={() =>
-                            setCartItems((prev) =>
-                              prev.filter(
-                                (cartItem) =>
-                                  cartItem.productId !== item.productId
-                              )
-                            )
-                          }
+                          onClick={() => handleRemoveCartItem(item.productId)}
                           className="text-black text-[20px] hover:text-[#A53E4C]"
                         >
                           <IoMdClose />

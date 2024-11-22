@@ -128,7 +128,7 @@ const Header = () => {
                         <ul className="flex flex-col gap-2 font-normal text-gray-500">
                           {[
                             { text: "Fullwidth", href: "#" },
-                            { text: "Sidebar Layouts", href: "#" },
+                            { text: "Sidebar Layouts", href: "/product" },
                             { text: "Infinity Scroll", href: "#" },
                             { text: "Background Modern", href: "#" },
                             { text: "List View", href: "#" },
@@ -622,7 +622,7 @@ const Header = () => {
                           {[
                             {
                               text: "Cart",
-                              href: "#",
+                              href: "/cart",
                               tooltip: { text: "HOT", color: "bg-red-600" },
                             },
                             { text: "404 Page", href: "#" },
@@ -724,7 +724,7 @@ const Header = () => {
                             },
                             { text: "Right Sidebar", href: "#" },
                             { text: "Standard", href: "#" },
-                            { text: "Blog List", href: "#" },
+                            { text: "Blog List", href: "/blogs" },
                             { text: "Grid", href: "#" },
                           ].map(({ text, href, tooltip }, index) => (
                             <li key={index} className="relative">
@@ -994,7 +994,7 @@ const Header = () => {
                         Fullwidth
                       </Link>
                       <Link
-                        href="/sidebar-layouts"
+                        href="/product"
                         onClick={toggleMenu}
                         className="text-gray-800 text-base hover:text-[#982B2B]"
                       >
@@ -1377,7 +1377,7 @@ const Header = () => {
                       </h3>
                       <div className="relative group">
                         <Link
-                          href="/filter-accordion"
+                          href="/cart"
                           onClick={toggleMenu}
                           className="text-gray-800 text-base hover:text-[#982B2B]"
                         >
@@ -1533,7 +1533,7 @@ const Header = () => {
                         Standar
                       </Link>
                       <Link
-                        href="/filter-accordion"
+                        href="/blogs"
                         onClick={toggleMenu}
                         className="text-gray-800 text-base hover:text-[#982B2B]"
                       >

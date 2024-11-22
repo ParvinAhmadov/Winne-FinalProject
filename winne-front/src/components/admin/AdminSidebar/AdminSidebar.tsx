@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { FaBox, FaShoppingCart, FaStar, FaTachometerAlt } from "react-icons/fa";
 import Image from "next/image";
+import { TbLogs } from "react-icons/tb";
 interface AdminSidebarProps {
   isOpen: boolean;
 }
@@ -79,6 +80,18 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
                   <FaShoppingCart className="text-gray-700 text-2xl group-hover:text-red-500 transition-all" />
                   <span className="text-gray-800 font-semibold transition-all group-hover:text-red-500">
                     Orders
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/blogs">
+              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <TbLogs  className="text-gray-700 text-2xl group-hover:text-blue-500 transition-all" />
+                  <span className="text-gray-800 font-semibold transition-all group-hover:text-blue-500">
+                    Blogs
                   </span>
                 </div>
               </div>

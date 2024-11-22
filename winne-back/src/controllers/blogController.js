@@ -1,27 +1,30 @@
 const Blog = require("../models/Blog");
 
 exports.createBlog = async (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
+  console.log("Request Body:", req.body);
+  console.log("Request File:", req.file);
 
   try {
     const { title, content, author, tags } = req.body;
 
+    if (!title || !content) {
+      throw new Error("Title and content are required.");
+    }
+
     const newBlog = new Blog({
       title,
       content,
-      author,
-      tags: tags.split(","),
+      author: author || "Anonymous", 
+      tags: tags ? tags.split(",").map((tag) => tag.trim()) : [],
       image: req.file ? `/uploads/${req.file.filename}` : undefined,
     });
 
     await newBlog.save();
 
-    res
-      .status(201)
-      .json({ message: "Blog created successfully", blog: newBlog });
+    res.status(201).json({ message: "Blog created successfully", blog: newBlog });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Error creating blog:", error.message);
+    res.status(400).json({ message: "Error creating blog: " + error.message });
   }
 };
 
