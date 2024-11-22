@@ -1,18 +1,18 @@
 const express = require("express");
+require("dotenv").config();
 const connectDB = require("./config/db");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const cartRoutes = require("./routes/cartRoutes");
-const orderRoutes = require("./routes/orderRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
-const blogRoutes = require('./routes/blogRoutes');
-
+const blogRoutes = require("./routes/blogRoutes");
 const cors = require("cors");
 const path = require("path");
-require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const checkoutRoutes = require("./routes/checkout");
+const orderRoutes = require("./routes/orders");
 
 const app = express();
 connectDB();
@@ -34,9 +34,10 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("/api/orders", orderRoutes);
-app.use('/api/blogs', blogRoutes);
+app.use("/api/blogs", blogRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/checkout", checkoutRoutes);
+app.use("/api/orders", orderRoutes);
 app.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();

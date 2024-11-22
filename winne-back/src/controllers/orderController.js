@@ -1,25 +1,30 @@
-const Cart = require('../models/Cart');
-const Order = require('../models/Order');
+const Cart = require("../models/Cart");
+const Order = require("../models/Order");
 
 exports.createOrder = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.user.id }).populate("items.productId");
-    if (!cart || !cart.items.length) {
-      return res.status(400).json({ message: "Your cart is empty" });
+    const cart = await Cart.findOne({ userId: req.user.id }).populate(
+      "items.productId"
+    );
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
     }
-
-    const totalPrice = cart.items.reduce((total, item) => {
-      return total + item.productId.price * item.quantity;
+    const totalAmount = cart.items.reduce((total, item) => {
+      if (!item.productId) return total; 
+      return total + (item.productId.price || 0) * item.quantity;
     }, 0);
+
+   
 
     const newOrder = new Order({
       userId: req.user.id,
-      items: cart.items.map(item => ({
+      items: cart.items.map((item) => ({
         productId: item.productId._id,
         quantity: item.quantity,
       })),
-      totalPrice,
-      status: "Pending", 
+      amount: totalAmount, 
+      status: "Pending",
+      createdAt: new Date(),
     });
 
     await newOrder.save();
@@ -27,26 +32,25 @@ exports.createOrder = async (req, res) => {
     cart.items = [];
     await cart.save();
 
-    res.status(201).json({ message: "Order created successfully", order: newOrder });
+    res
+      .status(201)
+      .json({ message: "Order created successfully", order: newOrder });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Order creation failed:", error.message);
+    res
+      .status(500)
+      .json({ message: "Failed to create order. Please try again." });
   }
 };
 
 exports.getUserOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.user.id }).populate("items.productId");
+    const orders = await Order.find({ userId: req.user.id }).populate(
+      "items.productId"
+    );
     res.json({ orders });
   } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-  
-exports.getAllOrders = async (req, res) => {
-  try {
-    const orders = await Order.find().populate("items.productId");
-    res.json(orders);
-  } catch (error) {
+    console.error("Failed to fetch user orders:", error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -56,20 +60,27 @@ exports.updateOrderStatus = async (req, res) => {
     const { orderId } = req.params;
     const { status } = req.body;
 
-    if (!["Pending", "Shipped", "Delivered", "Cancelled"].includes(status)) {
-      return res.status(400).json({ message: "Invalid status value" });
+    const validStatuses = ["Pending", "Paid", "Shipped", "Delivered", "Cancelled"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status provided." });
     }
 
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ message: "Order not found." });
     }
 
     order.status = status;
-    await order.save();
+    const updatedOrder = await order.save();
 
-    res.json({ message: "Order status updated successfully", order });
+    res.status(200).json({
+      message: "Order status updated successfully.",
+      order: updatedOrder,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Failed to update order status:", error.message);
+
+    res.status(500).json({ message: "Failed to update order status." });
   }
 };
+

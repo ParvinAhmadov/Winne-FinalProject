@@ -1,156 +1,148 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Select,
+  MenuItem,
+  CircularProgress,
+  Box,
+} from "@mui/material";
+import axios from "axios";
 
-interface Order {
-  _id: string;
-  userId: string;
-  items: Array<{
-    name: string;
-    quantity: number;
-    price: number;
-    productId: { _id: string; images: string[] };
-  }>;
-  totalPrice: number;
-  status: string;
-}
-
-const AdminOrdersPage: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+const AdminOrders = () => {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Unauthorized");
-        }
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/orders`,
+        const response = await axios.get(
+          "http://localhost:3001/api/orders/admin/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
+        setOrders(response.data);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error("Error fetching admin orders:", error.message);
+        } else {
+          console.error("Unknown error fetching admin orders:", error);
         }
-
-        const data = await response.json();
-        setOrders(data.orders);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchOrders();
   }, []);
 
-  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+  const handleStatusUpdate = async (orderId: string, newStatus: string) => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("Unauthorized");
-      }
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}/status`,
+      const response = await axios.put(
+        `http://localhost:3001/api/orders/admin/${orderId}`,
+        { status: newStatus },
         {
-          method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ status: newStatus }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to update order status");
+      if (response.status === 200) {
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === orderId ? { ...order, status: newStatus } : order
+          )
+        );
+        console.log(`Order ${orderId} status updated to ${newStatus}`);
+      } else {
+        console.error(`Failed to update status for order ${orderId}`);
       }
-
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === orderId ? { ...order, status: newStatus } : order
-        )
-      );
-    } catch (error) {
-      console.error("Error updating order status:", error);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error updating order status:", error.message);
+      } else {
+        console.error("Unknown error updating order status:", error);
+      }
     }
   };
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
-    <div className="p-10">
-      <h2 className="text-xl font-bold text-black mb-6">Admin Orders</h2>
-      <TableContainer component={Paper}>
+    <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4, p: 2 }}>
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Order ID</TableCell>
-              <TableCell>User ID</TableCell>
-              <TableCell>Items</TableCell>
-              <TableCell>Total Price</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell align="center">Order ID</TableCell>
+              <TableCell align="center">User ID</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Amount</TableCell>
+              <TableCell align="center">Products</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((order) => (
               <TableRow key={order._id}>
-                <TableCell>{order._id}</TableCell>
-                <TableCell>{order.userId}</TableCell>
-                <TableCell>
-                  {order.items.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      {item.productId &&
-                        item.productId.images &&
-                        item.productId.images.length > 0 && (
-                          <Image
-                            src={`${process.env.NEXT_PUBLIC_API_URL}${item.productId.images[0]}`}
-                            alt={item.name}
-                            width={40}
-                            height={40}
-                            className="object-cover"
-                          />
-                        )}
-                      <div>
-                        {item.name} x {item.quantity} (${item.price})
-                      </div>
-                    </div>
-                  ))}
-                </TableCell>
-                <TableCell>${order.totalPrice}</TableCell>
-                <TableCell>
+                <TableCell align="center">{order._id}</TableCell>
+                <TableCell align="center">{order.userId}</TableCell>
+                <TableCell align="center">
                   <Select
                     value={order.status}
-                    onChange={async (e) =>
-                      await updateOrderStatus(order._id, e.target.value)
+                    onChange={(e) =>
+                      handleStatusUpdate(order._id, e.target.value as string)
                     }
+                    fullWidth
                   >
                     <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Shipped">Shipped</MenuItem>
-                    <MenuItem value="Delivered">Delivered</MenuItem>
-                    <MenuItem value="Cancelled">Cancelled</MenuItem>
+                    <MenuItem value="Completed">Completed</MenuItem>
+                    <MenuItem value="Failed">Failed</MenuItem>
                   </Select>
+                </TableCell>
+                <TableCell align="center">
+                  ${order.amount?.toFixed(2) || "N/A"}
+                </TableCell>
+                <TableCell align="center">
+                  {order.items.map((item: any, index: number) => (
+                    <div key={index}>
+                      <strong>{item.name}</strong> x {item.quantity} ($
+                      {item.price})
+                    </div>
+                  ))}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 };
 
-export default AdminOrdersPage;
+export default AdminOrders;
