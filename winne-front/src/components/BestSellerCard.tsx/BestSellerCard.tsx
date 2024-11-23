@@ -109,9 +109,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
 
         const data = await response.json();
         setWishlist(data);
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
+      } catch (error) {}
     };
 
     fetchWishlist();

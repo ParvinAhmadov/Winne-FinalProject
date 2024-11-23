@@ -14,11 +14,12 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-const knownRoutes = ["/", "/admin", "/account"];
+const knownRoutes = ["/", "/admin", "/account", "/checkout"]; // Include checkout path here
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith("/admin");
+  const isCheckoutPage = pathname.startsWith("/checkout");
   const [isKnownRoute, setIsKnownRoute] = useState(true);
   const [loading, setLoading] = useState(true);
 
@@ -64,10 +65,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div>
-      <Header toggleSidebar={toggleSidebar} />
+      {!isCheckoutPage && <Header toggleSidebar={toggleSidebar} />}
       <main>{children}</main>
-      <UpButton />
-      <Footer />
+      {!isCheckoutPage && <UpButton />}
+      {!isCheckoutPage && <Footer />}
     </div>
   );
 };

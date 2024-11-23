@@ -56,7 +56,7 @@ body.activedesktop {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #333; 
+  border-top: 5px solid #333;
   content: "";
 }
 
@@ -81,12 +81,12 @@ body.activedesktop {
   border: 1px solid transparent;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s ease-in-out ;
-  letter-spacing: 0.1em
+  transition: all 0.3s ease-in-out;
+  letter-spacing: 0.1em;
 }
-.custom-button:hover{
+.custom-button:hover {
   background-color: white;
-  color: #A53E4C;
+  color: #a53e4c;
 }
 .custom-button::before,
 .custom-button::after {
@@ -94,7 +94,7 @@ body.activedesktop {
   position: absolute;
   width: 0;
   height: 0;
-  border: 1px solid #A53E4C;
+  border: 1px solid #a53e4c;
   transition: all 0.4s ease;
 }
 
@@ -128,7 +128,7 @@ body.activedesktop {
 }
 
 .animate-spin-x {
-  animation: spin-x 3s linear infinite; 
+  animation: spin-x 3s linear infinite;
 }
 
 @keyframes move-stripes {
@@ -157,7 +157,7 @@ body.activedesktop {
 
 .grid {
   display: grid;
-  transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 
 .grid-cols-3 {
@@ -168,3 +168,6 @@ body.activedesktop {
   grid-template-columns: repeat(4, 1fr);
 }
 
+.css-17v1qlu-MuiTypography-root {
+  color: #a53e4c;
+}

@@ -176,7 +176,7 @@ const AccountPage: React.FC = () => {
       <div className="w-full max-w-lg p-6">
         <h2 className="text-lg text-center font-semibold mb-2">{user.email}</h2>
 
-        <p className="text-center flex items-center justify-center gap-1 text-black mb-6">
+        <div className="text-center flex items-center justify-center gap-1 text-black mb-6">
           (<span className="text-[17px]">not</span>{" "}
           <div className="font-semibold md:text-[17px] text-[15px]">
             {user.email}
@@ -193,7 +193,7 @@ const AccountPage: React.FC = () => {
             Sign out
           </span>
           ).
-        </p>
+        </div>
 
         {user.isAdmin && (
           <div className="text-center mb-4">

@@ -31,11 +31,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
     try {
       setLoading(true);
 
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement!,
-        },
-      });
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: cardElement!,
+          },
+        }
+      );
 
       if (error) {
         setStatus(`Payment failed: ${error.message}`);
@@ -44,13 +47,16 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
 
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/orders`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -64,7 +70,11 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
         setStatus("Payment incomplete. Please try again.");
       }
     } catch (err) {
-      setStatus(`An error occurred: ${err instanceof Error ? err.message : "Unknown error"}`);
+      setStatus(
+        `An error occurred: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`
+      );
     } finally {
       setLoading(false);
     }
@@ -85,8 +95,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
           mx: "auto",
           mt: 6,
           p: 3,
-          border: "2px solid #ddd",
-          borderRadius: 4,
+          border: "1px solid #ddd",
+          borderRadius: 1,
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
           backgroundColor: "#fff",
         }}
@@ -95,9 +105,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
           variant="h4"
           textAlign="center"
           gutterBottom
-          sx={{ color: "#1976d2", fontWeight: "bold" }}
+          sx={{
+            fontWeight: "bold",
+            color: "#333",
+            paddingBottom: "10px",
+            fontSize: "18px",
+          }}
         >
-          Payment Details
+          PAYMENT DETAILS
         </Typography>
         <Box
           sx={{
@@ -121,11 +136,15 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
             height: "50px",
             fontSize: "18px",
             fontWeight: "bold",
-            backgroundColor: "#1976d2",
-            ":hover": { backgroundColor: "#115293" },
+            backgroundColor: "#000000",
+            ":hover": { backgroundColor: "#A53E4C" },
           }}
         >
-          {loading ? <CircularProgress size={24} sx={{ color: "#fff" }} /> : "Pay Now"}
+          {loading ? (
+            <CircularProgress size={24} sx={{ color: "#fff" }} />
+          ) : (
+            "PAY NOW"
+          )}
         </Button>
         {status && (
           <Typography

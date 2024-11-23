@@ -4,14 +4,11 @@ const ContactForm: React.FC = () => {
   return (
     <div className="mt-[5rem] bg-white">
       <div className="max-w-4xl mx-auto px-4 text-center">
-        {/* Heading */}
         <h2 className="text-3xl md:text-5xl  mb-6">Contact Form</h2>
         <div className="w-20 border-b-2 border-[#A53E4C] mx-auto mb-10"></div>
 
-        {/* Form */}
         <form className="space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Name Field */}
             <div className="flex flex-col text-left">
               <label
                 htmlFor="name"
@@ -28,7 +25,6 @@ const ContactForm: React.FC = () => {
               />
             </div>
 
-            {/* Email Field */}
             <div className="flex flex-col text-left">
               <label
                 htmlFor="email"
@@ -46,7 +42,6 @@ const ContactForm: React.FC = () => {
             </div>
           </div>
 
-          {/* Message Field */}
           <div className="flex flex-col text-left">
             <label
               htmlFor="message"
@@ -62,7 +57,6 @@ const ContactForm: React.FC = () => {
             ></textarea>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="bg-black text-white font-semibold text-xl px-8 py-4 hover:bg-gray-800 transition-all"
