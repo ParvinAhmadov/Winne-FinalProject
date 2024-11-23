@@ -77,7 +77,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
       }
 
       const data = await response.json();
-      console.log(data.message || "Product added to wishlist!"); 
+      console.log(data.message || "Product added to wishlist!");
     } catch (error: any) {
       const errorMessage = error.message || "An unexpected error occurred.";
       console.error("Error adding to wishlist:", errorMessage);
@@ -91,7 +91,6 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          console.error("User not logged in.");
           return;
         }
 
@@ -109,7 +108,7 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
         }
 
         const data = await response.json();
-        setWishlist(data); 
+        setWishlist(data);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
       }
@@ -255,8 +254,8 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
               <TbSearch />
             </button>
             <button
-              onClick={handleWishlistToggle} 
-              disabled={wishlistLoading} 
+              onClick={handleWishlistToggle}
+              disabled={wishlistLoading}
               className={`relative bg-white text-[21px] p-3 rounded-full flex items-center justify-center transition duration-500 ${
                 wishlistLoading
                   ? "cursor-not-allowed opacity-50"

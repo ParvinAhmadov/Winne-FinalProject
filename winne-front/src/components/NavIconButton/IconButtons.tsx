@@ -39,7 +39,6 @@ const IconButtons = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("User is not logged in.");
         return;
       }
 
@@ -66,9 +65,7 @@ const IconButtons = () => {
           image: `${process.env.NEXT_PUBLIC_API_URL}${item.image}`,
         }))
       );
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

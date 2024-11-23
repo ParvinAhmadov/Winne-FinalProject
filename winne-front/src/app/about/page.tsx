@@ -7,10 +7,10 @@ import React from "react";
 const AboutUsPage: React.FC = () => {
   return (
     <div>
-          <AboutContent />
-          <AboutFeatureSection />
+      <AboutContent />
+      <AboutFeatureSection />
       <TeamSection />
-      <NewsletterInstagramSection/>
+      <NewsletterInstagramSection />
     </div>
   );
 };
