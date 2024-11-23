@@ -20,7 +20,6 @@ import { FiDelete } from "react-icons/fi";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Image from "next/image";
 
-// Blog Interface
 interface Blog {
   _id?: string;
   title: string;
@@ -31,7 +30,6 @@ interface Blog {
   image: string | File | null;
 }
 
-// Tag Options
 const tagOptions = [
   { label: "Trending", value: "Trending" },
   { label: "Informative", value: "Informative" },
@@ -55,16 +53,18 @@ const BlogsPage: React.FC = () => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-        try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`);
-          if (!response.ok) throw new Error("Failed to fetch blogs.");
-          const data = await response.json();
-          setBlogs(data.blogs);
-        } catch (error) {
-          console.error("Fetch Blogs Error:", error);
-          toast.error("Error fetching blogs.");
-        }
-      };
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/blogs`
+        );
+        if (!response.ok) throw new Error("Failed to fetch blogs.");
+        const data = await response.json();
+        setBlogs(data.blogs);
+      } catch (error) {
+        console.error("Fetch Blogs Error:", error);
+        toast.error("Error fetching blogs.");
+      }
+    };
     fetchBlogs();
   }, []);
 
@@ -87,23 +87,25 @@ const BlogsPage: React.FC = () => {
         if (key === "image" && value instanceof File) {
           formData.append(key, value);
         } else if (key === "tags") {
-          formData.append(key, (value as string[]).join(", ")); // Tags'i string olarak gönder
+          formData.append(key, (value as string[]).join(", "));
         } else {
           formData.append(key, value as string);
         }
       });
-  
+
       const url =
         editIndex !== null
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/blogs/${blogs[editIndex].slug}`
           : `${process.env.NEXT_PUBLIC_API_URL}/api/blogs`;
-  
+
       const method = editIndex !== null ? "PUT" : "POST";
-  
+
       const response = await fetch(url, { method, body: formData });
       if (!response.ok) throw new Error("Failed to save blog.");
-  
-      toast.success(`Blog ${editIndex !== null ? "updated" : "added"} successfully!`);
+
+      toast.success(
+        `Blog ${editIndex !== null ? "updated" : "added"} successfully!`
+      );
       setIsModalOpen(false);
       resetModal();
       window.location.reload();
@@ -112,8 +114,6 @@ const BlogsPage: React.FC = () => {
       toast.error("Error saving blog.");
     }
   };
-  
-
 
   const handleDeleteBlog = async (index: number) => {
     try {
@@ -126,14 +126,16 @@ const BlogsPage: React.FC = () => {
       toast.success("Blog deleted successfully!");
       setBlogs((prev) => prev.filter((_, i) => i !== index));
     } catch (error) {
-        const errorMessage = (error as Error).message || "An unknown error occurred.";
-        toast.error(errorMessage);
-      }
+      const errorMessage =
+        (error as Error).message || "An unknown error occurred.";
+      toast.error(errorMessage);
+    }
   };
 
   const getImageSrc = (image: string | null): string => {
     if (!image) return "/placeholder.png";
-    if (image.startsWith("http://") || image.startsWith("https://")) return image;
+    if (image.startsWith("http://") || image.startsWith("https://"))
+      return image;
     const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
     return `${baseURL}${image}`;
   };
@@ -223,7 +225,9 @@ const BlogsPage: React.FC = () => {
                 <input
                   type="text"
                   value={newBlog.title}
-                  onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, title: e.target.value })
+                  }
                   className="border p-2 w-full rounded"
                 />
               </div>
@@ -232,7 +236,9 @@ const BlogsPage: React.FC = () => {
                 <input
                   type="text"
                   value={newBlog.slug}
-                  onChange={(e) => setNewBlog({ ...newBlog, slug: e.target.value })}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, slug: e.target.value })
+                  }
                   className="border p-2 w-full rounded"
                 />
               </div>
@@ -241,7 +247,9 @@ const BlogsPage: React.FC = () => {
                 <input
                   type="text"
                   value={newBlog.author}
-                  onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, author: e.target.value })
+                  }
                   className="border p-2 w-full rounded"
                 />
               </div>
@@ -249,7 +257,9 @@ const BlogsPage: React.FC = () => {
                 <label>Content</label>
                 <textarea
                   value={newBlog.content}
-                  onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, content: e.target.value })
+                  }
                   className="border p-2 w-full rounded"
                 />
               </div>
@@ -260,9 +270,14 @@ const BlogsPage: React.FC = () => {
                   options={tagOptions}
                   components={animatedComponents}
                   onChange={(selectedOptions) =>
-                    setNewBlog({ ...newBlog, tags: selectedOptions.map((option) => option.value) })
+                    setNewBlog({
+                      ...newBlog,
+                      tags: selectedOptions.map((option) => option.value),
+                    })
                   }
-                  value={tagOptions.filter((option) => newBlog.tags.includes(option.value))}
+                  value={tagOptions.filter((option) =>
+                    newBlog.tags.includes(option.value)
+                  )}
                 />
               </div>
               <div className="col-span-2">
@@ -270,7 +285,10 @@ const BlogsPage: React.FC = () => {
                 <input
                   type="file"
                   onChange={(e) =>
-                    setNewBlog({ ...newBlog, image: e.target.files?.[0] || null })
+                    setNewBlog({
+                      ...newBlog,
+                      image: e.target.files?.[0] || null,
+                    })
                   }
                   className="border p-2 w-full rounded"
                 />

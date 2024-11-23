@@ -126,14 +126,13 @@ const CheckoutPage: React.FC = () => {
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-              amount: 58000,
+              amount: 58000, 
             }),
           }
         );
 
         if (!response.ok) {
           const errorData = await response.json();
-
           throw new Error(
             errorData.message || "Failed to fetch client secret."
           );

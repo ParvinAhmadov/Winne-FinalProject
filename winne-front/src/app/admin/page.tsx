@@ -195,32 +195,33 @@ const AdminPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="mb-12">
-        <h3 className="text-xl tracking-widest font-semibold text-gray-700 mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
-          QUICK ACCESS
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { label: "Manage Products", href: "/admin/products" },
-            { label: "Manage Best Sellers", href: "/admin/best-sellers" },
-            { label: "Manage Orders", href: "/admin/orders" },
-            { label: "Manage Blogs", href: "/admin/blogs" },
-            { label: "Home Page", href: "/" },
-            { label: "Blogs Page", href: "/blogs" },
-            { label: "Products Page", href: "/product" },
-            { label: "Cart Page", href: "/cart" },
-            { label: "Account Page", href: "/account" },
-          ].map((link, index) => (
-            <Link
-              key={index}
-              href={link.href}
-              className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      </section>
+     <section className="mb-12">
+  <h3 className="text-xl tracking-widest font-semibold text-gray-700 mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
+    QUICK ACCESS
+  </h3>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {[
+      { label: "Manage Products", href: "/admin/products" },
+      { label: "Manage Best Sellers", href: "/admin/best-sellers" },
+      { label: "Manage Orders", href: "/admin/orders" },
+      { label: "Manage Messages", href: "/admin/messages" }, // New Link
+      { label: "Manage Blogs", href: "/admin/blogs" },
+      { label: "Home Page", href: "/" },
+      { label: "Blogs Page", href: "/blogs" },
+      { label: "Products Page", href: "/product" },
+      { label: "Cart Page", href: "/cart" },
+      { label: "Account Page", href: "/account" },
+    ].map((link, index) => (
+      <Link
+        key={index}
+        href={link.href}
+        className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+      >
+        {link.label}
+      </Link>
+    ))}
+  </div>
+</section>
     </div>
   );
 };

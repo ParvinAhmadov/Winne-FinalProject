@@ -20,3 +20,12 @@ export interface FilterState {
   color: string[];
   priceRange?: string[];
 }
+
+export interface Message {
+  _id: string;
+  name: string;
+  email: string;
+  message: string;
+  adminReply: string;
+  createdAt: string;
+}
