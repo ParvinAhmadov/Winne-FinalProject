@@ -62,6 +62,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
           const data = await response.json();
           console.log("Order created:", data);
           setStatus("Order created successfully!");
+          window.location.reload();
         } else {
           const errorData = await response.json();
           setStatus(`Failed to create order: ${errorData.message}`);
@@ -150,6 +151,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret }) => {
           <Typography
             variant="body1"
             textAlign="center"
+            borderRadius="4"
             color={status.includes("success") ? "green" : "red"}
             sx={{ mt: 3 }}
           >

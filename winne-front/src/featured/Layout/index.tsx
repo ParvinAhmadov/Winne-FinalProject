@@ -14,7 +14,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-const knownRoutes = ["/", "/admin", "/account", "/checkout"]; // Include checkout path here
+const knownRoutes = ["/", "/admin", "/account", "/checkout"]; 
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const pathname = usePathname();

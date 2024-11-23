@@ -126,13 +126,14 @@ const CheckoutPage: React.FC = () => {
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-              amount: 58000, // Total amount in smallest currency unit
+              amount: 58000,
             }),
           }
         );
 
         if (!response.ok) {
           const errorData = await response.json();
+
           throw new Error(
             errorData.message || "Failed to fetch client secret."
           );
@@ -201,7 +202,6 @@ const CheckoutPage: React.FC = () => {
                 >
                   CONTACT
                 </Typography>
-                {/* Replace with actual contact form */}
                 <input
                   type="text"
                   placeholder="Email or mobile phone number"
@@ -219,7 +219,6 @@ const CheckoutPage: React.FC = () => {
                 >
                   DELIVERY
                 </Typography>
-                {/* Replace with actual delivery form */}
                 <div className="mb-4">
                   <select className="w-full mb-4 p-3 border border-gray-300 focus:outline-none ">
                     <option>Country/Region</option>
@@ -228,7 +227,6 @@ const CheckoutPage: React.FC = () => {
                     <option>United States</option>
                     <option>United Arab Emirates</option>
                     <option>Belgium</option>
-                    {/* Add more countries as needed */}
                   </select>
                   <div className="flex gap-4 mb-4">
                     <input
@@ -263,7 +261,6 @@ const CheckoutPage: React.FC = () => {
                       placeholder="State"
                       className="w-2/3 p-3 border border-gray-300 focus:outline-none "
                     />
-                 
                   </div>
                 </div>
                 {loading ? (

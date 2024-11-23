@@ -31,6 +31,7 @@ const WishlistPage = () => {
         const token = localStorage.getItem("token");
         if (!token) {
           setError("User not logged in.");
+          window.location.href = "/account/login";
           return;
         }
 
@@ -65,6 +66,7 @@ const WishlistPage = () => {
       const token = localStorage.getItem("token");
       if (!token) {
         setError("User not logged in.");
+        window.location.href = "/account/login";
         return;
       }
 

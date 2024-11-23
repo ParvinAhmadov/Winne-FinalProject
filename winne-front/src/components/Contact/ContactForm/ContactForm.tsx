@@ -2,7 +2,7 @@ import React from "react";
 
 const ContactForm: React.FC = () => {
   return (
-    <div className="mt-[5rem] bg-white">
+    <div className="mt-[5rem] mb-[4rem] bg-white">
       <div className="max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl  mb-6">Contact Form</h2>
         <div className="w-20 border-b-2 border-[#A53E4C] mx-auto mb-10"></div>
@@ -59,7 +59,7 @@ const ContactForm: React.FC = () => {
 
           <button
             type="submit"
-            className="bg-black text-white font-semibold text-xl px-8 py-4 hover:bg-gray-800 transition-all"
+            className="bg-black text-white tracking-widest text-xl px-8 py-2 hover:bg-[#A53E4C] transition-all"
           >
             SUBMIT
           </button>

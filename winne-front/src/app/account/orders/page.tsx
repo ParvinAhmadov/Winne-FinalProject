@@ -29,6 +29,7 @@ const OrdersPage = () => {
 
       if (!token) {
         setError("User not logged in.");
+        window.location.href = "/account/login";
         setLoading(false);
         return;
       }

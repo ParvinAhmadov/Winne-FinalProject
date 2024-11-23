@@ -564,7 +564,7 @@ const Header = () => {
                           {[
                             {
                               text: "About Us #1",
-                              href: "#",
+                              href: "/about",
                               tooltip: { text: "HOT", color: "bg-red-600" },
                             },
                             { text: "About Us #2", href: "#" },
@@ -578,7 +578,7 @@ const Header = () => {
                             },
                             {
                               text: "Contact Us #1",
-                              href: "#",
+                              href: "/contact",
                             },
                             {
                               text: "Contact Us #2",
@@ -590,7 +590,7 @@ const Header = () => {
                             },
                             {
                               text: "FAQs",
-                              href: "#",
+                              href: "/faqs",
                             },
                           ].map(({ text, href, tooltip }, index) => (
                             <li key={index} className="relative">
@@ -625,7 +625,7 @@ const Header = () => {
                               href: "/cart",
                               tooltip: { text: "HOT", color: "bg-red-600" },
                             },
-                            { text: "404 Page", href: "#" },
+                            { text: "404 Page", href: "/error" },
                             {
                               text: "My account",
                               href: "/account",
@@ -633,6 +633,11 @@ const Header = () => {
                             {
                               text: "Login/Register",
                               href: "account/login",
+                              tooltip: { text: "NEW", color: "bg-green-400" },
+                            },
+                            {
+                              text: "My Orders",
+                              href: "account/orders",
                               tooltip: { text: "NEW", color: "bg-green-400" },
                             },
                           ].map(({ text, href, tooltip }, index) => (
@@ -1316,7 +1321,7 @@ const Header = () => {
                       </h3>
                       <div className="relative group">
                         <Link
-                          href="/filter-accordion"
+                          href="/about"
                           onClick={toggleMenu}
                           className="text-gray-800 text-base hover:text-[#982B2B]"
                         >
@@ -1348,7 +1353,7 @@ const Header = () => {
                         About Us #4
                       </Link>
                       <Link
-                        href="/filter-accordion"
+                        href="/contact"
                         onClick={toggleMenu}
                         className="text-gray-800 text-base hover:text-[#982B2B]"
                       >
@@ -1362,7 +1367,7 @@ const Header = () => {
                         Contact Us #2
                       </Link>
                       <Link
-                        href="/filter-accordion"
+                        href="/faqs"
                         onClick={toggleMenu}
                         className="text-gray-800 text-base hover:text-[#982B2B]"
                       >
@@ -1389,14 +1394,14 @@ const Header = () => {
                       </div>
 
                       <Link
-                        href="/filter-sticky"
+                        href="/error"
                         onClick={toggleMenu}
                         className="text-gray-800 text-base hover:text-[#982B2B]"
                       >
                         404 Page
                       </Link>
                       <Link
-                        href="/filter-dropdown"
+                        href="/account"
                         onClick={toggleMenu}
                         className="text-gray-800 text-base hover:text-[#982B2B]"
                       >
@@ -1404,11 +1409,23 @@ const Header = () => {
                       </Link>
                       <div className="relative group">
                         <Link
-                          href="/filter-accordion"
+                          href="account/login"
                           onClick={toggleMenu}
                           className="text-gray-800 text-base hover:text-[#982B2B]"
                         >
                           Login/Register
+                        </Link>
+                        <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
+                          NEW
+                        </span>
+                      </div>
+                      <div className="relative group">
+                        <Link
+                          href="/filter-accordion"
+                          onClick={toggleMenu}
+                          className="text-gray-800 text-base hover:text-[#982B2B]"
+                        >
+                          My Orders
                         </Link>
                         <span className="-top-1 ml-2 absolute bg-green-600 text-white text-[9px] px-1">
                           NEW
