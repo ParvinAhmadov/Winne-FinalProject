@@ -78,17 +78,21 @@ const AboutFeatureSection: React.FC = () => {
     >
       <div className="absolute inset-0 bg-black bg-opacity-10"></div>
 
-      <div className="relative z-10 container mx-auto text-center text-white px-4">
-        <div className="flex items-center justify-center gap-8">
+      <div className="relative z-10 container mx-auto text-center text-white  p-6 ">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="space-y-4 flex flex-col items-center w-[360px]"
+              className="space-y-4 flex flex-col items-center w-full sm:w-[360px]"
             >
               <div className="text-white mb-4">{feature.icon}</div>
-              <h3 className="text-2xl font-semibold">{feature.title}</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold">
+                {feature.title}
+              </h3>
               <div className="border w-[12%]"></div>
-              <p className="text-sm text-white">{feature.description}</p>
+              <p className="text-sm sm:text-base text-white">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
