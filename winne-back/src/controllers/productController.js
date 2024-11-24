@@ -231,12 +231,10 @@ exports.filterProducts = async (req, res) => {
     }
 
     if (tags) {
-      
       if (!filter.$and) filter.$and = [];
       filter.$and.push({ tags: { $in: tags.split(",") } });
     }
 
-   
     if (bestSeller) {
       filter.bestSeller = bestSeller === "true";
     }

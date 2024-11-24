@@ -113,60 +113,59 @@ const Adminheader: React.FC<AdminheaderProps> = ({ toggleSidebar }) => {
               </div>
             </li>
             <li className="relative">
-  <div
-    className="flex items-center gap-2 cursor-pointer"
-    onClick={toggleDropdown}
-  >
-    <picture className="w-10 h-10">
-      <img
-        className=" w-full h-full rounded-full border-2 border-white object-cover"
-        src="https://www.clipartmax.com/png/full/319-3191274_male-avatar-admin-profile.png"
-        alt="avatar"
-      />
-    </picture>
-    <div className="flex items-center gap-2 text-sm">
-      <strong>
-        {profileData
-          ? `${profileData.username} ${profileData.surname}`
-          : "Loading..."}
-      </strong>
-      <motion.div
-        animate={{
-          rotate: dropdownOpen ? 180 : 0,
-        }}
-        transition={{
-          duration: 0.3,
-          ease: "easeInOut",
-        }}
-      >
-        <IoIosArrowDown />
-      </motion.div>
-    </div>
-  </div>
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={toggleDropdown}
+              >
+                <picture className="w-10 h-10">
+                  <img
+                    className=" w-full h-full rounded-full border-2 border-white object-cover"
+                    src="https://www.clipartmax.com/png/full/319-3191274_male-avatar-admin-profile.png"
+                    alt="avatar"
+                  />
+                </picture>
+                <div className="flex items-center gap-2 text-sm">
+                  <strong>
+                    {profileData
+                      ? `${profileData.username} ${profileData.surname}`
+                      : "Loading..."}
+                  </strong>
+                  <motion.div
+                    animate={{
+                      rotate: dropdownOpen ? 180 : 0,
+                    }}
+                    transition={{
+                      duration: 0.3,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <IoIosArrowDown />
+                  </motion.div>
+                </div>
+              </div>
 
-  {/* Dropdown Menüsü */}
-  <AnimatePresence>
-    {dropdownOpen && (
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.2 }}
-        className="absolute top-12 right-0 bg-white text-black rounded shadow-lg w-48 p-1 z-20"
-      >
-        <ul className="text-sm">
-          <li
-            className="hover:bg-[#BF7A50] flex items-center gap-2 hover:text-white transition ease-in-out duration-300 p-2 rounded cursor-pointer"
-            onClick={handleLogout}
-          >
-            <CgLogOut />
-            LOGOUT
-          </li>
-        </ul>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</li>
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-12 right-0 bg-white text-black rounded shadow-lg w-48 p-1 z-20"
+                  >
+                    <ul className="text-sm">
+                      <li
+                        className="hover:bg-[#BF7A50] flex items-center gap-2 hover:text-white transition ease-in-out duration-300 p-2 rounded cursor-pointer"
+                        onClick={handleLogout}
+                      >
+                        <CgLogOut />
+                        LOGOUT
+                      </li>
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </li>
             <li>
               <div
                 className={`cursor-pointer transition-transform duration-default ease-default ${

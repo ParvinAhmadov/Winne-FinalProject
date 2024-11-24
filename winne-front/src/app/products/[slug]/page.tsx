@@ -48,9 +48,9 @@ export default async function DetailPage({
     <div className="container mx-auto p-6">
       <ProductDetails product={product} />
       <InfoSection />
-      <TabSection product={product}  />
+      <TabSection product={product} />
       <SosialMedia />
-      <RelatedProducts/>
+      <RelatedProducts />
     </div>
   );
 }

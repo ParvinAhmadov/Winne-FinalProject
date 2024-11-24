@@ -106,7 +106,6 @@ const BlogListPage = () => {
                       {blog.content.slice(0, 100)}...
                     </p>
                     <p className="text-[#A8A8A8] flex items-center gap-2 text-[13px] md:text-[15px] mb-2">
-                      <span>NOVEMBER</span>
                       {new Date(blog.createdAt).toLocaleDateString()}
                     </p>
                     <Link

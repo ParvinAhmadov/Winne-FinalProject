@@ -272,7 +272,7 @@ const CartPage = () => {
                       .toFixed(2)}
                   </span>
                 </h2>
-                <Link href="/checkout">
+                <Link href="/chekout">
                   <button className="hover:bg-black transition-all flex items-center justify-center text-white w-full sm:w-[320px] h-[50px] sm:h-[60px] bg-[#A53E4C]">
                     PROCEED TO CHECKOUT
                   </button>

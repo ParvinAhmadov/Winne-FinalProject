@@ -8,9 +8,9 @@ import BestSellerCard from "../BestSellerCard.tsx/BestSellerCard";
 import ClipLoader from "react-spinners/ClipLoader";
 
 interface ProductListProps {
-  filters: FilterState; 
-  sortOption?: string; 
-  isFilterVisible: boolean; 
+  filters: FilterState;
+  sortOption?: string;
+  isFilterVisible: boolean;
 }
 
 const ProductList: React.FC<ProductListProps> = ({
@@ -22,23 +22,21 @@ const ProductList: React.FC<ProductListProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(12); 
+  const [limit] = useState<number>(12);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
   const router = useRouter();
 
-  
   const updateUrlParams = useCallback(() => {
     const queryParams = new URLSearchParams();
 
-    
     Object.entries(filters).forEach(([key, value]) => {
       if (Array.isArray(value) && value.length > 0) {
         queryParams.set(key, value.join(","));
       } else if (typeof value === "string" && value.trim() !== "") {
         queryParams.set(key, value);
       } else {
-        queryParams.delete(key); 
+        queryParams.delete(key);
       }
     });
 
@@ -49,17 +47,14 @@ const ProductList: React.FC<ProductListProps> = ({
     router.push(`?${queryParams.toString()}`);
   }, [filters, page, sortOption, router]);
 
-  
   useEffect(() => {
     updateUrlParams();
   }, [filters, page, sortOption, updateUrlParams]);
 
-  
   useEffect(() => {
     updateUrlParams();
   }, [filters, page, sortOption, updateUrlParams]);
 
-  
   const fetchFilteredProducts = useCallback(
     debounce(async () => {
       try {
@@ -138,8 +133,8 @@ const ProductList: React.FC<ProductListProps> = ({
       >
         {isLoading ? (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
-          <ClipLoader color="#A53E4C" size={60} />
-        </div>
+            <ClipLoader color="#A53E4C" size={60} />
+          </div>
         ) : (
           relatedProducts.map((product) => (
             <BestSellerCard
@@ -156,7 +151,7 @@ const ProductList: React.FC<ProductListProps> = ({
       </div>
 
       {relatedProducts.length > 0 && (
-        <div className="flex justify-center gap-4 mt-6">
+        <div className="flex justify-center gap-4 mt-6 ml-[100%] md:ml-0">
           {page > 1 && (
             <button
               onClick={handlePreviousPage}

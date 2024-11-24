@@ -9,7 +9,10 @@ interface SortingDropdownProps {
   setSortOption: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SortingDropdown: React.FC<SortingDropdownProps> = ({ sortOption, setSortOption }) => {
+const SortingDropdown: React.FC<SortingDropdownProps> = ({
+  sortOption,
+  setSortOption,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -26,7 +29,6 @@ const SortingDropdown: React.FC<SortingDropdownProps> = ({ sortOption, setSortOp
           ? "Default sorting"
           : sortOption.replace("_", " ").replace(/^\w/, (c) => c.toUpperCase())}
         <CiCircleChevDown />
-        
       </button>
 
       <AnimatePresence>
@@ -53,7 +55,7 @@ const SortingDropdown: React.FC<SortingDropdownProps> = ({ sortOption, setSortOp
                 }`}
                 onClick={() => {
                   setSortOption(option.value);
-                  setIsOpen(false); 
+                  setIsOpen(false);
                 }}
               >
                 {option.label}

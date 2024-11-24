@@ -164,9 +164,12 @@ const CheckoutPage: React.FC = () => {
     <>
       <nav className="border-b py-4 flex justify-center items-center gap-[20%]">
         <div>
-          <h2 className="text-[20px] hover:text-orange-500 cursor-pointer">
+          <a
+            href="/"
+            className="text-[20px] hover:text-orange-500 cursor-pointer"
+          >
             Winne - Wine & Winery Responsive Shopify Theme
-          </h2>
+          </a>
         </div>
         <Link href="/product">
           <RiShoppingBag4Line className="text-[20px] text-orange-500 hover:text-orange-600" />

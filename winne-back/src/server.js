@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const checkoutRoutes = require("./routes/checkout");
 const orderRoutes = require("./routes/orders");
-const messageRoutes = require('./routes/messageRoutes');
+const messageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 connectDB();
@@ -21,7 +21,7 @@ connectDB();
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE", 'PATCH'],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
 );
@@ -39,7 +39,7 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/checkout", checkoutRoutes);
 app.use("/api/orders", orderRoutes);
-app.use('/api/messages', messageRoutes);
+app.use("/api/messages", messageRoutes);
 app.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();

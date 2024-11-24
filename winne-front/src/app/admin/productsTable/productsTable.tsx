@@ -60,16 +60,17 @@ const Row: React.FC<RowProps> = ({ product, index, onDelete, onEdit }) => {
           </IconButton>
         </TableCell>
         <TableCell>
-          {product.images.map((image, i) => (
+          {product.images.length > 0 ? (
             <Image
-              key={i}
-              src={`${baseURL}${image}`}
+              src={`${baseURL}${product.images[0]}`}
               alt={product.name}
               width={40}
               height={40}
               className="object-cover"
             />
-          ))}
+          ) : (
+            <p className="text-gray-500">No Image</p>
+          )}
         </TableCell>
         <TableCell>{product.name}</TableCell>
         <TableCell align="center">${product.price}</TableCell>

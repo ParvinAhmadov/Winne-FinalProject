@@ -1,13 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import {
   Box,
-  Card,
-  CardContent,
-  Typography,
   CircularProgress,
-  Grid,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
+import { FaChevronRight } from "react-icons/fa";
 
 interface Message {
   _id: string;
@@ -46,8 +52,8 @@ const UserMessages: React.FC = () => {
       const data: Message[] = await response.json();
       setMessages(data);
     } catch (error: any) {
-     window.location.href="/account/login"
       setError(error.message || "Failed to fetch messages.");
+      window.location.href = "/account/login";
     } finally {
       setLoading(false);
     }
@@ -72,54 +78,84 @@ const UserMessages: React.FC = () => {
   }
 
   return (
-    <Box p={4} bgcolor="#f5f5f5" minHeight="100vh">
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Your Messages
-      </Typography>
+    <>
+      <div className="relative w-full h-[404px]">
+        <Image
+          src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348"
+          alt="Wishlist Background"
+          layout="fill"
+          objectFit="cover"
+          quality={90}
+          priority
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <h1 className="text-white text-[46px]  mb-2">Your Messages</h1>
+          <p className="text-white text-[15px] flex items-center gap-2">
+            <a href="/" className="hover:text-[#A53E4C]">
+              Home
+            </a>
+            <span>
+              <FaChevronRight className="text-[10px]" />
+            </span>
+            Your Messages
+          </p>
+        </div>
+      </div>
+      <Box p={4} maxWidth="1140px" mx="auto" minHeight="100vh">
+        {error && (
+          <Typography variant="body1" color="error" gutterBottom>
+            {error}
+          </Typography>
+        )}
 
-      {error && (
-        <Typography variant="body1" color="error" gutterBottom>
-          {error}
-        </Typography>
-      )}
-
-      {messages.length === 0 ? (
-        <Typography variant="body1" color="textSecondary">
-          You have not submitted any messages yet.
-        </Typography>
-      ) : (
-        <Grid container spacing={4}>
-          {messages.map((msg) => (
-            <Grid item xs={12} sm={6} md={4} key={msg._id}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="body1" gutterBottom>
-                    <strong>Message:</strong> {msg.message}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    gutterBottom
-                    color={msg.adminReply ? "primary" : "textSecondary"}
-                  >
-                    <strong>Admin Reply:</strong>{" "}
-                    {msg.adminReply || "No reply yet."}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    color="textSecondary"
-                    display="block"
-                    mt={1}
-                  >
-                    <strong>Submitted:</strong>{" "}
-                    {new Date(msg.createdAt).toLocaleString()}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Box>
+        {messages.length === 0 ? (
+          (window.location.href = "/contact")
+        ) : (
+          <TableContainer component={Paper} elevation={3}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <strong>Name</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Email</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Message</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Winne Reply</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Submitted</strong>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {messages.map((msg) => (
+                  <TableRow key={msg._id}>
+                    <TableCell>{msg.name}</TableCell>
+                    <TableCell>{msg.email}</TableCell>
+                    <TableCell>{msg.message}</TableCell>
+                    <TableCell>
+                      <Typography
+                        color={msg.adminReply ? "black" : "textSecondary"}
+                      >
+                        {msg.adminReply || "No reply yet."}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(msg.createdAt).toLocaleString()}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Box>
+    </>
   );
 };
 

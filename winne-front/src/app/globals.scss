@@ -171,3 +171,27 @@ body.activedesktop {
 .css-17v1qlu-MuiTypography-root {
   color: #a53e4c;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a53e4c;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #902b3e;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #a53e4c #f1f1f1;
+}

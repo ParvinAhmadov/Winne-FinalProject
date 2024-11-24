@@ -61,7 +61,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </li>
           <li className="flex items-center gap-1 group hover:text-[#A53E4C]  active:text-[#A53E4C] ">
             <FaAngleRight className="hidden group-hover:flex" />
-            <a href="/">BLOGS</a>
+            <a href="/blogs">BLOGS</a>
           </li>
         </ul>
       </section>

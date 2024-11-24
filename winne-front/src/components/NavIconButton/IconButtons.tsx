@@ -423,7 +423,14 @@ const IconButtons = () => {
           />
         </Link>
         <IconButton
-          icon={<GrShop className="text-[24px]" />}
+          icon={
+            <div className="relative">
+              <GrShop className="text-[24px]" />
+              {cartItems.length > 0 && (
+                <span className="absolute -bottom-[3px] right-[1px] w-2 h-2 bg-[#A53E4C] rounded-full"></span>
+              )}
+            </div>
+          }
           onClick={toggleSidebar}
         />
       </div>

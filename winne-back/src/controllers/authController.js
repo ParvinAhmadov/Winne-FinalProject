@@ -4,11 +4,11 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../models/User");
 
-
 exports.register = async (req, res) => {
   const { email, password, username, surname, address, isAdmin } = req.body;
 
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
         address: newUser.address,
         isAdmin: newUser.isAdmin,
       },
-      token, 
+      token,
     });
   } catch (error) {
     console.error("Registration Error:", error);
@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email, isAdmin: user.isAdmin }, 
+      { id: user._id, email: user.email, isAdmin: user.isAdmin },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -101,7 +101,7 @@ exports.forgotPassword = async (req, res) => {
 
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; 
+    user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
     const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
@@ -158,7 +158,7 @@ exports.resetPassword = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id); 
+    const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -179,15 +179,15 @@ exports.getProfile = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-  const { username, surname, address } = req.body; 
+  const { username, surname, address } = req.body;
 
   try {
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { username, surname, address },
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedUser) {
@@ -200,7 +200,7 @@ exports.updateProfile = async (req, res) => {
         email: updatedUser.email,
         username: updatedUser.username,
         surname: updatedUser.surname,
-        address: updatedUser.address, 
+        address: updatedUser.address,
       },
     });
   } catch (error) {

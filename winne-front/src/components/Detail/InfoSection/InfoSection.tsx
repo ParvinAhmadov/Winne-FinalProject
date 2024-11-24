@@ -1,6 +1,6 @@
 import React from "react";
 import { AiOutlineSafetyCertificate } from "react-icons/ai";
-import { FaRedoAlt, FaShieldAlt, FaRegCheckCircle } from "react-icons/fa";
+import { FaRedoAlt, FaShieldAlt } from "react-icons/fa";
 import { SlPlane } from "react-icons/sl";
 
 export default function InfoSection() {

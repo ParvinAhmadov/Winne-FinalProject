@@ -640,6 +640,11 @@ const Header = () => {
                               href: "account/orders",
                               tooltip: { text: "NEW", color: "bg-green-400" },
                             },
+                            {
+                              text: "My Messages",
+                              href: "account/messages",
+                              tooltip: { text: "NEW", color: "bg-green-400" },
+                            },
                           ].map(({ text, href, tooltip }, index) => (
                             <li key={index} className="relative">
                               <a
@@ -934,7 +939,7 @@ const Header = () => {
                     }}
                   >
                     <Link
-                      href="/home-1"
+                      href="/"
                       onClick={toggleMenu}
                       className="text-black text-[16px]  md:text-[16px] h-[54px] flex items-center ml-5"
                     >

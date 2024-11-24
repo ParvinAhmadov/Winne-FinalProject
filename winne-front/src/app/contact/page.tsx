@@ -6,9 +6,9 @@ import React from "react";
 const ContactPage: React.FC = () => {
   return (
     <div>
-          <ContactSection />
-          <ContactForm />
-          <NewsletterInstagramSection/>
+      <ContactSection />
+      <ContactForm />
+      <NewsletterInstagramSection />
     </div>
   );
 };

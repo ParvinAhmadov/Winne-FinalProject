@@ -199,7 +199,6 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
             variant="outlined"
           />
           <Box mt={2} className="flex justify-end gap-4">
-            {/* Cancel Button */}
             <button
               onClick={handleCloseModal}
               className="flex items-center bg-black  hover:bg-[#A53E4C] text-white font-semibold py-2 px-4 transition duration-300"
@@ -208,7 +207,6 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
               <MdCancelScheduleSend />
             </button>
 
-            {/* Send Reply Button */}
             <button
               onClick={handleSendReply}
               disabled={!reply.trim()}

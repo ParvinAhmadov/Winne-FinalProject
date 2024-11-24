@@ -25,14 +25,21 @@ const EditModal: React.FC<EditModalProps> = ({
   onSave,
   onClose,
 }) => {
-  const [formData, setFormData] = useState(fields);
+  const [formData, setFormData] = useState<{ [key: string]: string }>(() =>
+    Object.fromEntries(
+      Object.entries(fields).map(([key, value]) => [key, value || ""])
+    )
+  );
 
   useEffect(() => {
-    setFormData(fields);
+    setFormData(
+      Object.fromEntries(
+        Object.entries(fields).map(([key, value]) => [key, value || ""])
+      )
+    );
   }, [fields]);
 
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6  shadow-lg w-full max-w-md">
@@ -220,8 +227,8 @@ const AccountPage: React.FC = () => {
           <button
             onClick={() =>
               openEditModal("Edit Profile", {
-                username: user.username,
-                surname: user.surname,
+                username: user.username || "",
+                surname: user.surname || "",
               })
             }
             className="text-sm hover:text-[#A53E4C] mt-2"
@@ -235,7 +242,9 @@ const AccountPage: React.FC = () => {
           <p>{billingAddress}</p>
           <button
             onClick={() =>
-              openEditModal("Edit Billing Address", { address: billingAddress })
+              openEditModal("Edit Billing Address", {
+                address: billingAddress || "",
+              })
             }
             className="text-sm hover:text-[#A53E4C] mt-2"
           >

@@ -80,7 +80,6 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
       console.log(data.message || "Product added to wishlist!");
     } catch (error: any) {
       const errorMessage = error.message || "An unexpected error occurred.";
-      console.error("Error adding to wishlist:", errorMessage);
     } finally {
       setWishlistLoading(false);
     }
@@ -210,7 +209,6 @@ const BestSellerCard: React.FC<BestSellerCardProps> = ({
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
-      console.error("Error adding product to cart:", errorMessage);
       toast.error(errorMessage);
     } finally {
       setLoading(false);

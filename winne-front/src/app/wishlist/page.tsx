@@ -52,7 +52,7 @@ const WishlistPage = () => {
         setWishlist(data);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
-        setError("Failed to load wishlist. Please try again.");
+        window.location.href = "account/login";
       } finally {
         setLoading(false);
       }
@@ -173,30 +173,33 @@ const WishlistPage = () => {
         </div>
       </div>
 
-      <div className="wishlist-container max-w-[1100px] mx-auto mt-10">
+      <div className="wishlist-container max-w-[1100px] mx-auto mt-10 px-4">
         {wishlist.length === 0 ? (
           <p className="text-center text-gray-500">Your wishlist is empty.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-gray-300">
-              <thead>
+            <table className="w-full border-collapse border border-gray-300 mb-6 text-xs sm:text-sm md:text-base">
+              <thead className="bg-white">
                 <tr>
-                  <th className="border font-normal w-[402px] tracking-widest border-gray-300 px-4 py-2 text-left">
+                  <th className="border font-medium tracking-wide border-gray-300 px-2 sm:px-4 py-2 text-left">
                     PRODUCT NAME
                   </th>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center">
+                  <th className="border font-medium tracking-wide border-gray-300 px-2 sm:px-4 py-2 text-center">
                     PRICE
                   </th>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center">
+                  <th className="border font-medium tracking-wide border-gray-300 px-2 sm:px-4 py-2 text-center">
                     ACTION
                   </th>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center"></th>
+                  <th className="border font-medium tracking-wide border-gray-300 px-2 sm:px-4 py-2 text-center"></th>
                 </tr>
               </thead>
               <tbody>
                 {wishlist.map((item) => (
-                  <tr key={item.productId._id} className="text-left">
-                    <td className="px-4 py-2 flex items-center gap-10">
+                  <tr
+                    key={item.productId._id}
+                    className="border-t text-center h-auto sm:h-[100px] md:h-[120px]"
+                  >
+                    <td className="flex items-center gap-2 sm:gap-4 md:gap-10 px-2 sm:px-4 py-2">
                       <Image
                         src={
                           item.productId.images[0]
@@ -204,38 +207,34 @@ const WishlistPage = () => {
                             : "/placeholder-image.jpg"
                         }
                         alt={item.productId.name}
-                        width={80}
-                        height={100}
-                        className="object-cover"
+                        width={50}
+                        height={60}
+                        className="object-cover  md:w-[80px] md:h-[100px]"
                       />
-                      <span className="text-[#A8A8A8]">
+                      <span className="text-gray-700 hover:text-[#A53E4C] cursor-pointer">
                         {item.productId.name}
                       </span>
                     </td>
-                    <td className="text-center text-[#A8A8A8] px-4 py-2">
+                    <td className="px-2 sm:px-4 py-2 text-gray-700">
                       ${item.productId.price.toFixed(2)}
                     </td>
-                    <td className="px-4 py-2 text-center">
-                      <div className="flex w-full items-center justify-center">
-                        <button
-                          className="bg-black text-white w-[200px] h-[55px] hover:bg-[#A53E4C] transition ease-in-out duration-200"
-                          onClick={() => handleAddToCart(item)}
-                        >
-                          Add to Cart
-                        </button>
-                      </div>
+                    <td className="px-2 sm:px-4 py-2">
+                      <button
+                        className="bg-black text-white text-xs sm:text-sm md:text-base w-full sm:w-[150px] md:w-[200px] h-[35px] sm:h-[45px] md:h-[50px] hover:bg-[#A53E4C] transition-all"
+                        onClick={() => handleAddToCart(item)}
+                      >
+                        Add to Cart
+                      </button>
                     </td>
-                    <td>
-                      <div className="flex items-center justify-center">
-                        <button
-                          className="text-black text-[20px] hover:text-[#A53E4C] font-bold"
-                          onClick={() =>
-                            handleRemoveFromWishlist(item.productId._id)
-                          }
-                        >
-                          <IoCloseSharp />
-                        </button>
-                      </div>
+                    <td className="px-2 sm:px-4 py-2">
+                      <button
+                        className="text-black text-lg hover:text-[#A53E4C] font-bold"
+                        onClick={() =>
+                          handleRemoveFromWishlist(item.productId._id)
+                        }
+                      >
+                        <IoCloseSharp />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -244,7 +243,7 @@ const WishlistPage = () => {
             <div className="mt-6 flex justify-center">
               <a
                 href="/product"
-                className="hover:bg-black flex tracking-widest items-center justify-center cursor-pointer text-white w-full sm:w-[290px] h-[50px] sm:h-[60px] bg-[#A53E4C] transition-all"
+                className="hover:bg-black flex tracking-widest items-center justify-center cursor-pointer text-white w-full sm:w-[290px] md:w-[320px] h-[40px] sm:h-[50px] md:h-[60px] bg-[#A53E4C] transition-all"
               >
                 CONTINUE SHOPPING
               </a>

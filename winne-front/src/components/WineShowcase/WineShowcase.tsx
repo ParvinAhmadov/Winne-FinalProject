@@ -6,7 +6,7 @@ const WineShowcase: React.FC = () => {
       className="flex items-center justify-start bg-cover bg-center bg-no-repeat h-[660px] text-black py-10 px-4 md:py-16 md:mt-8"
       style={{
         backgroundImage:
-          "url('https://winne-store-demo.myshopify.com/cdn/shop/files/bn1.5.png?v=1653894743')", // Replace with your image path
+          "url('https://winne-store-demo.myshopify.com/cdn/shop/files/bn1.5.png?v=1653894743')",
       }}
     >
       <div className="flex flex-col items-start text-left max-w-[800px] space-y-4 md:space-y-6 ml-0 md:ml-[10%]">

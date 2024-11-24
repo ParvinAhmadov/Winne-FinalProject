@@ -3,7 +3,7 @@
 import React from "react";
 
 interface SectionItem {
-  icon: string; 
+  icon: string;
 }
 
 const items: SectionItem[] = [
@@ -36,7 +36,7 @@ const IconSection: React.FC = () => {
             <img
               src={item.icon}
               alt={`Icon ${index}`}
-              className="w-[80px] h-[80px] object-contain"
+              className="w-[130px] h-[130px] object-contain"
             />
           </div>
         ))}

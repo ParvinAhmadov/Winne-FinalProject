@@ -78,7 +78,7 @@ const OrdersPage = () => {
 
   return (
     <div>
-      <div className="relative w-full h-[404px]">
+      <div className="relative w-full h-[200px] sm:h-[404px]">
         <Image
           src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348"
           alt="Orders Background"
@@ -88,37 +88,39 @@ const OrdersPage = () => {
           priority
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <h1 className="text-white text-[46px]  mb-2">My Orders</h1>
-          <p className="text-white text-[15px] flex items-center gap-2">
+          <h1 className="text-white text-[24px] sm:text-[46px] mb-2">
+            My Orders
+          </h1>
+          <p className="text-white text-[12px] sm:text-[15px] flex items-center gap-2">
             <a href="/" className="hover:text-[#A53E4C]">
               Home
             </a>
             <span>
-              <FaChevronRight className="text-[10px]" />
+              <FaChevronRight className="text-[8px] sm:text-[10px]" />
             </span>
             Orders
           </p>
         </div>
       </div>
 
-      <div className="orders-container max-w-[1100px] mx-auto mt-10">
+      <div className="orders-container max-w-[1100px] mx-auto mt-6 sm:mt-10">
         {orders.length === 0 ? (
           <p className="text-center text-gray-500">You have no orders yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-gray-300">
+            <table className="w-full text-sm sm:text-base border-collapse border border-gray-300">
               <thead>
                 <tr>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-left">
+                  <th className="border font-normal tracking-widest border-gray-300 px-2 sm:px-4 py-2 text-left">
                     ORDER NAME
                   </th>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center">
+                  <th className="border font-normal tracking-widest border-gray-300 px-2 sm:px-4 py-2 text-center">
                     STATUS
                   </th>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center">
+                  <th className="border font-normal tracking-widest border-gray-300 px-2 sm:px-4 py-2 text-center">
                     AMOUNT
                   </th>
-                  <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center">
+                  <th className="border font-normal tracking-widest border-gray-300 px-2 sm:px-4 py-2 text-center">
                     ITEMS
                   </th>
                 </tr>
@@ -126,16 +128,16 @@ const OrdersPage = () => {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id} className="text-left">
-                    <td className="px-4 py-2">
+                    <td className="px-2 sm:px-4 py-2">
                       {order.items.map((item) => item.name).join(", ")}
                     </td>
-                    <td className="text-center text-[#A8A8A8] px-4 py-2">
+                    <td className="text-center text-[#A8A8A8] px-2 sm:px-4 py-2">
                       {order.status}
                     </td>
-                    <td className="text-center text-[#A8A8A8] px-4 py-2">
+                    <td className="text-center text-[#A8A8A8] px-2 sm:px-4 py-2">
                       {order.amount ? `$${order.amount.toFixed(2)}` : "N/A"}
                     </td>
-                    <td className="px-4 py-2 text-center">
+                    <td className="px-2 sm:px-4 py-2 text-center">
                       {order.items.map((item) => (
                         <div key={item._id} className="mb-2">
                           <strong>{item.name}</strong> x {item.quantity}($

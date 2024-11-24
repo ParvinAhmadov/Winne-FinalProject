@@ -17,6 +17,7 @@ interface Blog {
   slug: string;
   createdAt: string;
   tags: string[];
+  author: string;
 }
 
 const BlogDetailPage = () => {
@@ -92,7 +93,7 @@ const BlogDetailPage = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center mt-2 text-xs sm:text-sm lg:text-base space-y-2 sm:space-y-0 sm:space-x-4">
               <p className="flex items-center gap-2">
                 <FaUser className="text-[10px]" />
-                Winne-store-demo Admin
+                {blog.author}
               </p>
               <p className="flex items-center gap-1">
                 <CiClock2 />

@@ -67,9 +67,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
       const data = await response.json();
       console.log(data.message || "Product successfully added to wishlist!");
-    } catch (error: any) {
-      console.error("Error adding to wishlist:", error.message);
-    }
+    } catch (error: any) {}
   };
 
   useEffect(() => {

@@ -137,8 +137,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 ))
               ) : (
-                <div className="text-center text-[22px] mb-6 font-semibold">
-                  Your shopping bag is empty
+                <div className="text-center text-[#212529] text-[20px] mb-6">
+                  Your cart is currently empty.
                 </div>
               )}
             </div>

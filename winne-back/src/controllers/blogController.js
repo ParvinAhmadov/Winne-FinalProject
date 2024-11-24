@@ -14,14 +14,16 @@ exports.createBlog = async (req, res) => {
     const newBlog = new Blog({
       title,
       content,
-      author: author || "Anonymous", 
+      author: author || "Anonymous",
       tags: tags ? tags.split(",").map((tag) => tag.trim()) : [],
       image: req.file ? `/uploads/${req.file.filename}` : undefined,
     });
 
     await newBlog.save();
 
-    res.status(201).json({ message: "Blog created successfully", blog: newBlog });
+    res
+      .status(201)
+      .json({ message: "Blog created successfully", blog: newBlog });
   } catch (error) {
     console.error("Error creating blog:", error.message);
     res.status(400).json({ message: "Error creating blog: " + error.message });

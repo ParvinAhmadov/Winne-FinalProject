@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
-import {  FaClock} from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { TbShoppingCartStar } from "react-icons/tb";
 import { GrStatusGood } from "react-icons/gr";
@@ -162,7 +162,9 @@ const AdminPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
-              icon: <MdOutlineProductionQuantityLimits className="h-10 w-10 text-[#BF7A50]" />,
+              icon: (
+                <MdOutlineProductionQuantityLimits className="h-10 w-10 text-[#BF7A50]" />
+              ),
               label: "TOTAL PRODUCTS",
               value: statistics.totalProducts,
             },
@@ -209,11 +211,13 @@ const AdminPage: React.FC = () => {
             { label: "BLOGS PAGE", href: "/blogs" },
             { label: "PRODUCTS PAGE", href: "/product" },
             { label: "CART PAGE", href: "/cart" },
+            { label: "CONTACT MESSAGES PAGE", href: "account/messages" },
+            { label: "ABOUT PAGE", href: "/about" },
+            { label: "MANAGE BLOGS", href: "/admin/blogs" },
             { label: "MANAGE PRODUCTS", href: "/admin/products" },
             { label: "MANAGE BEST-SELLERS", href: "/admin/best-sellers" },
             { label: "MANAGE ORDERS", href: "/admin/orders" },
             { label: "MANAGE MESSAGES", href: "/admin/messages" },
-            { label: "MANAGE BLOGS", href: "/admin/blogs" },
           ].map((link, index) => (
             <Link
               key={index}

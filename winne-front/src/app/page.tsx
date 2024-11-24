@@ -17,7 +17,7 @@ export default function Home() {
       <WineShowcase />
       <HotDealSection />
       <IconSection />
-      <OurBlogSection/>
+      <OurBlogSection />
     </div>
   );
 }

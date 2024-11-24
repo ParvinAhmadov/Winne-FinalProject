@@ -21,7 +21,7 @@ const HotDealSection: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/paginated?page=1&limit=4`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/paginated?page=3&limit=4`
       );
 
       if (!response.ok) {

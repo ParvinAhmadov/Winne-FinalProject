@@ -58,8 +58,7 @@ const ProductPage: React.FC = () => {
 
   return (
     <div>
-      
-      <div className="relative w-full h-[146px]">
+      <div className="relative w-full h-[423px]">
         <Image
           src="https://winne-store-demo.myshopify.com/cdn/shop/files/heading-about.png?v=1653993348"
           alt="Wishlist Background"
@@ -82,7 +81,6 @@ const ProductPage: React.FC = () => {
         </div>
       </div>
 
-      
       <div className="products-page max-w-[1450px] mx-auto mt-10 px-4">
         <div className="flex justify-between items-center mb-6">
           <button
