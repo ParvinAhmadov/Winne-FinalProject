@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { FaBox, FaShoppingCart, FaStar, FaTachometerAlt } from "react-icons/fa";
 import Image from "next/image";
-import { TbLogs } from "react-icons/tb";
+import { TbLogs, TbShoppingCartStar } from "react-icons/tb";
+import { RxDashboard } from "react-icons/rx";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { GrStatusGood } from "react-icons/gr";
 interface AdminSidebarProps {
   isOpen: boolean;
 }
@@ -36,11 +38,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
         <ul className="flex flex-col gap-4 text-base">
           <li>
             <Link href="/admin">
-              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <FaTachometerAlt className="text-gray-700 text-2xl group-hover:text-indigo-500 transition-all" />
-                  <span className="text-gray-800 font-semibold transition-all group-hover:text-indigo-500">
-                    Dashboard
+              <div className="group p-4 bg-black shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3 ">
+                  <RxDashboard className="text-white text-xl  transition-all" />
+                  <span className="text-white text-sm tracking-widest font-semibold transition-all ">
+                    DASHBOARD
                   </span>
                 </div>
               </div>
@@ -49,11 +51,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
 
           <li>
             <Link href="/admin/products">
-              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+              <div className="group p-4 bg-black shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <FaBox className="text-gray-700 text-2xl group-hover:text-green-500 transition-all" />
-                  <span className="text-gray-800 font-semibold transition-all group-hover:text-green-500">
-                    Products
+                  <MdOutlineProductionQuantityLimits className="text-white text-xl  transition-all" />
+                  <span className="text-white text-sm tracking-widest font-semibold transition-all">
+                    PRODUCTS
                   </span>
                 </div>
               </div>
@@ -62,11 +64,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
 
           <li>
             <Link href="/admin/best-sellers">
-              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+              <div className="group p-4 bg-black shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <FaStar className="text-gray-700 text-2xl group-hover:text-yellow-500 transition-all" />
-                  <span className="text-gray-800 font-semibold transition-all group-hover:text-yellow-500">
-                    Best Sellers
+                  <TbShoppingCartStar className="text-white text-xl  transition-all" />
+                  <span className="text-white text-sm tracking-widest font-semibold transition-all">
+                    BEST SELLERS
                   </span>
                 </div>
               </div>
@@ -75,11 +77,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
 
           <li>
             <Link href="/admin/orders">
-              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+              <div className="group p-4 bg-black shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <FaShoppingCart className="text-gray-700 text-2xl group-hover:text-red-500 transition-all" />
-                  <span className="text-gray-800 font-semibold transition-all group-hover:text-red-500">
-                    Orders
+                  <GrStatusGood className="text-white text-xl  transition-all" />
+                  <span className="text-white text-sm tracking-widest font-semibold transition-all">
+                    ORDERS
                   </span>
                 </div>
               </div>
@@ -87,11 +89,23 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
           </li>
           <li>
             <Link href="/admin/blogs">
-              <div className="group p-4 bg-gray-100 rounded-md shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+              <div className="group p-4 bg-black shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <TbLogs  className="text-gray-700 text-2xl group-hover:text-blue-500 transition-all" />
-                  <span className="text-gray-800 font-semibold transition-all group-hover:text-blue-500">
+                  <TbLogs className="text-white text-xl  transition-all" />
+                  <span className="text-white text-sm tracking-widest font-semibold transition-all">
                     Blogs
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/messages">
+              <div className="group p-4 bg-black shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <TbLogs className="text-white text-xl  transition-all" />
+                  <span className="text-white text-sm tracking-widest font-semibold transition-all">
+                    USER MESSAGES
                   </span>
                 </div>
               </div>

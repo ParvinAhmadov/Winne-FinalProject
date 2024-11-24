@@ -44,8 +44,7 @@ const CheckoutPage: React.FC = () => {
       const data = await response.json();
       setCartItems(data.items);
     } catch (error) {
-      setError("Failed to load cart items. Please try again.");
-      console.error("Error fetching cart items:", error);
+      window.location.href = "/account/login";
     } finally {
       setLoading(false);
     }
@@ -126,7 +125,7 @@ const CheckoutPage: React.FC = () => {
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-              amount: 58000, 
+              amount: 58000,
             }),
           }
         );
@@ -344,7 +343,7 @@ const CheckoutPage: React.FC = () => {
                     {cartItems.map((item) => (
                       <tr
                         key={item.productId}
-                        className="border-t text-center md:h-[80px] sm:h-[100px] text-xs sm:text-sm"
+                        className="border-t text-center md:h-[80px]  text-xs sm:text-sm"
                       >
                         <td className="px-1 sm:px-2 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 border-r">
                           <img
@@ -354,7 +353,7 @@ const CheckoutPage: React.FC = () => {
                                 : `${process.env.NEXT_PUBLIC_API_URL}${item.image}`
                             }
                             alt={item.name}
-                            className="md:w-[80px] md:h-[80px] sm:w-[50px] sm:h-[60px] object-cover"
+                            className="md:w-[80px] md:h-[80px] w-[60px] h-[60px] object-cover"
                           />
                           <span className="text-[#212529] hover:text-[#A53E4C] cursor-pointer">
                             {item.name}

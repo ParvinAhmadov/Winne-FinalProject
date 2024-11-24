@@ -5,7 +5,10 @@ import React, { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
-import { FaArrowUp, FaCube, FaClock, FaShoppingCart } from "react-icons/fa";
+import {  FaClock} from "react-icons/fa";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { TbShoppingCartStar } from "react-icons/tb";
+import { GrStatusGood } from "react-icons/gr";
 
 interface Statistics {
   totalProducts: number;
@@ -142,46 +145,46 @@ const AdminPage: React.FC = () => {
 
   return (
     <div
-      className="p-10 min-h-screen bg-cover bg-center"
+      className="p-10 min-h-screen bg-cover bg-center shadow-md shadow-[#212529]"
       style={{
         backgroundImage:
           "url('https://winne-store-demo.myshopify.com/cdn/shop/files/bn1.1.png?v=1653892975')",
       }}
     >
-      <h2 className="text-2xl tracking-widest font-extrabold text-[#212529] mb-8 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
+      <h2 className="text-2xl tracking-widest font-extrabold text-[#212529] mb-8 bg-white bg-opacity-80 p-4  shadow-md">
         ADMIN DASHBOARD
       </h2>
 
       <section className="mb-12">
-        <h3 className="text-xl tracking-widest font-semibold text-[#212529] mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
+        <h3 className="text-xl tracking-widest font-semibold text-[#212529] mb-6 bg-white bg-opacity-80 p-4  shadow-md">
           OVERVIEW
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
-              icon: <FaCube className="h-10 w-10 text-blue-600" />,
-              label: "Total Products",
+              icon: <MdOutlineProductionQuantityLimits className="h-10 w-10 text-[#BF7A50]" />,
+              label: "TOTAL PRODUCTS",
               value: statistics.totalProducts,
             },
             {
-              icon: <FaArrowUp className="h-10 w-10 text-green-600" />,
-              label: "Best Sellers",
+              icon: <TbShoppingCartStar className="h-10 w-10 text-[#BF7A50]" />,
+              label: "BEST SELLERS",
               value: statistics.bestSellers,
             },
             {
-              icon: <FaShoppingCart className="h-10 w-10 text-orange-600" />,
-              label: "Total Orders",
+              icon: <GrStatusGood className="h-10 w-10 text-[#BF7A50]" />,
+              label: "TOTAL ORDERS",
               value: statistics.totalOrders,
             },
             {
-              icon: <FaClock className="h-10 w-10 text-red-600" />,
-              label: "Pending Orders",
+              icon: <FaClock className="h-10 w-10 text-[#BF7A50]" />,
+              label: "PENDINGS ORDERS",
               value: statistics.pendingOrders,
             },
           ].map((stat, index) => (
             <div
               key={index}
-              className="p-6 bg-white bg-opacity-80 border rounded-lg shadow-md flex items-center space-x-4"
+              className="p-6 bg-white bg-opacity-80 border  shadow-md flex items-center space-x-4"
             >
               {stat.icon}
               <div>
@@ -195,33 +198,33 @@ const AdminPage: React.FC = () => {
         </div>
       </section>
 
-     <section className="mb-12">
-  <h3 className="text-xl tracking-widest font-semibold text-gray-700 mb-6 bg-white bg-opacity-80 p-4 rounded-lg shadow-md">
-    QUICK ACCESS
-  </h3>
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {[
-      { label: "Manage Products", href: "/admin/products" },
-      { label: "Manage Best Sellers", href: "/admin/best-sellers" },
-      { label: "Manage Orders", href: "/admin/orders" },
-      { label: "Manage Messages", href: "/admin/messages" }, // New Link
-      { label: "Manage Blogs", href: "/admin/blogs" },
-      { label: "Home Page", href: "/" },
-      { label: "Blogs Page", href: "/blogs" },
-      { label: "Products Page", href: "/product" },
-      { label: "Cart Page", href: "/cart" },
-      { label: "Account Page", href: "/account" },
-    ].map((link, index) => (
-      <Link
-        key={index}
-        href={link.href}
-        className="bg-gradient-to-r from-indigo-500 text-center text-white px-6 py-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
-      >
-        {link.label}
-      </Link>
-    ))}
-  </div>
-</section>
+      <section className="mb-12">
+        <h3 className="text-xl tracking-widest font-semibold text-[#212529] mb-6 bg-white bg-opacity-80 p-4  shadow-md">
+          QUICK ACCESS
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 tracking-widest">
+          {[
+            { label: "HOME PAGE", href: "/" },
+            { label: "ACCOUNT PAGE", href: "/account" },
+            { label: "BLOGS PAGE", href: "/blogs" },
+            { label: "PRODUCTS PAGE", href: "/product" },
+            { label: "CART PAGE", href: "/cart" },
+            { label: "MANAGE PRODUCTS", href: "/admin/products" },
+            { label: "MANAGE BEST-SELLERS", href: "/admin/best-sellers" },
+            { label: "MANAGE ORDERS", href: "/admin/orders" },
+            { label: "MANAGE MESSAGES", href: "/admin/messages" },
+            { label: "MANAGE BLOGS", href: "/admin/blogs" },
+          ].map((link, index) => (
+            <Link
+              key={index}
+              href={link.href}
+              className="bg-gradient-to-r from-[#BF7A50] text-center text-white px-6 py-4  shadow-md hover:bg-black transition duration-300"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

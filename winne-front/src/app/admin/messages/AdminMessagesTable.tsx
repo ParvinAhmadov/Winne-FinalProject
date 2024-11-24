@@ -8,11 +8,19 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Collapse, IconButton, Box, Typography, Modal, TextField, Button } from "@mui/material";
+import {
+  Collapse,
+  IconButton,
+  Box,
+  Typography,
+  Modal,
+  TextField,
+} from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { FaReply } from "react-icons/fa";
-import { FiDelete } from "react-icons/fi";
+import { TbMessageMinus, TbMessageReply } from "react-icons/tb";
+import { MdCancelScheduleSend } from "react-icons/md";
+import { IoMdSend } from "react-icons/io";
 
 interface Message {
   _id: string;
@@ -36,7 +44,9 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
 }) => {
   const [openRows, setOpenRows] = useState<{ [key: string]: boolean }>({});
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null);
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
+    null
+  );
   const [reply, setReply] = useState<string>("");
 
   const toggleRow = (id: string) => {
@@ -98,7 +108,9 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
                   <TableCell>{msg.message}</TableCell>
                   <TableCell>
                     {msg.adminReply || (
-                      <Typography color="textSecondary">No reply yet</Typography>
+                      <Typography color="textSecondary">
+                        No reply yet
+                      </Typography>
                     )}
                   </TableCell>
                   <TableCell>
@@ -110,20 +122,27 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
                       color="primary"
                       aria-label="reply"
                     >
-                      <FaReply />
+                      <TbMessageReply className="text-black" />
                     </IconButton>
                     <IconButton
                       onClick={() => onDelete(msg._id)}
                       color="error"
                       aria-label="delete"
                     >
-                      <FiDelete />
+                      <TbMessageMinus className="text-[#A53E4C]" />
                     </IconButton>
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-                    <Collapse in={openRows[msg._id]} timeout="auto" unmountOnExit>
+                  <TableCell
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={7}
+                  >
+                    <Collapse
+                      in={openRows[msg._id]}
+                      timeout="auto"
+                      unmountOnExit
+                    >
                       <Box margin={2}>
                         <Typography variant="body2" color="textSecondary">
                           <strong>Full Message:</strong> {msg.message}
@@ -158,11 +177,17 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
-            borderRadius: 2,
           }}
         >
-          <Typography id="reply-modal-title" variant="h6" component="h2" gutterBottom>
-            Reply to Message
+          <Typography
+            id="reply-modal-title"
+            variant="h6"
+            component="h2"
+            gutterBottom
+          >
+            <div className="text-center tracking-widest text-sm font-bold">
+              REPLY TO MESSAGE
+            </div>
           </Typography>
           <TextField
             fullWidth
@@ -173,18 +198,27 @@ const AdminMessagesTable: React.FC<AdminMessagesTableProps> = ({
             onChange={(e) => setReply(e.target.value)}
             variant="outlined"
           />
-          <Box mt={2} display="flex" justifyContent="flex-end" gap={2}>
-            <Button variant="outlined" onClick={handleCloseModal}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
+          <Box mt={2} className="flex justify-end gap-4">
+            {/* Cancel Button */}
+            <button
+              onClick={handleCloseModal}
+              className="flex items-center bg-black  hover:bg-[#A53E4C] text-white font-semibold py-2 px-4 transition duration-300"
+            >
+              <span className="mr-2">Cancel</span>
+              <MdCancelScheduleSend />
+            </button>
+
+            {/* Send Reply Button */}
+            <button
               onClick={handleSendReply}
               disabled={!reply.trim()}
+              className={`flex items-center bg-[#A53E4C]  hover:bg-black text-white font-semibold py-2 px-4 transition duration-300 ${
+                !reply.trim() ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Send Reply
-            </Button>
+              <span className="mr-2">Send Reply</span>
+              <IoMdSend className="text-white" />
+            </button>
           </Box>
         </Box>
       </Modal>

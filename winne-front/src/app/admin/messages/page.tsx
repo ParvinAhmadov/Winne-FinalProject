@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Message } from "@/types";
 import AdminMessagesTable from "./AdminMessagesTable";
@@ -66,7 +65,7 @@ const AdminMessagesPage: React.FC = () => {
         throw new Error("Failed to send reply.");
       }
 
-      fetchMessages(); 
+      fetchMessages();
     } catch (error: any) {
       console.error("Error sending reply:", error.message || error);
       setError(error.message || "Failed to send reply.");
@@ -120,11 +119,7 @@ const AdminMessagesPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Admin Messages
-      </Typography>
-
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}

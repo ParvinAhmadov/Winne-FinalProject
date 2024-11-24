@@ -10,19 +10,18 @@ exports.createOrder = async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" });
     }
     const totalAmount = cart.items.reduce((total, item) => {
-      if (!item.productId) return total; 
+      if (!item.productId) return total;
       return total + (item.productId.price || 0) * item.quantity;
     }, 0);
-
-   
 
     const newOrder = new Order({
       userId: req.user.id,
       items: cart.items.map((item) => ({
         productId: item.productId._id,
+        name: item.productId.name,
         quantity: item.quantity,
       })),
-      amount: totalAmount, 
+      amount: totalAmount,
       status: "Pending",
       createdAt: new Date(),
     });
@@ -60,7 +59,11 @@ exports.updateOrderStatus = async (req, res) => {
     const { orderId } = req.params;
     const { status } = req.body;
 
-    const validStatuses = ["Pending", "Paid", "Shipped", "Delivered", "Cancelled"];
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      return res.status(400).json({ message: "Invalid order ID." });
+    }
+
+    const validStatuses = ["Pending", "Completed", "Failed", "Cancelled"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status provided." });
     }
@@ -78,9 +81,7 @@ exports.updateOrderStatus = async (req, res) => {
       order: updatedOrder,
     });
   } catch (error) {
-    console.error("Failed to update order status:", error.message);
-
+    console.error("Failed to update order status:", error);
     res.status(500).json({ message: "Failed to update order status." });
   }
 };
-

@@ -35,11 +35,14 @@ const OrdersPage = () => {
       }
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/orders`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch orders.");
@@ -48,8 +51,7 @@ const OrdersPage = () => {
         const data = await response.json();
         setOrders(data);
       } catch (error) {
-        console.error("Error fetching orders:", error);
-        setError("Failed to load orders. Please try again.");
+        window.location.href = "/account/login";
       } finally {
         setLoading(false);
       }
@@ -108,7 +110,7 @@ const OrdersPage = () => {
               <thead>
                 <tr>
                   <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-left">
-                    ORDER ID
+                    ORDER NAME
                   </th>
                   <th className="border font-normal tracking-widest border-gray-300 px-4 py-2 text-center">
                     STATUS
@@ -124,17 +126,19 @@ const OrdersPage = () => {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id} className="text-left">
-                    <td className="px-4 py-2">{order._id}</td>
+                    <td className="px-4 py-2">
+                      {order.items.map((item) => item.name).join(", ")}
+                    </td>
                     <td className="text-center text-[#A8A8A8] px-4 py-2">
                       {order.status}
                     </td>
                     <td className="text-center text-[#A8A8A8] px-4 py-2">
-                    {order.amount ? `$${order.amount.toFixed(2)}` : "N/A"}
+                      {order.amount ? `$${order.amount.toFixed(2)}` : "N/A"}
                     </td>
                     <td className="px-4 py-2 text-center">
                       {order.items.map((item) => (
                         <div key={item._id} className="mb-2">
-                         <strong>{item.name}</strong> x {item.quantity}($
+                          <strong>{item.name}</strong> x {item.quantity}($
                           {item.price})
                         </div>
                       ))}

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoCaretDownOutline, IoCaretUpOutline } from "react-icons/io5";
@@ -38,7 +39,7 @@ const CartPage = () => {
       setCartItems(data.items);
     } catch (error) {
       setError("Failed to load cart items. Please try again.");
-      console.error("Error fetching cart items:", error);
+      window.location.href = "/account/login";
     } finally {
       setLoading(false);
     }
@@ -271,9 +272,11 @@ const CartPage = () => {
                       .toFixed(2)}
                   </span>
                 </h2>
-                <button className="hover:bg-black transition-all flex items-center justify-center text-white w-full sm:w-[320px] h-[50px] sm:h-[60px] bg-[#A53E4C]">
-                  PROCEED TO CHECKOUT
-                </button>
+                <Link href="/checkout">
+                  <button className="hover:bg-black transition-all flex items-center justify-center text-white w-full sm:w-[320px] h-[50px] sm:h-[60px] bg-[#A53E4C]">
+                    PROCEED TO CHECKOUT
+                  </button>
+                </Link>
               </div>
             </div>
           </>

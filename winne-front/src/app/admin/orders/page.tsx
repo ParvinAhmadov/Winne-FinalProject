@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -101,6 +100,7 @@ const AdminOrders = () => {
           <TableHead>
             <TableRow>
               <TableCell align="center">Order ID</TableCell>
+              <TableCell align="center">Order Name</TableCell>
               <TableCell align="center">User ID</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Amount</TableCell>
@@ -111,6 +111,9 @@ const AdminOrders = () => {
             {orders.map((order) => (
               <TableRow key={order._id}>
                 <TableCell align="center">{order._id}</TableCell>
+                <TableCell align="center">
+                  {order.items.map((item: any) => item.name).join(", ")}
+                </TableCell>
                 <TableCell align="center">{order.userId}</TableCell>
                 <TableCell align="center">
                   <Select

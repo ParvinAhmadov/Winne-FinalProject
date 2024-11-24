@@ -46,7 +46,7 @@ const UserMessages: React.FC = () => {
       const data: Message[] = await response.json();
       setMessages(data);
     } catch (error: any) {
-      console.error("Error fetching user messages:", error);
+     window.location.href="/account/login"
       setError(error.message || "Failed to fetch messages.");
     } finally {
       setLoading(false);

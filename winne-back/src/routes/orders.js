@@ -51,8 +51,8 @@ router.put("/:orderId", authenticate, async (req, res) => {
 
 router.get("/admin/all", authenticate, isAdmin, async (req, res) => {
   try {
-    const orders = await Order.find().populate("items.productId"); 
-    res.status(200).json(orders); 
+    const orders = await Order.find().populate("items.productId");
+    res.status(200).json(orders);
   } catch (error) {
     console.error("Failed to fetch orders for admin:", error.message);
     res.status(500).json({ message: "Failed to fetch orders for admin." });
@@ -73,7 +73,7 @@ router.put("/admin/:orderId", authenticate, isAdmin, async (req, res) => {
       return res.status(404).json({ message: "Order not found." });
     }
 
-    order.status = status; 
+    order.status = status;
     await order.save();
 
     res
