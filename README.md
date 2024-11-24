@@ -1,6 +1,6 @@
 # 🍷 Winne - Final Project
 
-Welcome to the **Winne Wine & Winery** final project! This repository contains the front-end and back-end code for a fully responsive and dynamic e-commerce application for wine products.
+Welcome to the **Winne Wine & Winery** final project! This repository contains the front-end and back-end code for a mobile and desktop responsive and dynamic e-commerce application for wine products.
 
 ---
 
